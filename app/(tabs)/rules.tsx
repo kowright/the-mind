@@ -11,14 +11,14 @@ import { Fonts } from '@/constants/theme';
 import { Text, View } from 'react-native';
 
 
-export default function TabTwoScreen() {
+export default function TabThreeScreen() {
     return (
         <View style={styles.background}>
             <Text style={{ fontSize: 32, fontWeight: 'bold' }}>
                 THE MIND
             </Text>
             <Text style={{ fontSize: 32, fontWeight: 'bold' }}>
-                SETTINGS
+                RULES
             </Text>
         </View>
     );

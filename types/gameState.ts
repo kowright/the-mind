@@ -1,37 +1,26 @@
+import { Card } from "./card";
+import { GamePhase } from "./gamePhase";
+import { Level } from "./level";
+import { Player } from "./player";
+import { Shuriken } from "./shuriken";
+
 export interface GameState {
-    // players
-    // lives
-    // shuriken
-    // level
-    // playedCards
+    players: Player[];
+    lives: number;
+    shuriken: Shuriken[]; // TODO might not even need a whole type for it
+    level: Level; // TODO: might make a constant map of what levels are 
+    discardPile: Card[];
     // players who want shuriken
-    // game phase
+    gamePhase: GamePhase;
 }
 
-// move below ones to other files
 
 /*
-export Shuriken {
-    // remove every player's lowest card
-}
 
-export Level {
-    // number
-    // reward 
-    // reward action
-}
 
-export GamePhase {
-    // setup
-    // play
-    // win phase
-    // game Over
-}
 
-export type GameAction =
-  | { type: 'PLAY_CARD'; cardId: string }
-  | { type: 'END_TURN' }
-  | { type: 'RESET_GAME' };
+
+
 
 
 // EXAMPLE 

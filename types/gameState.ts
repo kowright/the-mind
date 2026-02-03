@@ -1,61 +1,57 @@
+import { hasValidPlayerCount } from "../utils/utils";
 import { Card } from "./card";
+import { GameAction } from "./gameAction";
 import { GamePhase } from "./gamePhase";
 import { Level } from "./level";
 import { Player } from "./player";
-import { Shuriken } from "./shuriken";
 
 export interface GameState {
     players: Player[];
     lives: number;
-    shuriken: Shuriken[]; // TODO might not even need a whole type for it
-    level: Level; // TODO: might make a constant map of what levels are 
+    shuriken: number;
+    level: Level;
     discardPile: Card[];
     // players who want shuriken
     gamePhase: GamePhase;
+    winLevel: number;
+    lastGameAction?: GameAction;
 }
 
-
-/*
-
-
-
-
-
-
-
-// EXAMPLE 
-export function reduceGame(
-  state: GameState,
-  action: GameAction
-): GameState {
-  switch (action.type) {
-    case 'PLAY_CARD': {
-      const player = state.players.find(
-        (p) => p.id === state.currentPlayerId
-      )!;
-
-      const card = player.hand.find(
-        (c) => c.id === action.cardId
-      )!;
-
-      const newState = card.play(state);
-
-      return {
-        ...newState,
-        discardPile: [...state.discardPile, card],
-      };
+export function determineLivesAndShuriken(gameState: GameState) {  
+    const validPlayerCount = hasValidPlayerCount(gameState.players);
+    if (!validPlayerCount) {
+        // return error
+        return gameState;
     }
 
-    case 'END_TURN':
-      return {
-        ...state,
-        currentPlayerId: nextPlayer(state),
-      };
-
-    default:
-      return state;
-  }
+    switch (gameState.players.length) {
+        case 2:
+            gameState = {
+                ...gameState,
+                winLevel: 12,
+                lives: 2,
+                shuriken: 1,
+            };
+        case 3:
+            gameState = {
+                ...gameState,
+                winLevel: 10,
+                lives: 3,
+                shuriken: 1,
+            };
+        case 4: 
+            gameState = {
+                ...gameState,
+                winLevel: 8,
+                lives: 4,
+                shuriken: 1,
+            };
+    }
 }
 
+export function canShurikenBeUsed(gameState: GameState) {
+    const shurikenCount = gameState.shuriken;
+    const playerCount = gameState.players.length;
 
-*/
+    return shurikenCount === playerCount;
+}

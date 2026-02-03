@@ -2,7 +2,6 @@ interface GameViewProps {
 
 }
 
-// create initial game state here
 
 export function GameView() {
     return (
@@ -36,3 +35,11 @@ export function GameView() {
     );
 }
 */
+
+/*
+ EXAMPLE TO SEND INFO TO FE TO MAKE IT DO STUFF
+useEffect(() => {
+    if (gameState.lastEvent === 'FAILED_ORDER') {
+        playFailedOrderAnimation();
+    }
+}, [gameState.lastEvent]);*/

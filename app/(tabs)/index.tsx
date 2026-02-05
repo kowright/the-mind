@@ -8,6 +8,8 @@ import { Text, View } from 'react-native';
 import { TabView } from '@/components/tab-view';
 import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
+import { GameAction } from '@/types/gameAction';
+
  
 export default function HomeScreen() {
     const { dispatch, state } = useGame();  

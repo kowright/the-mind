@@ -61,3 +61,42 @@ function createDeck() {
         number: i+1,
     }));
 }
+
+export function getTopCardFromPlayerHand(
+    playerId: number,
+    gameState: GameState
+): Card | null {
+    const player = gameState.players.find(p => p.id === playerId);
+    if (!player || player.hand.cards.length === 0) {
+        return null;
+    }
+
+    return player.hand.cards[0]; // READ only
+}
+
+export function removeTopCardFromPlayer(
+    player: Player
+): { updatedPlayer: Player; playedCard: Card | null } {
+    const [card, ...remainingCards] = player.hand.cards;
+
+    if (!card) {
+        return { updatedPlayer: player, playedCard: null };
+    }
+
+    return {
+        playedCard: card,
+        updatedPlayer: {
+            ...player,
+            hand: {
+                cards: remainingCards,
+            },
+        },
+    };
+}
+
+export function addCardToDiscardPile(
+    discardPile: Card[] | undefined,
+    card: Card
+): Card[] {
+    return [...(discardPile ?? []), card];
+}

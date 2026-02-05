@@ -23,6 +23,9 @@ export default function HomeScreen() {
           <Button onPress={() => dispatch({ type: 'GAME_START' })}>
             EVERYONE HERE?
           </Button>
+          <Button onPress={() => dispatch({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 })}>
+              MAKE FAKERS
+          </Button>
 
       </TabView>
   );

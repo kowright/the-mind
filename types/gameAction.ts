@@ -10,6 +10,7 @@ export type GameAction =
     | { type: 'GAME_LOST' }
     | { type: 'LEVEL_START' }
     | { type: 'GAME_START' }
+    | { type: 'MAKE_FAKE_PLAYERS', playerCount: number; }
 
 
 

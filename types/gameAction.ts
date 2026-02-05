@@ -11,6 +11,7 @@ export type GameAction =
     | { type: 'LEVEL_START' }
     | { type: 'GAME_START' }
     | { type: 'MAKE_FAKE_PLAYERS', playerCount: number; }
+    | { type: 'SIMULATE_FAKE_GAME'}
 
 
 

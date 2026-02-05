@@ -11,7 +11,8 @@ import { useGame } from '@/hooks/useGame';
  
 export default function HomeScreen() {
     const { dispatch, state } = useGame();  
-    console.log('index.tsc rendering gamePhase: ', state.gamePhase )
+    console.log('index.tsc rendering gamePhase: ', state.gamePhase)
+
     
   return (
       <TabView>
@@ -20,11 +21,11 @@ export default function HomeScreen() {
             style={styles.image}
             source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
           />
-          <Button onPress={() => dispatch({ type: 'GAME_START' })}>
+          <Button onPress={() => startGame(dispatch)}>
             EVERYONE HERE?
           </Button>
-          <Button onPress={() => dispatch({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 })}>
-              MAKE FAKERS
+          <Button onPress={() => startFakeGame(dispatch)}>
+              MAKE FAKE GAME
           </Button>
 
       </TabView>
@@ -51,3 +52,14 @@ const styles = StyleSheet.create({
         transform: [{ scale: 0.50 }],
     },
 });
+function startFakeGame(dispatch: React.Dispatch<GameAction>) {
+    dispatch({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
+    dispatch({ type: 'GAME_START' });
+    dispatch({ type: 'LEVEL_START' });
+}
+
+function startGame(dispatch: React.Dispatch<GameAction>) {
+    dispatch({ type: 'GAME_START' });
+    dispatch({ type: 'LEVEL_START' });
+}
+

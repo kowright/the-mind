@@ -10,6 +10,7 @@ export interface GameState {
     shuriken: number;
     level: Level;
     discardPile?: Card[];
+    deck: Card[];
     // players who want shuriken
     gamePhase: GamePhase;
     winLevel: number;
@@ -22,6 +23,7 @@ export const initialGameState: GameState = {
     shuriken: 1,
     level: levels[0],
     discardPile: undefined,
+    deck: createDeck(),
     gamePhase: 'setup',
     winLevel: 0,
     lastGameAction: undefined,
@@ -51,4 +53,11 @@ export function canShurikenBeUsed(gameState: GameState) {
     const playerCount = gameState.players.length;
 
     return shurikenCount === playerCount;
+}
+
+
+function createDeck() {
+    return Array.from({ length: 100 }, (_, i): Card => ({
+        number: i+1,
+    }));
 }

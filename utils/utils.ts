@@ -22,3 +22,35 @@ export function makeFakePlayers(
         hand: { cards: [] },
     }));
 }
+
+export function shuffleDeck<T>(array: T[]): T[] {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+/**
+ * Deal cards- each card from the top of the deck goes to a different player.
+ * Removes cards from shuffledDeck as they are dealt.
+ */
+export function dealCards(
+    players: Player[],
+    shuffledDeck: Card[],
+    level: number
+): Card[] {
+    // Reset each player's hand
+    players.forEach(player => (player.hand = { cards: [] }));
+
+    for (let i = 0; i < level; i++) {
+        for (let player of players) {
+            const card = shuffledDeck.shift(); // take the top card
+            if (!card) break; 
+            player.hand.cards.push(card);
+        }
+    }
+
+    return shuffledDeck; // remaining cards
+}

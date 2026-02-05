@@ -52,6 +52,23 @@ export function gameReducer(
                 // 
             };
 
+        case 'FAKE_PLAY':
+            console.log('FAKE PLAY from Player ', action.playerId);
+
+            // REMOVE TOP CARD FROM PLAYER DECK
+            // PUT IT ON DISCARD PILE
+            // DETERMINE IF IT WAS VALID
+            // IF INVALID, TAKE AWAY LIFE
+            // IF INVALID, CHECK IF WE LOST THE GAME
+            // DESPITE VALIDITY, CHECK IF WE WON THE GAME
+            // IF WE DID NOT WIN, CHECK IF ALL CARDS WERE PLAYED OR IF PLAYERS HAVE NO MORE CARDS
+
+
+
+            return {
+                ...state,
+            };
+
 
         default:
             return state;

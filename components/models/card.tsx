@@ -11,7 +11,8 @@ interface CardViewProps {
 export function CardView({ card, onPlay }: CardViewProps) {
     return (
         <>
-       <Text>CARD</Text>
+            <Text>CARD</Text>
+            <Text>{card.number}</Text>
         </>
     );
 }

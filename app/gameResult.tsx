@@ -1,14 +1,15 @@
 // whether win or lose, probably show the same game deck that was last used
 // and either a win or lose text
+import { Text, View } from 'react-native';
 
 interface GameResultProps {
 
 }
 
-export function GameResult() {
+export default function GameResult() {
     return (
-        <>
-            GameResult
-        </>
+        <View>
+            <Text> GAME RESULT </Text>
+        </View>
     );
 }

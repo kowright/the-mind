@@ -9,6 +9,7 @@ export type GameAction =
     | { type: 'GAME_WON' }
     | { type: 'GAME_LOST' }
     | { type: 'LEVEL_START' }
+    | { type: 'GAME_START' }
 
 
 

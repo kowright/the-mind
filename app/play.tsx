@@ -1,14 +1,16 @@
 // actual card showing view
+import { Text, View } from 'react-native';
 
 interface PlayViewProps {
 
 }
 
 
-export function PlayView() {
+export default function PlayView() {
+    console.log("play view rendering");
     return (
-        <>
-            PlayView
-        </>
+        <View>
+            <Text> PLAY VIEW </Text>
+        </View>
     );
 }

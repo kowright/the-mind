@@ -1,3 +1,5 @@
+import { Text, View } from 'react-native';
+
 interface PlayerViewProps {
     // id 
     // cards or hand
@@ -6,7 +8,7 @@ interface PlayerViewProps {
 export function PlayerView() {
     return (
         <>
-            GameView
+            <Text>GAME VIEW</Text>
         </>
     );
 }

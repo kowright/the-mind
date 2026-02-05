@@ -2,7 +2,7 @@ import { hasValidPlayerCount } from "../utils/utils";
 import { Card } from "./card";
 import { GameAction } from "./gameAction";
 import { GamePhase } from "./gamePhase";
-import { Level } from "./level";
+import { Level, levels } from "./level";
 import { Player } from "./player";
 
 export interface GameState {
@@ -10,12 +10,24 @@ export interface GameState {
     lives: number;
     shuriken: number;
     level: Level;
-    discardPile: Card[];
+    discardPile?: Card[];
     // players who want shuriken
     gamePhase: GamePhase;
     winLevel: number;
     lastGameAction?: GameAction;
 }
+
+export const initialGameState: GameState = {
+    players: [],
+    lives: 0,
+    shuriken: 0,
+    level: levels[0],
+    discardPile: undefined,
+    gamePhase: 'setup',
+    winLevel: 0,
+    lastGameAction: undefined,
+}
+
 
 export function determineLivesAndShuriken(gameState: GameState) {  
     const validPlayerCount = hasValidPlayerCount(gameState.players);

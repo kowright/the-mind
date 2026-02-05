@@ -1,4 +1,5 @@
 import { Card } from "../../types/card";
+import { Text, View } from 'react-native';
 
 interface CardViewProps {
     card: Card;
@@ -10,7 +11,7 @@ interface CardViewProps {
 export function CardView({ card, onPlay }: CardViewProps) {
     return (
         <>
-        Card!
+       <Text>CARD</Text>
         </>
     );
 }

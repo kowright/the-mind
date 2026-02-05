@@ -6,7 +6,7 @@ export interface Level {
 
 type RewardType = 'Life' | 'Shuriken' | 'None';
 
-const levels: readonly Level[] = [
+export const levels: readonly Level[] = [
     {
         number: 1,
         reward: 'None',

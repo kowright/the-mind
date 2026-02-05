@@ -1,3 +1,4 @@
+import { Text, View } from 'react-native';
 interface GameViewProps {
 
 }
@@ -6,7 +7,7 @@ interface GameViewProps {
 export function GameView() {
     return (
         <>
-            GameView
+            <Text> GAME vIEW </Text>
         </>
     );
 }

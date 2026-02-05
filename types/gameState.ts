@@ -58,7 +58,8 @@ export function canShurikenBeUsed(gameState: GameState) {
 
 function createDeck() {
     return Array.from({ length: 100 }, (_, i): Card => ({
-        number: i+1,
+        number: i + 1,
+        mistakenlyPlayed: false,
     }));
 }
 
@@ -99,4 +100,40 @@ export function addCardToDiscardPile(
     card: Card
 ): Card[] {
     return [...(discardPile ?? []), card];
+}
+
+export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) {
+    if (!lastCard) {
+        return true;
+    }
+
+    return !lastCard || lastCard.number < cardPlayed.number
+}
+
+export function getLastValidCard(discardPile: Card[] | undefined): Card | undefined {
+    if (!discardPile) {
+        return undefined;
+    }
+    for (let i = discardPile.length - 1; i >= 0; i--) {
+        if (!discardPile[i].mistakenlyPlayed) {
+            return discardPile[i];
+        }
+    }
+    return undefined;
+}
+
+export function setPlayedCard(
+    card: Card,
+    playerId: number,
+    wasCorrect: boolean
+): Card {
+    return {
+        number: card.number,
+        mistakenlyPlayedByPlayerId: playerId,
+        mistakenlyPlayed: !wasCorrect,
+    };
+}
+
+export function areAllHandsEmpty(players: Player[]): boolean {
+    return players.every(player => player.hand.cards.length === 0);
 }

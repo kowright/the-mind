@@ -55,4 +55,16 @@ export function dealCards(
     return shuffledDeck; // remaining cards
 }
 
- 
+export function loseLife(lives: number): number {
+    return Math.max(lives - 1, 0);
+}
+
+
+export function areAllLivesLost(lives: number) {
+    return lives === 0;
+}
+
+export function isGameWon(gameState: GameState) {
+    const atWinLevel = gameState.level.number === gameState.winLevel;
+    return atWinLevel
+}

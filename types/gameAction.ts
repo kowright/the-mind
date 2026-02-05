@@ -1,3 +1,5 @@
+import { GamePhase } from "./gamePhase";
+
 // events & intent, not how they happenm
 export type GameAction =
     // players
@@ -12,6 +14,8 @@ export type GameAction =
     | { type: 'GAME_START' }
     | { type: 'MAKE_FAKE_PLAYERS', playerCount: number; }
     | { type: 'FAKE_PLAY'; playerId: number; }
+    | { type: 'TRANSITION', nextAction: GameAction }
+    | { type: 'LEVEL_END' }
 
 
 

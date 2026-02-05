@@ -1,15 +1,16 @@
 import { GameState } from '@/types/gameState';
 import { GameAction } from '@/types/gameAction';
-import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards } from '@/utils/utils';
-import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile } from '@/types/gameState';
-
+import { GamePhase } from '@/types/gamePhase';
+import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon } from '@/utils/utils';
+import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, wasLastPlayWasValid, getLastValidCard, setPlayedCard, areAllHandsEmpty } from '@/types/gameState';
+import { Card } from '@/types/card';
 export function gameReducer(
     state: GameState,
     action: GameAction
 ): GameState {
     switch (action.type) {
         case 'GAME_START':
-            console.log('GAME STARTTO', state);
+            console.log('GAME STARTTO');
 
             const playerCount = state.players.length;
             if (!hasValidPlayerCount(state.players)) {
@@ -20,7 +21,7 @@ export function gameReducer(
             const lives = determineLives(playerCount);
             const winLevel = determineWinLevel(playerCount);
 
-            return {
+            return { //TODO add last action to all of these returns
                 ...state,
                 gamePhase: 'playing',
                 lives,
@@ -40,17 +41,21 @@ export function gameReducer(
         case 'LEVEL_START':
             console.log('LEVEL START');
             // start with all 100 cards
+
             const shuffledDeck = shuffleDeck(state.deck);
-            // TODO: sort each hand
+            // TODO: sort each player hand
             dealCards(state.players, shuffledDeck, state.level.number);
             state.players.map(player => player.hand.cards.map(card => console.log(card.number)));
             // put all players in not ready mode TODO: do something for this
-            // maybe store players * level top cards for checking later?
-
-
+            
+            const startDiscardPile: Card[] = [];
+            const startGamePhase: GamePhase = 'playing';
             return {
                 ...state,
-                // 
+                discardPile: startDiscardPile,
+                gamePhase: startGamePhase,
+                
+                
             };
 
         case 'FAKE_PLAY':
@@ -66,12 +71,25 @@ export function gameReducer(
             const player = state.players[playerIndex];
 
 
-            const { updatedPlayer, playedCard } =
+            let { updatedPlayer, playedCard } =
                 removeTopCardFromPlayer(player);
 
             if (!playedCard) return state;
 
             console.log('Card played: ', playedCard);
+
+            const lastValidCard = getLastValidCard(state.discardPile);
+
+            const wasRightMove = wasLastPlayWasValid(lastValidCard, playedCard);
+
+
+            if (!wasRightMove) {
+                console.log('YOU MESSED UP ', updatedPlayer.name);
+                const mistakeCard = setPlayedCard(playedCard, updatedPlayer.id, wasRightMove);
+                playedCard = { ...mistakeCard };
+            }
+
+
 
             const updatedPlayers = state.players.map((p, index) =>
                 index === playerIndex ? updatedPlayer : p
@@ -81,19 +99,64 @@ export function gameReducer(
                 state.discardPile,
                 playedCard
             );
-            // DETERMINE IF IT WAS VALID
-            // IF INVALID, TAKE AWAY LIFE
-            // IF INVALID, CHECK IF WE LOST THE GAME
-            // DESPITE VALIDITY, CHECK IF WE WON THE GAME
-            // IF WE DID NOT WIN, CHECK IF ALL CARDS WERE PLAYED OR IF PLAYERS HAVE NO MORE CARDS
 
+            const updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
+            console.log('lives: ', updatedLives);
+            const noMoreLives = areAllLivesLost(updatedLives);
 
+            let updatedGamePhase : GamePhase = noMoreLives ? 'gameOver' : state.gamePhase;
+            console.log('gamePhase', updatedGamePhase);
+
+            const noMoreCards = areAllHandsEmpty(updatedPlayers);
+            console.log('hands are empty?: ', noMoreCards);
+
+            let updatedLevel = state.level;
+
+            if (noMoreCards) {
+                const gameWon = isGameWon(state);
+                if (gameWon) {
+                    console.log("YAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY GAME WON!")
+
+                    updatedGamePhase = 'gameOver';
+                }
+                else {
+                    updatedGamePhase = 'transition';
+                }
+                console.log('LEVEL WON')
+                updatedLevel.number++;
+                console.log('Going to level ', updatedLevel);
+                
+                // TODO get reward
+
+                // set level to next level and play.tsx should have an effect for checking level to dispatch next action
+            }
+            
 
             return {
                 ...state,
+                lastGameAction: {type: 'FAKE_PLAY', playerId: updatedPlayer.id},
                 players: updatedPlayers,
-                discardPile: updatedDiscardPile   
+                discardPile: updatedDiscardPile,   
+                lives: updatedLives, 
+                gamePhase: updatedGamePhase,
+
             };
+
+
+        case 'TRANSITION':
+            console.log('TRANSITION');
+
+            const transitionGamePhase: GamePhase = 'transition';
+            console.log('new game phase', transitionGamePhase);
+            return {
+                ...state,
+                gamePhase: transitionGamePhase,
+
+
+            };
+
+        case 'LEVEL_END':
+            console.log('LEVEL END');
 
 
         default:

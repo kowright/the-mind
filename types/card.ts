@@ -5,6 +5,8 @@ export interface Card {
 /*    id: string;*/
 /*    play: (state: GameState) => GameState;*/
     number: number;
+    mistakenlyPlayed: boolean;
+    mistakenlyPlayedByPlayerId?: number;
 }
 
 export function playCard(card: Card, playerId: number, gameState: GameState) {

@@ -236,6 +236,11 @@ export function gameReducer(
                 //last game action
             };
 
+        case 'CALL_FOR_SHURIKEN':
+            console.log('CALL FOR SHURIKEN by ', action.playerId);
+        // new field in game state to hold how many people want it
+        // if amount in field = number of players then shuriken called needs to be dispatched
+
 
         default:
             return state;

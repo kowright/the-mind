@@ -71,13 +71,22 @@ export default function PlayView() {
                                 <View>
                                     {player.hand.cards.map(card => (
                                         <View
+                                            style={styles.deckContainer}
                                             key={`hand-${player.id}-${card.id}`}
-                                   
+                                          
                                         >
                                             <Text>{card.number}</Text>
                                         </View>
                                     ))}
-                                </View>
+                            </View>
+
+                            <View style={styles.buttonContainer}>
+                                <Button
+                                    onPress={() => dispatch({ type: 'CALL_FOR_SHURIKEN', playerId: player.id })}
+                                >
+                                   SHURIKEN
+                                </Button>
+                            </View>
 
                         </View>
                     ))}
@@ -118,12 +127,22 @@ const styles = StyleSheet.create({
     discardPileContainerRight: {
         marginTop: 16,
         backgroundColor: 'green',
+        display: 'flex',
+        alignItems: 'center',
     }, 
     discardPileContainerWrong: {
         marginTop: 16,
         backgroundColor: 'red',
+        display: 'flex',
+        alignItems: 'center',
     }, 
     playerContainer: {
         marginBottom: 16,
+        outlineWidth: 2,
+        outlineColor: 'blue',
+    },
+    deckContainer: {
+        display: 'flex',
+        alignItems: 'center',
     }
 });

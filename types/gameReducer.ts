@@ -250,8 +250,40 @@ export function gameReducer(
 
         case 'CALL_FOR_SHURIKEN':
             console.log('CALL FOR SHURIKEN by ', action.playerId);
-        // new field in game state to hold how many people want it
-        // if amount in field = number of players then shuriken called needs to be dispatched
+
+            if (state.gamePhase !== 'playing') return state;
+            if (state.shuriken <= 0) return state;
+
+            // Prevent double votes
+            if (state.shurikenCalls.includes(action.playerId)) {
+                return state;
+            }
+
+            const shurikenCalls = [...state.shurikenCalls, action.playerId];
+
+            const allAgreed =
+                shurikenCalls.length === state.players.length;
+
+            return {
+                ...state,
+                shurikenCalls,
+                gamePhase: allAgreed ? 'shuriken' : state.gamePhase,
+            };
+
+        case 'SHURIKEN_OVER': {
+            if (state.shuriken <= 0) return state;
+
+            // could shuriken all of the cards out of people's hands- maybe refactor away the win code to be here as well
+
+            return {
+                ...state,
+                shuriken: state.shuriken - 1,
+                players: removeLowestCardFromAllHands(state.players),
+                shurikenCalls: [],
+                gamePhase: 'playing',
+            };
+        }
+
 
 
         default:

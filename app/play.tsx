@@ -33,7 +33,19 @@ export default function PlayView() {
 
             return () => clearTimeout(timeout); // cleanup if component unmounts
         }
+
+        if (state.gamePhase === 'shuriken') {
+
+            const timeout = setTimeout(() => {
+                dispatch({ type: 'SHURIKEN_OVER' });
+            }, 5000);
+
+            return () => clearTimeout(timeout); 
+
+        }
     }, [state.gamePhase]);
+
+
 
 
     const pastLevelIndex = state.level.number - 2;
@@ -55,6 +67,7 @@ export default function PlayView() {
                     <Text>LEVEL: {state.level.number}</Text>
                     <Text>LIVES: {state.lives}</Text>
                     <Text>SHURIKEN: {state.shuriken}</Text>
+                    <Text>SHURIKEN CALLED: {state.shurikenCalls.length}/{state.players.length}</Text>
 
                     {players.map(player => (
                         <View key={player.id} style={styles.playerContainer}>
@@ -113,9 +126,18 @@ export default function PlayView() {
                         <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
                         <Text>You will win at level: {state.winLevel}</Text>
                     </>
-            ) : (
-                <Text>SOMETHING ELSE</Text>
-            )}
+                ) : state.gamePhase === 'shuriken' ? (
+                <>
+                            <Text>SHURIKEN CALLED!</Text>
+                  <Text>Looks like you all can agree on something!</Text>
+                </>
+             
+            ): (
+            <Text>SOMETHING ELSE</Text>
+            )
+
+
+            } 
         </View>
     );
 }

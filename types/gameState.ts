@@ -14,6 +14,7 @@ export interface GameState {
     // players who want shuriken
     gamePhase: GamePhase;
     winLevel: number;
+    shurikenCalls: number[];
     lastGameAction?: GameAction;
 }
 
@@ -26,6 +27,7 @@ export const initialGameState: GameState = {
     deck: createDeck(),
     gamePhase: 'setup',
     winLevel: 0,
+    shurikenCalls: [],
     lastGameAction: undefined,
 }
 

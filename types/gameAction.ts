@@ -8,6 +8,7 @@ export type GameAction =
     // game
     | { type: 'FAILED_ORDER' } // PROBABLY LOGIC RETURN USER NAME WHO MESSED UP
     | { type: 'SHURIKEN_CALLED' } // probably want something about which cards are leaving
+    | { type: 'SHURIKEN_OVER' }
     | { type: 'GAME_WON' }
     | { type: 'GAME_LOST' }
     | { type: 'LEVEL_START' }

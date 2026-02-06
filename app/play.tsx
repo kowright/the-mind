@@ -4,6 +4,8 @@ import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
 import { Platform, StyleSheet } from 'react-native';
 import { CardView } from '@/components/models/card';
+import { Level, levels, RewardType } from "@/types/level";
+
 
 import { useEffect } from 'react';
 
@@ -33,6 +35,11 @@ export default function PlayView() {
     }, [state.gamePhase]);
 
     //TODO: need to see changed lives
+    console.log('state level', state.level)
+    const pastLevelNumber = state.level.number - 2; // -1 for being on next level, -1 for zero based indexing
+    const pastLevelReward = levels[pastLevelNumber].reward.toString();
+    const nextLevelNumber = state.level.number-1;
+    const nextLevelReward = levels[nextLevelNumber].reward.toString();
 
 
     console.log('discard pile: ', state.discardPile);
@@ -72,7 +79,11 @@ export default function PlayView() {
                     ))}
                 </>
             ) : state.gamePhase === 'transition' ? (
-                <Text>TRANSITION</Text>
+                <>
+                    <Text>TRANSITION</Text>
+                        <Text>YOU EARNED: {pastLevelReward}</Text>
+                        <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
+                    </>
             ) : (
                 <Text>SOMETHING ELSE</Text>
             )}

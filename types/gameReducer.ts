@@ -1,7 +1,7 @@
 import { GameState } from '@/types/gameState';
 import { GameAction } from '@/types/gameAction';
 import { GamePhase } from '@/types/gamePhase';
-import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands } from '@/utils/utils';
+import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber } from '@/utils/utils';
 import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, wasLastPlayWasValid, getLastValidCard, setPlayedCard, areAllHandsEmpty, determineRewards } from '@/types/gameState';
 import { Card } from '@/types/card';
 import { Level, levels, RewardType } from "./level";
@@ -41,28 +41,30 @@ export function gameReducer(
 
 
         case 'LEVEL_START':
-            console.log('LEVEL START');
-            // start with all 100 cards
+            {
+                console.log('LEVEL START');
+                // start with all 100 cards
 
-            const shuffledDeck = shuffleDeck(state.deck);
-            // TODO: sort each player hand
-            dealCards(state.players, shuffledDeck, state.level.number);
+                const shuffledDeck = shuffleDeck(state.deck);
 
-            const playersWithSortedHands = sortPlayerHands(state.players);
+                const { players, remainingDeck } = dealCards(state.players, shuffledDeck, state.level.number);
             
-            state.players.map(player => player.hand.cards.map(card => console.log(card.number)));
-            // put all players in not ready mode TODO: do something for this
-            
-            const startDiscardPile: Card[] = [];
-            const startGamePhase: GamePhase = 'playing';
-            return {
-                ...state,
-                discardPile: startDiscardPile,
-                gamePhase: startGamePhase,
-                players: playersWithSortedHands,
-                
-                
-            };
+                const playersWithSortedHands = sortPlayerHands(players);
+
+                state.players.map(player => player.hand.cards.map(card => console.log(card.number)));
+                // put all players in not ready mode TODO: do something for this
+
+                const startDiscardPile: Card[] = [];
+                const startGamePhase: GamePhase = 'playing';
+                return {
+                    ...state,
+                    discardPile: startDiscardPile,
+                    gamePhase: startGamePhase,
+                    players: playersWithSortedHands,
+
+
+                };
+            }
 
         case 'FAKE_PLAY':
             console.log('FAKE PLAY')
@@ -91,20 +93,43 @@ export function gameReducer(
 
             if (!wasRightMove) {
                 console.log('YOU MESSED UP ', updatedPlayer.name);
-                const mistakeCard = setPlayedCard(playedCard, updatedPlayer.id, wasRightMove);
-                playedCard = { ...mistakeCard };
+              /*  const mistakeCard = setPlayedCard(playedCard, updatedPlayer.id, wasRightMove);
+                playedCard = { ...mistakeCard };*/
+                playedCard = {
+                    ...playedCard,
+                    mistakenlyPlayed: true,
+                    mistakenlyPlayedByPlayerId: updatedPlayer.id,
+                };
+
+
+                
             }
 
 
 
-            const updatedPlayers = state.players.map((p, index) =>
+            let updatedPlayers = state.players.map((p, index) =>
                 index === playerIndex ? updatedPlayer : p
             );
 
-            const updatedDiscardPile = addCardToDiscardPile(
+            let updatedDiscardPile: Card[] = addCardToDiscardPile(
                 state.discardPile,
                 playedCard
             );
+
+            if (!wasRightMove) {
+                const { editedPlayers, removedCards } =
+                    removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
+
+                updatedDiscardPile = [
+                    ...updatedDiscardPile,
+                    ...removedCards,
+                ];
+
+                updatedPlayers = updatedPlayers.map(p =>
+                    editedPlayers.find(ep => ep.id === p.id) ?? p
+                );
+
+            }
 
             const updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
             console.log('lives: ', updatedLives);
@@ -147,6 +172,28 @@ export function gameReducer(
                 // set level to next level and play.tsx should have an effect for checking level to dispatch next action
             }
 
+            if (!state.discardPile === undefined) {
+                const handIds = state.players.flatMap(p =>
+                    p.hand.cards.map(c => c.id)
+                );
+
+                const discardIds = state.discardPile
+                    ? state.discardPile.map(c => c.id)
+                    : [];
+
+                const allIds = [...handIds, ...discardIds];
+
+                const duplicates = allIds.filter(
+                    (id, index) => allIds.indexOf(id) !== index
+                );
+
+                if (duplicates.length > 0) {
+                    console.error('DUPLICATE CARD IDS FOUND', duplicates);
+                }
+
+            }
+          
+
 
 
             return {
@@ -176,6 +223,18 @@ export function gameReducer(
 
         case 'LEVEL_END':
             console.log('LEVEL END');
+
+        case 'SHURIKEN_CALLED':
+            console.log('SHURIKEN CALLED');
+
+            const newShuriken = state.shuriken - 1;
+
+            return {
+                ...state,
+                players: removeLowestCardFromAllHands(state.players),
+                shuriken: newShuriken,
+                //last game action
+            };
 
 
         default:

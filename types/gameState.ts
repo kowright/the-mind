@@ -60,6 +60,7 @@ function createDeck() {
     return Array.from({ length: 100 }, (_, i): Card => ({
         number: i + 1,
         mistakenlyPlayed: false,
+        id: `card-${i+1}`
     }));
 }
 
@@ -78,22 +79,23 @@ export function getTopCardFromPlayerHand(
 export function removeTopCardFromPlayer(
     player: Player
 ): { updatedPlayer: Player; playedCard: Card | null } {
-    const [card, ...remainingCards] = player.hand.cards;
-
-    if (!card) {
+    const cards = player.hand.cards;
+    if (cards.length === 0) {
         return { updatedPlayer: player, playedCard: null };
     }
+
+    const card = cards[0];
 
     return {
         playedCard: card,
         updatedPlayer: {
             ...player,
             hand: {
-                cards: remainingCards,
+                cards: cards.slice(1),
             },
         },
     };
-}
+};
 
 export function addCardToDiscardPile(
     discardPile: Card[] | undefined,
@@ -141,9 +143,6 @@ export function areAllHandsEmpty(players: Player[]): boolean {
 export function determineRewards(lives: number, shuriken:number, level: Level) {
     let rewardShuriken = shuriken;
     let rewardLives = lives;
-    console.log('determining rewards...', level);
-    console.log('lives', lives);
-    console.log('shuriken', shuriken);
 
     if (level.reward === 'Life') {
         rewardLives++;

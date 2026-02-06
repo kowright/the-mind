@@ -40,20 +40,33 @@ export function dealCards(
     players: Player[],
     shuffledDeck: Card[],
     level: number
-): Card[] {
-    // Reset each player's hand
-    players.forEach(player => (player.hand = { cards: [] }));
+): { players: Player[]; remainingDeck: Card[] } {
+
+    let deck = [...shuffledDeck];
+
+    let updatedPlayers = players.map(player => ({
+        ...player,
+        hand: { cards: [] as Card[] },
+    }));
 
     for (let i = 0; i < level; i++) {
-        for (let player of players) {
-            const card = shuffledDeck.shift(); // take the top card
-            if (!card) break; 
-            player.hand.cards.push(card);
-        }
+        updatedPlayers = updatedPlayers.map(player => {
+            const card = deck.shift();
+            if (!card) return player;
+
+            return {
+                ...player,
+                hand: {
+                    ...player.hand,
+                    cards: [...player.hand.cards, card],
+                },
+            };
+        });
     }
 
-    return shuffledDeck; // remaining cards
+    return { players: updatedPlayers, remainingDeck: deck };
 }
+
 
 export function sortPlayerHands(players: Player[]) {
     return players.map(player => ({
@@ -78,4 +91,59 @@ export function areAllLivesLost(lives: number) {
 export function isGameWon(gameState: GameState) {
     const atWinLevel = gameState.level.number === gameState.winLevel;
     return atWinLevel
+}
+
+export function removeLowestCardFromAllHands(players: Player[]): Player[] {
+    return players.map(player => {
+        if (player.hand.cards.length === 0) return player;
+
+        const lowest = Math.min(
+            ...player.hand.cards.map(card => card.number)
+        );
+
+        return {
+            ...player,
+            hand: {
+                ...player.hand,
+                cards: player.hand.cards.filter(
+                    card => card.number !== lowest
+                ),
+            },
+        };
+    });
+}
+
+export function removeCardsLowerThanCardNumber(
+    players: Player[],
+    playedCardNumber: number
+): {
+    editedPlayers: Player[];
+    removedCards: Card[];
+} {
+    const removedCards: Card[] = [];
+
+    const editedPlayers = players.map(player => {
+        const keptCards: Card[] = [];
+        const discarded: Card[] = [];
+
+        for (const card of player.hand.cards) {
+            if (card.number < playedCardNumber) {
+                discarded.push(card);
+            } else {
+                keptCards.push(card);
+            }
+        }
+
+        removedCards.push(...discarded);
+
+        return {
+            ...player,
+            hand: {
+                ...player.hand,
+                cards: keptCards,
+            },
+        };
+    });
+
+    return { editedPlayers, removedCards };
 }

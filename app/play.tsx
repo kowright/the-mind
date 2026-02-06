@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 interface PlayViewProps {
 
 }
+// TODO ADD SHURIKEN BUTTON
 
 
 export default function PlayView() {
@@ -34,15 +35,18 @@ export default function PlayView() {
         }
     }, [state.gamePhase]);
 
-    //TODO: need to see changed lives
-    console.log('state level', state.level)
-    const pastLevelNumber = state.level.number - 2; // -1 for being on next level, -1 for zero based indexing
-    const pastLevelReward = levels[pastLevelNumber].reward.toString();
-    const nextLevelNumber = state.level.number-1;
-    const nextLevelReward = levels[nextLevelNumber].reward.toString();
 
+    const pastLevelIndex = state.level.number - 2;
+    const nextLevelIndex = state.level.number - 1;
 
-    console.log('discard pile: ', state.discardPile);
+    const pastLevelReward =
+        levels[pastLevelIndex]?.reward ?? 'None';
+
+    const nextLevelReward =
+        levels[nextLevelIndex]?.reward ?? 'None';
+
+    const showDiscardPile: boolean = state.discardPile ? state.discardPile.length > 0 : false;
+
     return (
         <View>
             {state.gamePhase === 'playing' ? (
@@ -53,7 +57,7 @@ export default function PlayView() {
                     <Text>SHURIKEN: {state.shuriken}</Text>
 
                     {players.map(player => (
-                        <View key={player.id}>
+                        <View key={player.id} style={styles.playerContainer}>
 
                          
                                 <View style={styles.buttonContainer}>
@@ -67,7 +71,7 @@ export default function PlayView() {
                                 <View>
                                     {player.hand.cards.map(card => (
                                         <View
-                                            key={`${player.id}-${card.number}`}
+                                            key={`hand-${player.id}-${card.id}`}
                                    
                                         >
                                             <Text>{card.number}</Text>
@@ -75,55 +79,35 @@ export default function PlayView() {
                                     ))}
                                 </View>
 
-                </View>
+                        </View>
                     ))}
+                    <Text>DISCARD PILE</Text>
+                    {showDiscardPile ? (
+                        <>
+                            {state.discardPile?.map(card => (
+                                <View key={`discard-${card.id}`} style={card.mistakenlyPlayed ? styles.discardPileContainerWrong : styles.discardPileContainerRight}>
+                                    <Text>{card.number}</Text>
+                                </View>
+                            )) }
+                        </>
+                       
+
+                    )
+                        : (<Text>NO DISCARD YET</Text>)}
+                 
                 </>
             ) : state.gamePhase === 'transition' ? (
                 <>
                     <Text>TRANSITION</Text>
                         <Text>YOU EARNED: {pastLevelReward}</Text>
                         <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
+                        <Text>You will win at level: {state.winLevel}</Text>
                     </>
             ) : (
                 <Text>SOMETHING ELSE</Text>
             )}
         </View>
     );
-
- /*   return (
-        <View>
-            <Text> PLAY VIEW </Text>
-            <Text> LEVEL: {state.level.number} </Text>
-            <Text> LIVES: {state.lives} </Text>
-            <Text> SHURIKEN: {state.shuriken} </Text>
-            {players.map(player => (
-                <View key={player.id} style={styles.playerSection}>
-
-                    {*//* Player action button *//*}
-                    <View style={styles.buttonContainer}>
-                        <Button
-                            onPress={() => dispatch({ type: 'FAKE_PLAY', playerId: player.id })}
-                        >
-                            MAKE PLAYER {player.id} PLAY
-                        </Button>
-                    </View>
-
-                    {*//* Player hand *//*}
-                    <View style={styles.handContainer}>
-                        {player.hand.cards.map(card => (
-                            <View
-                                key={`${player.id}-${card.number}`}
-                                style={styles.card}
-                            >
-                                <Text>{card.number}</Text>
-                            </View>
-                        ))}
-                    </View>
-
-                </View>
-            ))}
-        </View>
-    );*/
 }
 
 
@@ -131,4 +115,15 @@ const styles = StyleSheet.create({
     buttonContainer: { 
         margin: 8,
     },
+    discardPileContainerRight: {
+        marginTop: 16,
+        backgroundColor: 'green',
+    }, 
+    discardPileContainerWrong: {
+        marginTop: 16,
+        backgroundColor: 'red',
+    }, 
+    playerContainer: {
+        marginBottom: 16,
+    }
 });

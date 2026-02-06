@@ -2,7 +2,7 @@
 import { GameState } from '@/types/gameState';
 
 export interface Card {
-/*    id: string;*/
+    id: string;
 /*    play: (state: GameState) => GameState;*/
     number: number;
     mistakenlyPlayed: boolean;

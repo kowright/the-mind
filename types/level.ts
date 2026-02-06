@@ -4,7 +4,7 @@ export interface Level {
     reward: RewardType;
 }
 
-type RewardType = 'Life' | 'Shuriken' | 'None';
+export type RewardType = 'Life' | 'Shuriken' | 'None';
 
 export const levels: readonly Level[] = [
     {

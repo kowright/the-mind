@@ -55,6 +55,17 @@ export function dealCards(
     return shuffledDeck; // remaining cards
 }
 
+export function sortPlayerHands(players: Player[]) {
+    return players.map(player => ({
+        ...player,
+        hand: {
+            ...player.hand,
+            cards: [...player.hand.cards].sort((a, b) => a.number - b.number),
+        },
+    }));
+}
+
+
 export function loseLife(lives: number): number {
     return Math.max(lives - 1, 0);
 }

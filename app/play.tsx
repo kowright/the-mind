@@ -32,6 +32,8 @@ export default function PlayView() {
         }
     }, [state.gamePhase]);
 
+    //TODO: need to see changed lives
+
 
     console.log('discard pile: ', state.discardPile);
     return (

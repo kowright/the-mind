@@ -1,7 +1,7 @@
 import { Card } from "./card";
 import { GameAction } from "./gameAction";
 import { GamePhase } from "./gamePhase";
-import { Level, levels } from "./level";
+import { Level, levels, RewardType } from "./level";
 import { Player } from "./player";
 
 export interface GameState {
@@ -136,4 +136,22 @@ export function setPlayedCard(
 
 export function areAllHandsEmpty(players: Player[]): boolean {
     return players.every(player => player.hand.cards.length === 0);
+}
+
+export function determineRewards(lives: number, shuriken:number, level: Level) {
+    let rewardShuriken = shuriken;
+    let rewardLives = lives;
+    console.log('determining rewards...', level);
+    console.log('lives', lives);
+    console.log('shuriken', shuriken);
+
+    if (level.reward === 'Life') {
+        rewardLives++;
+        console.log('Earned a life!')
+    }
+    else if (level.reward === 'Shuriken') {
+        rewardShuriken++;
+        console.log('Earned a shuriken!');
+    }
+    return { rewardLives, rewardShuriken };
 }

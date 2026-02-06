@@ -1,9 +1,11 @@
 import { GameState } from '@/types/gameState';
 import { GameAction } from '@/types/gameAction';
 import { GamePhase } from '@/types/gamePhase';
-import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon } from '@/utils/utils';
-import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, wasLastPlayWasValid, getLastValidCard, setPlayedCard, areAllHandsEmpty } from '@/types/gameState';
+import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands } from '@/utils/utils';
+import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, wasLastPlayWasValid, getLastValidCard, setPlayedCard, areAllHandsEmpty, determineRewards } from '@/types/gameState';
 import { Card } from '@/types/card';
+import { Level, levels, RewardType } from "./level";
+
 export function gameReducer(
     state: GameState,
     action: GameAction
@@ -45,6 +47,9 @@ export function gameReducer(
             const shuffledDeck = shuffleDeck(state.deck);
             // TODO: sort each player hand
             dealCards(state.players, shuffledDeck, state.level.number);
+
+            const playersWithSortedHands = sortPlayerHands(state.players);
+            
             state.players.map(player => player.hand.cards.map(card => console.log(card.number)));
             // put all players in not ready mode TODO: do something for this
             
@@ -54,6 +59,7 @@ export function gameReducer(
                 ...state,
                 discardPile: startDiscardPile,
                 gamePhase: startGamePhase,
+                players: playersWithSortedHands,
                 
                 
             };
@@ -110,8 +116,13 @@ export function gameReducer(
             const noMoreCards = areAllHandsEmpty(updatedPlayers);
             console.log('hands are empty?: ', noMoreCards);
 
-            let updatedLevel = state.level;
+            let updatedLevel: Level = state.level;
+            let completedLevel = state.level;
+            console.log('COMPLETED LEVEL', completedLevel)
 
+            let rewardedLives: number = updatedLives;
+            let rewardedShuriken: number = state.shuriken;
+            
             if (noMoreCards) {
                 const gameWon = isGameWon(state);
                 if (gameWon) {
@@ -123,22 +134,30 @@ export function gameReducer(
                     updatedGamePhase = 'transition';
                 }
                 console.log('LEVEL WON')
-                updatedLevel.number++;
-                console.log('Going to level ', updatedLevel);
-                
-                // TODO get reward
+                const nextLevelNumber = updatedLevel.number+1;
+                console.log('next level number', nextLevelNumber)
+                updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
 
+                console.log('array', levels[completedLevel.number-1])
+                console.log('Going to level ', updatedLevel);
+
+                const { rewardLives, rewardShuriken } = determineRewards(updatedLives, state.shuriken, completedLevel);
+                rewardedLives = rewardLives;
+                rewardedShuriken = rewardShuriken;
                 // set level to next level and play.tsx should have an effect for checking level to dispatch next action
             }
-            
+
+
 
             return {
                 ...state,
                 lastGameAction: {type: 'FAKE_PLAY', playerId: updatedPlayer.id},
                 players: updatedPlayers,
                 discardPile: updatedDiscardPile,   
-                lives: updatedLives, 
+                lives: rewardedLives, 
                 gamePhase: updatedGamePhase,
+                shuriken: rewardedShuriken,
+                level: updatedLevel,
 
             };
 

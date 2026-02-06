@@ -6,7 +6,7 @@ export interface Card {
 /*    play: (state: GameState) => GameState;*/
     number: number;
     mistakenlyPlayed: boolean;
-    mistakenlyPlayedByPlayerId?: number;
+    mistakenlyPlayedByPlayerId?: number; // TODO: change to theMistaken or something
 }
 
 export function playCard(card: Card, playerId: number, gameState: GameState) {

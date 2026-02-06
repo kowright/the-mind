@@ -115,13 +115,13 @@ export function removeLowestCardFromAllHands(players: Player[]): Player[] {
 
 export function removeCardsLowerThanCardNumber(
     players: Player[],
-    playedCardNumber: number
+    playedCardNumber: number,
 ): {
     editedPlayers: Player[];
     removedCards: Card[];
-} {
+    } {
     const removedCards: Card[] = [];
-
+    console.log('remove cards lower than: ', playedCardNumber);
     const editedPlayers = players.map(player => {
         const keptCards: Card[] = [];
         const discarded: Card[] = [];
@@ -129,6 +129,8 @@ export function removeCardsLowerThanCardNumber(
         for (const card of player.hand.cards) {
             if (card.number < playedCardNumber) {
                 discarded.push(card);
+                card.mistakenlyPlayedByPlayerId = player.id;
+                card.mistakenlyPlayed = true;
             } else {
                 keptCards.push(card);
             }

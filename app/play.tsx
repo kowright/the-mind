@@ -107,7 +107,8 @@ export default function PlayView() {
                 </>
             ) : state.gamePhase === 'transition' ? (
                 <>
-                    <Text>TRANSITION</Text>
+                        <Text>TRANSITION</Text>
+                        <Text>Like, please wait</Text>
                         <Text>YOU EARNED: {pastLevelReward}</Text>
                         <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
                         <Text>You will win at level: {state.winLevel}</Text>

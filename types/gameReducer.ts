@@ -111,27 +111,40 @@ export function gameReducer(
                 index === playerIndex ? updatedPlayer : p
             );
 
+        
+        
+            const { editedPlayers, removedCards } =
+                removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
+            if (removedCards.length > 0) {
+                removedCards.map(card => console.log(card.mistakenlyPlayedByPlayerId + ' DID NOT PLAY WHEN THEY WERE SUPPOSED TO'))
+                playedCard = {
+                    ...playedCard,
+                    mistakenlyPlayed: true,
+                    mistakenlyPlayedByPlayerId: updatedPlayer.id,
+                };
+                console.log('playedCard', playedCard)
+            }
+
             let updatedDiscardPile: Card[] = addCardToDiscardPile(
                 state.discardPile,
                 playedCard
             );
+            console.log('removed cards: ', removedCards);
+            console.log('editedPlayers', editedPlayers);
+            updatedDiscardPile = [
+                ...updatedDiscardPile,
+                ...removedCards,
+            ];
 
-            if (!wasRightMove) {
-                const { editedPlayers, removedCards } =
-                    removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
+            updatedPlayers = updatedPlayers.map(p =>
+                editedPlayers.find(ep => ep.id === p.id) ?? p
+            );
 
-                updatedDiscardPile = [
-                    ...updatedDiscardPile,
-                    ...removedCards,
-                ];
+            
 
-                updatedPlayers = updatedPlayers.map(p =>
-                    editedPlayers.find(ep => ep.id === p.id) ?? p
-                );
+            let updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
+            updatedLives = removedCards.length > 0 ? loseLife(updatedLives) : updatedLives;
 
-            }
-
-            const updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
             console.log('lives: ', updatedLives);
             const noMoreLives = areAllLivesLost(updatedLives);
 
@@ -143,7 +156,6 @@ export function gameReducer(
 
             let updatedLevel: Level = state.level;
             let completedLevel = state.level;
-            console.log('COMPLETED LEVEL', completedLevel)
 
             let rewardedLives: number = updatedLives;
             let rewardedShuriken: number = state.shuriken;

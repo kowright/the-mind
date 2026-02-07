@@ -1,15 +1,49 @@
 // whether win or lose, probably show the same game deck that was last used
 // and either a win or lose text
 import { Text, View } from 'react-native';
+import { useGame } from '@/hooks/useGame';
+import { isGameWon} from '@/utils/utils';
+import { Platform, StyleSheet, Pressable } from 'react-native';
+import { Button } from '@react-navigation/elements';
 
 interface GameResultProps {
 
 }
 
 export default function GameResult() {
+
+    const { dispatch, state } = useGame();
+
+    const wonGame = isGameWon(state);
+    const title = wonGame ? 'YOU WON!' : 'WOW, YOU LOST';
+    const levelAchieved = wonGame ? state.winLevel : `${state.level.number} out of ${state.winLevel}`
+    const snarkyText = wonGame ? 'YOU ALL REALLY ARE ONE MIND!' : 'YOU DEFINITELY COULD HAVE TRIED HARDER BRUH';
     return (
-        <View>
+        <View >
             <Text> GAME RESULT </Text>
+            <Text style={wonGame ? styles.wonContainer : styles.lostContainer}>{title}</Text>
+            <Text>LIVES: {state.lives}</Text>
+            <Text>You made it to Level {levelAchieved}</Text>
+            <Text>{snarkyText}</Text>
+            <Button onPress={() => dispatch({ type: 'GAME_RESTART' })}>
+                NEW GAME?
+            </Button>
+
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    wonContainer: {
+        backgroundColor: 'green',
+        color: 'white',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    lostContainer: {
+        backgroundColor: 'red',
+        color: 'white',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    }
+});

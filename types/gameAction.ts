@@ -17,6 +17,7 @@ export type GameAction =
     | { type: 'FAKE_PLAY'; playerId: number; }
     | { type: 'TRANSITION', nextAction: GameAction }
     | { type: 'LEVEL_END' }
+    | { type: 'GAME_RESTART' }
 
 
 

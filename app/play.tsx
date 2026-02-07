@@ -13,7 +13,7 @@ interface PlayViewProps {
 
 }
 // TODO what happens if someone makes a mistake, all lower cards get removed and they win? show mistake screen before win
-
+// TODO: somehow started round 3 with 0 lives 
 
 export default function PlayView() {
     console.log("play view rendering");

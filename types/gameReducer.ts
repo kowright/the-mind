@@ -1,10 +1,10 @@
-import { GameState } from '@/types/gameState';
 import { GameAction } from '@/types/gameAction';
 import { GamePhase } from '@/types/gamePhase';
 import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber } from '@/utils/utils';
 import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, wasLastPlayWasValid, getLastValidCard, setPlayedCard, areAllHandsEmpty, determineRewards } from '@/types/gameState';
 import { Card } from '@/types/card';
 import { Level, levels, RewardType } from "./level";
+import { GameState, initialGameState } from '@/types/gameState';
 
 export function gameReducer(
     state: GameState,
@@ -29,6 +29,15 @@ export function gameReducer(
                 lives,
                 winLevel
             };
+
+        case 'GAME_RESTART':
+            console.log("GAME RESTART");
+
+            return {
+                
+                ...initialGameState,
+            }
+
 
         case 'MAKE_FAKE_PLAYERS':
             console.log('MAKE FAKE PLAYERS');

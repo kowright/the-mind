@@ -133,7 +133,7 @@ export function gameReducer(
             console.log('editedPlayers', editedPlayers);
             updatedDiscardPile = [
                 ...updatedDiscardPile,
-                ...removedCards,
+                ...removedCards, 
             ];
 
             updatedPlayers = updatedPlayers.map(p =>
@@ -217,7 +217,7 @@ export function gameReducer(
                 gamePhase: updatedGamePhase,
                 shuriken: rewardedShuriken,
                 level: updatedLevel,
-
+                lastRemovedCards: removedCards,// TODO have transition or something to show what happened when someone made a mistake
             };
 
 
@@ -236,19 +236,26 @@ export function gameReducer(
         case 'LEVEL_END':
             console.log('LEVEL END');
 
-        case 'SHURIKEN_CALLED':
-            console.log('SHURIKEN CALLED');
+        case 'SHURIKEN_CALLED': { // do shuriken rules
 
-            const newShuriken = state.shuriken - 1;
+            if (state.lastRemovedCards.length > 0) {
+                return state; // we already calculated the rules
+            }
+            const { players, removedCards } =
+                removeLowestCardFromAllHands(state.players);
 
             return {
                 ...state,
-                players: removeLowestCardFromAllHands(state.players),
-                shuriken: newShuriken,
-                //last game action
+                players,
+                shuriken: state.shuriken - 1,
+                lastRemovedCards: removedCards,
+                // still in shuriken game phase
+                // last game action
             };
+        };
 
-        case 'CALL_FOR_SHURIKEN':
+
+        case 'CALL_FOR_SHURIKEN': // votes, show shuriken screen
             console.log('CALL FOR SHURIKEN by ', action.playerId);
 
             if (state.gamePhase !== 'playing') return state;
@@ -256,7 +263,7 @@ export function gameReducer(
 
             // Prevent double votes
             if (state.shurikenCalls.includes(action.playerId)) {
-                return state;
+                return state; // TODO remove someone's call if clicked again
             }
 
             const shurikenCalls = [...state.shurikenCalls, action.playerId];
@@ -270,17 +277,16 @@ export function gameReducer(
                 gamePhase: allAgreed ? 'shuriken' : state.gamePhase,
             };
 
-        case 'SHURIKEN_OVER': {
-            if (state.shuriken <= 0) return state;
-
-            // could shuriken all of the cards out of people's hands- maybe refactor away the win code to be here as well
+        case 'SHURIKEN_OVER': { // leave shuriken screen
+            console.log('SHURIKEN OVER')
+        
 
             return {
                 ...state,
-                shuriken: state.shuriken - 1,
-                players: removeLowestCardFromAllHands(state.players),
+
                 shurikenCalls: [],
                 gamePhase: 'playing',
+                lastRemovedCards: [],
             };
         }
 

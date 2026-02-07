@@ -15,7 +15,8 @@ export interface GameState {
     gamePhase: GamePhase;
     winLevel: number;
     shurikenCalls: number[];
-    lastGameAction?: GameAction;
+    lastRemovedCards: Card[];
+    lastGameAction?: GameAction; // WHERE IS THIS USED
 }
 
 export const initialGameState: GameState = {
@@ -28,6 +29,7 @@ export const initialGameState: GameState = {
     gamePhase: 'setup',
     winLevel: 0,
     shurikenCalls: [],
+    lastRemovedCards: [],
     lastGameAction: undefined,
 }
 

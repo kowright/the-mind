@@ -93,25 +93,27 @@ export function isGameWon(gameState: GameState) {
     return atWinLevel
 }
 
-export function removeLowestCardFromAllHands(players: Player[]): Player[] {
-    return players.map(player => {
+export function removeLowestCardFromAllHands(
+    players: Player[]
+): { players: Player[]; removedCards: Card[] } {
+    const removedCards: Card[] = [];
+
+    const updatedPlayers = players.map(player => {
         if (player.hand.cards.length === 0) return player;
 
-        const lowest = Math.min(
-            ...player.hand.cards.map(card => card.number)
-        );
+        const [lowest, ...rest] = player.hand.cards;
+
+        removedCards.push(lowest);
 
         return {
             ...player,
-            hand: {
-                ...player.hand,
-                cards: player.hand.cards.filter(
-                    card => card.number !== lowest
-                ),
-            },
+            hand: { cards: rest },
         };
     });
+
+    return { players: updatedPlayers, removedCards };
 }
+
 
 export function removeCardsLowerThanCardNumber(
     players: Player[],

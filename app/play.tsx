@@ -2,17 +2,17 @@
 import { Text, View } from 'react-native';
 import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, Pressable } from 'react-native';
 import { CardView } from '@/components/models/card';
 import { Level, levels, RewardType } from "@/types/level";
 
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 interface PlayViewProps {
 
 }
-// TODO ADD SHURIKEN BUTTON
+// TODO what happens if someone makes a mistake, all lower cards get removed and they win? show mistake screen before win
 
 
 export default function PlayView() {
@@ -29,12 +29,14 @@ export default function PlayView() {
 
             const timeout = setTimeout(() => {
                 dispatch({ type: 'LEVEL_START' });
-            }, 5000);
+            }, 3000);
 
             return () => clearTimeout(timeout); // cleanup if component unmounts
         }
 
         if (state.gamePhase === 'shuriken') {
+            console.log('shuriken game phase')
+            dispatch({ type: 'SHURIKEN_CALLED' });
 
             const timeout = setTimeout(() => {
                 dispatch({ type: 'SHURIKEN_OVER' });
@@ -45,7 +47,11 @@ export default function PlayView() {
         }
     }, [state.gamePhase]);
 
-
+    if (state.lastRemovedCards.length > 0) {
+        console.log('last removed card: ', state.lastRemovedCards)
+        console.log('game phase', state.gamePhase)
+    }
+   
 
 
     const pastLevelIndex = state.level.number - 2;
@@ -58,6 +64,8 @@ export default function PlayView() {
         levels[nextLevelIndex]?.reward ?? 'None';
 
     const showDiscardPile: boolean = state.discardPile ? state.discardPile.length > 0 : false;
+
+    const shurikenDisabled = state.shuriken === 0;
 
     return (
         <View>
@@ -93,13 +101,30 @@ export default function PlayView() {
                                     ))}
                             </View>
 
-                            <View style={styles.buttonContainer}>
-                                <Button
-                                    onPress={() => dispatch({ type: 'CALL_FOR_SHURIKEN', playerId: player.id })}
-                                >
-                                   SHURIKEN
-                                </Button>
-                            </View>
+                            {/*<View style={styles.buttonContainer}>*/}
+                            {/*    <Button*/}
+                            {/*        disabled={state.shuriken === 0}*/}
+                            {/*        onPress={() => dispatch({ type: 'CALL_FOR_SHURIKEN', playerId: player.id })}*/}
+                            {/*    >*/}
+                            {/*       SHURIKEN*/}
+                            {/*    </Button>*/}
+                            {/*</View>*/}
+
+
+                            <Pressable
+                                disabled={shurikenDisabled}
+                                onPress={() =>
+                                    dispatch({ type: 'CALL_FOR_SHURIKEN', playerId: player.id })
+                                }
+                                style={({ pressed }) => [
+                                    styles.shurikenButton,
+                                    shurikenDisabled && styles.shurikenButtonDisabled,
+                                    pressed && !shurikenDisabled && styles.shurikenButtonPressed,
+                                ]}
+                            >
+                                <Text style={styles.shurikenButtonText}>SHURIKEN</Text>
+                            </Pressable>
+
 
                         </View>
                     ))}
@@ -126,14 +151,22 @@ export default function PlayView() {
                         <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
                         <Text>You will win at level: {state.winLevel}</Text>
                     </>
-                ) : state.gamePhase === 'shuriken' ? (
+            ) : state.gamePhase === 'shuriken' ? (
                 <>
-                            <Text>SHURIKEN CALLED!</Text>
-                  <Text>Looks like you all can agree on something!</Text>
+                    <Text> SHURIKEN CALLED!</Text>
+                            <Text>Looks like you all can agree on something!</Text>
+                    <Text>Removed cards: </Text>
+                    <View>
+                        {state.lastRemovedCards.map(card => (
+                            <View key={`removed-${card.id}`}>
+                                <Text>{card.number}</Text>
+                            </View>
+                        ))}
+                    </View>
                 </>
              
             ): (
-            <Text>SOMETHING ELSE</Text>
+            <Text>SOMETHING ELSE, maybe loading or something</Text>
             )
 
 
@@ -167,5 +200,30 @@ const styles = StyleSheet.create({
     deckContainer: {
         display: 'flex',
         alignItems: 'center',
-    }
+    },
+    disabledButtonContainer: {
+        opacity: 0.4,
+    }, 
+    shurikenButtonPressed: {
+        opacity: 0.8,
+    },
+    shurikenButton: {
+        backgroundColor: '#6c63ff',
+        paddingVertical: 10,
+        paddingHorizontal: 16,
+        borderRadius: 6,
+        alignItems: 'center',
+    },
+    shurikenButtonDisabled: {
+        backgroundColor: '#aaa',
+        opacity: 0.5,
+    },
+    shurikenButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
 });
+
+
+
+

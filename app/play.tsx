@@ -101,16 +101,6 @@ export default function PlayView() {
                                     ))}
                             </View>
 
-                            {/*<View style={styles.buttonContainer}>*/}
-                            {/*    <Button*/}
-                            {/*        disabled={state.shuriken === 0}*/}
-                            {/*        onPress={() => dispatch({ type: 'CALL_FOR_SHURIKEN', playerId: player.id })}*/}
-                            {/*    >*/}
-                            {/*       SHURIKEN*/}
-                            {/*    </Button>*/}
-                            {/*</View>*/}
-
-
                             <Pressable
                                 disabled={shurikenDisabled}
                                 onPress={() =>
@@ -129,6 +119,7 @@ export default function PlayView() {
                         </View>
                     ))}
                     <Text>DISCARD PILE</Text>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
                     {showDiscardPile ? (
                         <>
                             {state.discardPile?.map(card => (
@@ -139,8 +130,10 @@ export default function PlayView() {
                         </>
                        
 
-                    )
-                        : (<Text>NO DISCARD YET</Text>)}
+                        )
+                   
+                            : (<Text>NO DISCARD YET</Text>)}
+                        </View>
                  
                 </>
             ) : state.gamePhase === 'transition' ? (
@@ -223,7 +216,3 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 });
-
-
-
-

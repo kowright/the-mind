@@ -154,20 +154,58 @@ export function gameReducer(
             let updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
             updatedLives = removedCards.length > 0 ? loseLife(updatedLives) : updatedLives;
 
-            console.log('lives: ', updatedLives);
-            const noMoreLives = areAllLivesLost(updatedLives);
+            if (!state.discardPile === undefined) {
+                const handIds = state.players.flatMap(p =>
+                    p.hand.cards.map(c => c.id)
+                );
 
-            let updatedGamePhase : GamePhase = noMoreLives ? 'gameOver' : state.gamePhase;
-            console.log('gamePhase', updatedGamePhase);
+                const discardIds = state.discardPile
+                    ? state.discardPile.map(c => c.id)
+                    : [];
 
-            const noMoreCards = areAllHandsEmpty(updatedPlayers);
-            console.log('hands are empty?: ', noMoreCards);
+                const allIds = [...handIds, ...discardIds];
+
+                const duplicates = allIds.filter(
+                    (id, index) => allIds.indexOf(id) !== index
+                );
+
+                if (duplicates.length > 0) {
+                    console.error('DUPLICATE CARD IDS FOUND', duplicates);
+                }
+
+            }
+
 
             let updatedLevel: Level = state.level;
             let completedLevel = state.level;
 
             let rewardedLives: number = updatedLives;
             let rewardedShuriken: number = state.shuriken;
+
+            console.log('lives: ', updatedLives);
+            const noMoreLives = areAllLivesLost(updatedLives);
+
+            let updatedGamePhase : GamePhase = noMoreLives ? 'gameOver' : state.gamePhase;
+            console.log('gamePhase', updatedGamePhase);
+
+
+            if (noMoreLives) {
+                return {
+                    ...state,
+                    lastGameAction: { type: 'FAKE_PLAY', playerId: updatedPlayer.id },
+                    players: updatedPlayers,
+                    discardPile: updatedDiscardPile,
+                    lives: rewardedLives,
+                    gamePhase: updatedGamePhase,
+                    shuriken: rewardedShuriken,
+                    level: updatedLevel,
+                    lastRemovedCards: removedCards,// TODO have transition or something to show what happened when someone made a mistake
+                };
+            }
+  
+
+            const noMoreCards = areAllHandsEmpty(updatedPlayers);
+            console.log('hands are empty?: ', noMoreCards)
             
             if (noMoreCards) {
                 const gameWon = isGameWon(state);
@@ -193,26 +231,7 @@ export function gameReducer(
                 // set level to next level and play.tsx should have an effect for checking level to dispatch next action
             }
 
-            if (!state.discardPile === undefined) {
-                const handIds = state.players.flatMap(p =>
-                    p.hand.cards.map(c => c.id)
-                );
-
-                const discardIds = state.discardPile
-                    ? state.discardPile.map(c => c.id)
-                    : [];
-
-                const allIds = [...handIds, ...discardIds];
-
-                const duplicates = allIds.filter(
-                    (id, index) => allIds.indexOf(id) !== index
-                );
-
-                if (duplicates.length > 0) {
-                    console.error('DUPLICATE CARD IDS FOUND', duplicates);
-                }
-
-            }
+       
           
 
 

@@ -108,11 +108,13 @@ export function addCardToDiscardPile(
     return [...(discardPile ?? []), card];
 }
 
-export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) {
+export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) { // TODO fix name
+    console.log('wasLastPlayWasValid');
     if (!lastCard) {
+        console.log('no last card to compare!');
         return true;
     }
-
+    console.log('last play ' + lastCard.number + ' < ' + cardPlayed.number);
     return !lastCard || lastCard.number < cardPlayed.number
 }
 

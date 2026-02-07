@@ -97,13 +97,13 @@ export function gameReducer(
 
             const lastValidCard = getLastValidCard(state.discardPile);
 
-            const wasRightMove = wasLastPlayWasValid(lastValidCard, playedCard);
+          /*  const wasRightMove = wasLastPlayWasValid(lastValidCard, playedCard);
 
 
             if (!wasRightMove) {
                 console.log('YOU MESSED UP ', updatedPlayer.name);
-              /*  const mistakeCard = setPlayedCard(playedCard, updatedPlayer.id, wasRightMove);
-                playedCard = { ...mistakeCard };*/
+              *//*  const mistakeCard = setPlayedCard(playedCard, updatedPlayer.id, wasRightMove);
+                playedCard = { ...mistakeCard };*//*
                 playedCard = {
                     ...playedCard,
                     mistakenlyPlayed: true,
@@ -114,14 +114,16 @@ export function gameReducer(
                 
             }
 
-
+            let updatedGamePhase: GamePhase = wasRightMove ? state.gamePhase : 'mistake';
+            console.log('1 game phase', updatedGamePhase)*/
 
             let updatedPlayers = state.players.map((p, index) =>
                 index === playerIndex ? updatedPlayer : p
             );
 
         
-        
+            let updatedGamePhase: GamePhase = state.gamePhase;
+            let wasRightMove: boolean = true;
             const { editedPlayers, removedCards } =
                 removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
             if (removedCards.length > 0) {
@@ -131,7 +133,10 @@ export function gameReducer(
                     mistakenlyPlayed: true,
                     mistakenlyPlayedByPlayerId: updatedPlayer.id,
                 };
+                updatedGamePhase = 'mistake';
+                wasRightMove = false;
                 console.log('playedCard', playedCard)
+                console.log('cards were removed game phase', updatedGamePhase)
             }
 
             let updatedDiscardPile: Card[] = addCardToDiscardPile(
@@ -154,26 +159,7 @@ export function gameReducer(
             let updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
             updatedLives = removedCards.length > 0 ? loseLife(updatedLives) : updatedLives;
 
-            if (!state.discardPile === undefined) {
-                const handIds = state.players.flatMap(p =>
-                    p.hand.cards.map(c => c.id)
-                );
 
-                const discardIds = state.discardPile
-                    ? state.discardPile.map(c => c.id)
-                    : [];
-
-                const allIds = [...handIds, ...discardIds];
-
-                const duplicates = allIds.filter(
-                    (id, index) => allIds.indexOf(id) !== index
-                );
-
-                if (duplicates.length > 0) {
-                    console.error('DUPLICATE CARD IDS FOUND', duplicates);
-                }
-
-            }
 
 
             let updatedLevel: Level = state.level;
@@ -185,7 +171,7 @@ export function gameReducer(
             console.log('lives: ', updatedLives);
             const noMoreLives = areAllLivesLost(updatedLives);
 
-            let updatedGamePhase : GamePhase = noMoreLives ? 'gameOver' : state.gamePhase;
+            updatedGamePhase = noMoreLives ? 'gameOver' : updatedGamePhase;
             console.log('gamePhase', updatedGamePhase);
 
 
@@ -205,7 +191,6 @@ export function gameReducer(
   
 
             const noMoreCards = areAllHandsEmpty(updatedPlayers);
-            console.log('hands are empty?: ', noMoreCards)
             
             if (noMoreCards) {
                 const gameWon = isGameWon(state);
@@ -217,13 +202,12 @@ export function gameReducer(
                 else {
                     updatedGamePhase = 'transition';
                 }
-                console.log('LEVEL WON')
-                const nextLevelNumber = updatedLevel.number+1;
-                console.log('next level number', nextLevelNumber)
+                const nextLevelNumber = updatedLevel.number + 1;
+                console.log('LEVEL WON, onto level ', nextLevelNumber);
+
                 updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
 
                 console.log('array', levels[completedLevel.number-1])
-                console.log('Going to level ', updatedLevel);
 
                 const { rewardLives, rewardShuriken } = determineRewards(updatedLives, state.shuriken, completedLevel);
                 rewardedLives = rewardLives;
@@ -235,7 +219,7 @@ export function gameReducer(
           
 
 
-
+            console.log('fake play last game phase', updatedGamePhase)
             return {
                 ...state,
                 lastGameAction: {type: 'FAKE_PLAY', playerId: updatedPlayer.id},
@@ -317,6 +301,14 @@ export function gameReducer(
                 lastRemovedCards: [],
             };
         }
+
+        case 'MISTAKE_OVER':
+            return {
+                ...state,
+                gamePhase: 'playing',
+                
+            };
+
 
 
 

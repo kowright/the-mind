@@ -5,4 +5,5 @@ export type GamePhase =
     | 'transition'
     | 'win'
     | 'shuriken'
-    | 'gameOver';
+    | 'gameOver'
+    | 'mistake';

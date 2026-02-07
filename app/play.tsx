@@ -13,7 +13,7 @@ interface PlayViewProps {
 
 }
 // TODO what happens if someone makes a mistake, all lower cards get removed and they win? show mistake screen before win
-
+// TODO all players must agree to start round first
 
 export default function PlayView() {
     console.log("play view rendering");
@@ -45,13 +45,21 @@ export default function PlayView() {
             return () => clearTimeout(timeout); 
 
         }
+
+        if (state.gamePhase === 'mistake') {
+            console.log('!!!!!!!!! mistake in play tsx', state.lastRemovedCards);
+            const timeout = setTimeout(() => {
+                dispatch({ type: 'MISTAKE_OVER' });
+            }, 3000);
+
+            return () => clearTimeout(timeout);
+        }
     }, [state.gamePhase]);
 
     if (state.lastRemovedCards.length > 0) {
         console.log('last removed card: ', state.lastRemovedCards)
         console.log('game phase', state.gamePhase)
     }
-   
 
 
     const pastLevelIndex = state.level.number - 2;
@@ -69,7 +77,7 @@ export default function PlayView() {
 
     return (
         <View>
-            {state.gamePhase === 'playing' ? (
+            {state.gamePhase === 'playing' || state.gamePhase === 'mistake' ? (
                 <>
                     <Text>PLAY VIEW</Text>
                     <Text>LEVEL: {state.level.number}</Text>
@@ -118,6 +126,20 @@ export default function PlayView() {
 
                         </View>
                     ))}
+
+                    {state.gamePhase === 'mistake' ? (
+                        <View style={styles.overlay} >
+                            <View style={styles.overlapText}>
+                            <Text> MISTAKE!</Text>
+                            <Text>
+                                By Player X played incorrectly
+                            </Text>
+                                <Text>Get ready...</Text>
+                            </View>
+                        </View>
+                    ) : (<></>)
+                    }
+
                     <Text>DISCARD PILE</Text>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
                     {showDiscardPile ? (
@@ -133,7 +155,7 @@ export default function PlayView() {
                         )
                    
                             : (<Text>NO DISCARD YET</Text>)}
-                        </View>
+                    </View>
                  
                 </>
             ) : state.gamePhase === 'transition' ? (
@@ -158,10 +180,9 @@ export default function PlayView() {
                     </View>
                 </>
              
-            ): (
+            ) : (
             <Text>SOMETHING ELSE, maybe loading or something</Text>
             )
-
 
             } 
         </View>
@@ -215,4 +236,18 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
     },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.7)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 999,
+    },
+    overlapText: {
+        backgroundColor: 'white',
+    }
 });

@@ -18,6 +18,7 @@ export type GameAction =
     | { type: 'TRANSITION', nextAction: GameAction }
     | { type: 'LEVEL_END' }
     | { type: 'GAME_RESTART' }
+    | { type: 'MISTAKE_OVER' }
 
 
 

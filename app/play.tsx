@@ -7,7 +7,7 @@ import { CardView } from '@/components/models/card';
 import { Level, levels, RewardType } from "@/types/level";
 
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PlayViewProps {
 
@@ -20,6 +20,8 @@ export default function PlayView() {
    
     const { dispatch, state } = useGame();
     const { players } = state;
+    const [mistakeCountdown, setMistakeCountdown] = useState(3);
+
 
     useEffect(() => {
         if (!state) return;
@@ -45,16 +47,51 @@ export default function PlayView() {
             return () => clearTimeout(timeout); 
 
         }
-
-        if (state.gamePhase === 'mistake') {
+/*
+        if (state.gamePhase === 'mistake' && mistakeCountdown === 0) return;
             console.log('!!!!!!!!! mistake in play tsx', state.lastRemovedCards);
-            const timeout = setTimeout(() => {
+           *//* const timeout = setTimeout(() => {
                 dispatch({ type: 'MISTAKE_OVER' });
             }, 3000);
 
-            return () => clearTimeout(timeout);
+            return () => clearTimeout(timeout);*//*
+
+            setMistakeCountdown(3);
+
+            const interval = setInterval(() => {
+                setMistakeCountdown(prev => {
+                    if (prev <= 1) {
+                        clearInterval(interval);
+                        dispatch({ type: 'MISTAKE_OVER' });
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);*/
+
+        if (state.gamePhase === 'mistake') {
+            setMistakeCountdown(3);
+
+            const interval = setInterval(() => {
+                setMistakeCountdown(prev => prev - 1);
+            }, 1000);
+
+            return () => clearInterval(interval);
         }
+
+           
+   
+
+
+        
     }, [state.gamePhase]);
+
+    useEffect(() => {
+        if (state.gamePhase === 'mistake' && mistakeCountdown === 0) {
+            dispatch({ type: 'MISTAKE_OVER' });
+        }
+    }, [mistakeCountdown, state.gamePhase]);
+
 
     if (state.lastRemovedCards.length > 0) {
         console.log('last removed card: ', state.lastRemovedCards)
@@ -134,7 +171,7 @@ export default function PlayView() {
                             <Text>
                                 By Player X played incorrectly
                             </Text>
-                                <Text>Get ready...</Text>
+                                <Text>Get ready...{mistakeCountdown}</Text>
                             </View>
                         </View>
                     ) : (<></>)

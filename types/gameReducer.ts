@@ -70,7 +70,7 @@ export function gameReducer(
                     discardPile: startDiscardPile,
                     gamePhase: startGamePhase,
                     players: playersWithSortedHands,
-
+                    shurikenCalls: [],
 
                 };
             }
@@ -261,6 +261,7 @@ export function gameReducer(
                 players,
                 shuriken: state.shuriken - 1,
                 lastRemovedCards: removedCards,
+             
                 // still in shuriken game phase
                 // last game action
             };

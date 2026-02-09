@@ -25,7 +25,7 @@ export function gameReducer(
 
             return { //TODO add last action to all of these returns
                 ...state,
-                gamePhase: 'playing',
+                gamePhase: 'agreeToStart',
                 lives,
                 winLevel
             };
@@ -64,13 +64,14 @@ export function gameReducer(
                 // put all players in not ready mode TODO: do something for this
 
                 const startDiscardPile: Card[] = [];
-                const startGamePhase: GamePhase = 'playing';
+                const startGamePhase: GamePhase = 'agreeToStart';
                 return {
                     ...state,
                     discardPile: startDiscardPile,
                     gamePhase: startGamePhase,
                     players: playersWithSortedHands,
                     shurikenCalls: [],
+                    readyToStartPlayers: [],
 
                 };
             }
@@ -308,9 +309,37 @@ export function gameReducer(
                 ...state,
                 gamePhase: 'playing',
                 
+            }
+
+        case 'READY_TO_START': // players ready to start level
+            console.log(action.playerId + ' is ready to start!');
+            console.log('game phase', state.gamePhase)
+      
+            console.log("ready 1")
+            // Prevent double votes
+            if (state.readyToStartPlayers.includes(action.playerId)) {
+                return state; // TODO remove someone's call if clicked again
+            }
+
+            console.log("ready 2");
+            const readyToStartPlayers = [...state.readyToStartPlayers, action.playerId];
+            console.log('ready 3', readyToStartPlayers)
+            const allReady =
+                readyToStartPlayers.length === state.players.length;
+
+            return {
+                ...state,
+                readyToStartPlayers,
+                gamePhase: allReady ? 'transition' : state.gamePhase,
             };
 
 
+        case 'TRANSITION_TO_PLAYING':
+            return {
+                ...state,
+                gamePhase: 'playing',
+
+            }
 
 
         default:

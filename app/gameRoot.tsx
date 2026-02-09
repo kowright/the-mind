@@ -2,21 +2,11 @@ import { Stack } from 'expo-router';
 import { useGame } from '@/hooks/useGame';
 import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
-
+/*
 export default function GameRoot() {
 
     const { state } = useGame();
     console.log('gameRoot rendering')
-
-/*    return (
-        <Stack>
-            {state.gamePhase === 'setup' && <Stack.Screen name="(tabs)" />}
-            {state.gamePhase === 'playing' && <Stack.Screen name="play" />}
-            {state.gamePhase === 'gameOver' && <Stack.Screen name="result" />}
-        </Stack>
-    );*/
-
-
 
         const router = useRouter();
     useEffect(() => {
@@ -28,7 +18,7 @@ export default function GameRoot() {
                 case 'setup':
                     router.replace('(tabs)');
                     break;
-                case 'playing':
+                case 'agreeToStart':
                     router.replace('play');
                     break;
                 case 'gameOver':
@@ -42,6 +32,6 @@ export default function GameRoot() {
 
     return null;
     }
-
+*/
 
 

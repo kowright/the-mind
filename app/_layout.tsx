@@ -8,7 +8,7 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-
+    console.log('Root layout')
   return (
       <GameProvider>
           <GameRouter/>

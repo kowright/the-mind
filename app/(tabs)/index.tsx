@@ -3,7 +3,7 @@ import { Platform, StyleSheet } from 'react-native';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { Text, View } from 'react-native';
 import { TabView } from '@/components/tab-view';
 import { Button } from '@react-navigation/elements';
@@ -58,10 +58,12 @@ function startFakeGame(dispatch: React.Dispatch<GameAction>) {
     dispatch({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
     dispatch({ type: 'GAME_START' });
     dispatch({ type: 'LEVEL_START' });
+    router.replace('/play');
 }
 
 function startGame(dispatch: React.Dispatch<GameAction>) {
     dispatch({ type: 'GAME_START' });
     dispatch({ type: 'LEVEL_START' });
+    router.replace('/play');
 }
 

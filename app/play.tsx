@@ -14,7 +14,6 @@ interface PlayViewProps {
 }
 // TODO: make the play screen a component that can be passed the phase to that the agreeToStart and playing phases look the same
 // TODO: from above, make return () states be components 
-// TODO: show the discard pile on transition- might need to make the transition like 10 seconds or  have it be controller by an agree to continue or by the person who said everyone's here
 
 export default function PlayView() {
     console.log("play view rendering");
@@ -203,6 +202,22 @@ export default function PlayView() {
                                     <Text>YOU EARNED: {pastLevelReward}</Text>
                                     <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
                                     <Text>You will win at level: {state.winLevel}</Text>
+                                    <Text>DISCARD PILE</Text>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+                                        {showDiscardPile ? (
+                                            <>
+                                                {state.discardPile?.map(card => (
+                                                    <View key={`discard-${card.id}`} style={card.mistakenlyPlayed ? styles.discardPileContainerWrong : styles.discardPileContainerRight}>
+                                                        <Text>{card.number}</Text>
+                                                    </View>
+                                                ))}
+                                            </>
+
+
+                                        )
+
+                                            : (<Text>NO DISCARD YET</Text>)}
+                                    </View>
                                 </>
                             )}
                     </>

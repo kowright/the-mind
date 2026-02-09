@@ -186,7 +186,7 @@ export function gameReducer(
                     gamePhase: updatedGamePhase,
                     shuriken: rewardedShuriken,
                     level: updatedLevel,
-                    lastRemovedCards: removedCards,// TODO have transition or something to show what happened when someone made a mistake
+                    lastRemovedCards: removedCards,
                 };
             }
   

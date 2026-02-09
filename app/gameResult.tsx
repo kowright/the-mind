@@ -11,8 +11,14 @@ interface GameResultProps {
 }
 
 export default function GameResult() {
-
+    console.log('GAME RESULT')
     const { dispatch, state } = useGame();
+    if (state.discardPile) {
+        console.log('discard', state.discardPile)
+    }
+    else {
+        console.log('no discard')
+    }
 
     const wonGame = isGameWon(state);
     const title = wonGame ? 'YOU WON!' : 'WOW, YOU LOST';
@@ -24,6 +30,20 @@ export default function GameResult() {
             <Text style={wonGame ? styles.wonContainer : styles.lostContainer}>{title}</Text>
             <Text>LIVES: {state.lives}</Text>
             <Text>You made it to Level {levelAchieved}</Text>
+            <Text>DISCARD PILE</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+
+                <>
+                    {state.discardPile?.map(card => (
+                        <View key={`discard-${card.id}`} style={card.mistakenlyPlayed ? styles.discardPileContainerWrong : styles.discardPileContainerRight}>
+                            <Text>{card.number}</Text>
+                        </View>
+                    ))}
+                </>
+
+
+
+            </View>
             <Text>{snarkyText}</Text>
             <Button onPress={() => dispatch({ type: 'GAME_RESTART' })}>
                 NEW GAME?
@@ -45,5 +65,17 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         fontWeight: 'bold',
-    }
+    },
+    discardPileContainerRight: {
+        marginTop: 16,
+        backgroundColor: 'green',
+        display: 'flex',
+        alignItems: 'center',
+    },
+    discardPileContainerWrong: {
+        marginTop: 16,
+        backgroundColor: 'red',
+        display: 'flex',
+        alignItems: 'center',
+    },
 });

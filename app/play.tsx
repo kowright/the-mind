@@ -12,15 +12,16 @@ import React, { useEffect, useState } from 'react';
 interface PlayViewProps {
 
 }
-// TODO all players must agree to start round first
-// TODO: make the play screen a component that can be passed the phase to that the agreeToStart and playing phases look the same 
+// TODO: make the play screen a component that can be passed the phase to that the agreeToStart and playing phases look the same
+// TODO: from above, make return () states be components 
+// TODO: show the discard pile on transition- might need to make the transition like 10 seconds or  have it be controller by an agree to continue or by the person who said everyone's here
 
 export default function PlayView() {
     console.log("play view rendering");
    
     const { dispatch, state } = useGame();
     const { players } = state;
-    const [mistakeCountdown, setMistakeCountdown] = useState(3);
+    const [countdown, setCountdown] = useState(3);
 
 
     useEffect(() => {
@@ -33,10 +34,10 @@ export default function PlayView() {
             if (state.readyToStartPlayers.length > 0) {
                 // agreeToStart to playing transition
                 console.log('ALL players are ready!! in play tsx')
-                setMistakeCountdown(3);
+                setCountdown(3);
 
                 const interval = setInterval(() => {
-                    setMistakeCountdown(prev => prev - 1);
+                    setCountdown(prev => prev - 1);
                 }, 1000);
 
                 return () => clearInterval(interval);
@@ -69,34 +70,22 @@ export default function PlayView() {
         }
 
         if (state.gamePhase === 'mistake') {
-            setMistakeCountdown(3);
+            setCountdown(3);
 
             const interval = setInterval(() => {
-                setMistakeCountdown(prev => prev - 1);
+                setCountdown(prev => prev - 1);
             }, 1000);
 
             return () => clearInterval(interval);
         }
-
-           
-   
-
-
         
     }, [state.gamePhase]);
 
     useEffect(() => {
-        if (mistakeCountdown === 0) {
+        if (countdown === 0) {
             dispatch({ type: 'TRANSITION_TO_PLAYING' });
         }
-    /*    if (state.gamePhase === 'mistake' && mistakeCountdown === 0) {
-            dispatch({ type: 'TRANSITION_TO_PLAYING' });
-        }
-
-        if (state.gamePhase === 'transition' && mistakeCountdown === 0) {
-            dispatch({type: 'TRANSITION_TO_PLAYING'})
-        }*/
-    }, [mistakeCountdown, state.gamePhase]);
+    }, [countdown, state.gamePhase]);
 
 
     if (state.lastRemovedCards.length > 0) {
@@ -117,6 +106,7 @@ export default function PlayView() {
     const showDiscardPile: boolean = state.discardPile ? state.discardPile.length > 0 : false;
 
     const shurikenDisabled = state.shuriken === 0;
+    const inAskToStartPhase = state.readyToStartPlayers.length > 0;
 
     return (
         <View>
@@ -177,7 +167,7 @@ export default function PlayView() {
                             <Text>
                                 By Player X played incorrectly
                             </Text>
-                                <Text>Get ready...{mistakeCountdown}</Text>
+                                <Text>Get ready...{countdown}</Text>
                             </View>
                         </View>
                     ) : (<></>)
@@ -204,11 +194,17 @@ export default function PlayView() {
             ) : state.gamePhase === 'transition' ? (
                 <>
                         <Text>TRANSITION</Text>
-                        <Text>Like, please wait</Text>
-                        <Text>YOU EARNED: {pastLevelReward}</Text>
-                        <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
-                        <Text>You will win at level: {state.winLevel}</Text>
-                        <Text>COUNTDOWN: {mistakeCountdown}</Text>
+                   
+
+                        {inAskToStartPhase ?
+                            (<Text>START IN: {countdown}</Text>) :
+                            (
+                                <>
+                                    <Text>YOU EARNED: {pastLevelReward}</Text>
+                                    <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
+                                    <Text>You will win at level: {state.winLevel}</Text>
+                                </>
+                            )}
                     </>
 
             ) : state.gamePhase === 'shuriken' ? (
@@ -231,7 +227,6 @@ export default function PlayView() {
                                 <Text>LEVEL: {state.level.number}</Text>
                                 <Text>LIVES: {state.lives}</Text>
                                 <Text>SHURIKEN: {state.shuriken}</Text>
-                                <Text>SHURIKEN CALLED: {state.shurikenCalls.length}/{state.players.length}</Text>
                                 <Text>WHO IS READY TO START?: {state.readyToStartPlayers.length}/{state.players.length}</Text>
 
                                 {players.map(player => (

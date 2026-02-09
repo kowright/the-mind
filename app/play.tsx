@@ -28,11 +28,11 @@ export default function PlayView() {
 
         if (state.gamePhase === 'transition') {
             console.log('Transition started, waiting 5 seconds...');
-            console.log('!!! TRANSITION TO START LEVEL', state.readyToStartPlayers.length);
+            console.log('!!! TRANSITION TO START, ready to start players:', state.readyToStartPlayers.length);
 
             if (state.readyToStartPlayers.length > 0) {
                 // agreeToStart to playing transition
-                console.log('players are ready!! in play tsx')
+                console.log('ALL players are ready!! in play tsx')
                 setMistakeCountdown(3);
 
                 const interval = setInterval(() => {
@@ -86,13 +86,16 @@ export default function PlayView() {
     }, [state.gamePhase]);
 
     useEffect(() => {
-        if (state.gamePhase === 'mistake' && mistakeCountdown === 0) {
-            dispatch({ type: 'MISTAKE_OVER' });
+        if (mistakeCountdown === 0) {
+            dispatch({ type: 'TRANSITION_TO_PLAYING' });
+        }
+    /*    if (state.gamePhase === 'mistake' && mistakeCountdown === 0) {
+            dispatch({ type: 'TRANSITION_TO_PLAYING' });
         }
 
         if (state.gamePhase === 'transition' && mistakeCountdown === 0) {
             dispatch({type: 'TRANSITION_TO_PLAYING'})
-        }
+        }*/
     }, [mistakeCountdown, state.gamePhase]);
 
 
@@ -205,6 +208,7 @@ export default function PlayView() {
                         <Text>YOU EARNED: {pastLevelReward}</Text>
                         <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
                         <Text>You will win at level: {state.winLevel}</Text>
+                        <Text>COUNTDOWN: {mistakeCountdown}</Text>
                     </>
 
             ) : state.gamePhase === 'shuriken' ? (
@@ -221,7 +225,7 @@ export default function PlayView() {
                     </View>
                 </>
              
-             ) : state.gamePhase === 'agreeToStart' ? (
+             ) : (state.readyToStartPlayers.length > 0 || state.gamePhase === 'agreeToStart') ? (
                             <>
                                 <Text>AGREE TO START</Text>
                                 <Text>LEVEL: {state.level.number}</Text>
@@ -235,12 +239,7 @@ export default function PlayView() {
 
 
                                         <View style={styles.buttonContainer}>
-                                            <Button
-                                            // should be disabled 
-                                                onPress={() => dispatch({ type: 'FAKE_PLAY', playerId: player.id })}
-                                            >
-                                                MAKE PLAYER {player.id} PLAY
-                                            </Button>
+                                            <Text>{player.name}</Text>
                                         </View>
 
                                         <View>

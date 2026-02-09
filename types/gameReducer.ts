@@ -231,6 +231,7 @@ export function gameReducer(
                 shuriken: rewardedShuriken,
                 level: updatedLevel,
                 lastRemovedCards: removedCards,// TODO have transition or something to show what happened when someone made a mistake
+                readyToStartPlayers: [],
             };
 
 
@@ -242,7 +243,7 @@ export function gameReducer(
             return {
                 ...state,
                 gamePhase: transitionGamePhase,
-
+                readyToStartPlayers: [],
 
             };
 
@@ -303,13 +304,6 @@ export function gameReducer(
                 lastRemovedCards: [],
             };
         }
-
-        case 'MISTAKE_OVER':
-            return {
-                ...state,
-                gamePhase: 'playing',
-                
-            }
 
         case 'READY_TO_START': // players ready to start level
             console.log(action.playerId + ' is ready to start!');

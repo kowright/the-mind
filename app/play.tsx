@@ -5,21 +5,22 @@ import { useGame } from '@/hooks/useGame';
 import { Platform, StyleSheet, Pressable } from 'react-native';
 import { CardView } from '@/components/models/card';
 import { Level, levels, RewardType } from "@/types/level";
-
+import { MistakeView } from '@/components/phases/mistake';
+import { GameplayView } from '@/components/phases/gameplayView'
 
 import React, { useEffect, useState } from 'react';
+import { DiscardPileView } from '../components/models/discardPile';
+import { TransitionView } from '../components/phases/transition';
+import { ShurikenView } from '../components/phases/shuriken';
 
 interface PlayViewProps {
 
 }
-// TODO: make the play screen a component that can be passed the phase to that the agreeToStart and playing phases look the same
-// TODO: from above, make return () states be components 
 
 export default function PlayView() {
     console.log("play view rendering");
    
     const { dispatch, state } = useGame();
-    const { players } = state;
     const [countdown, setCountdown] = useState(3);
 
 
@@ -27,12 +28,9 @@ export default function PlayView() {
         if (!state) return;
 
         if (state.gamePhase === 'transition') {
-            console.log('Transition started, waiting 5 seconds...');
-            console.log('!!! TRANSITION TO START, ready to start players:', state.readyToStartPlayers.length);
 
             if (state.readyToStartPlayers.length > 0) {
                 // agreeToStart to playing transition
-                console.log('ALL players are ready!! in play tsx')
                 setCountdown(3);
 
                 const interval = setInterval(() => {
@@ -53,7 +51,6 @@ export default function PlayView() {
         }
 
         if (state.gamePhase === 'shuriken') {
-            console.log('shuriken game phase')
             dispatch({ type: 'SHURIKEN_CALLED' });
 
             const timeout = setTimeout(() => {
@@ -61,11 +58,6 @@ export default function PlayView() {
             }, 5000);
 
             return () => clearTimeout(timeout); 
-        }
-
-        if (state.gamePhase === 'agreeToStart') {
-            console.log('agreeToStart game phase');
-            console.log('players to start', state.readyToStartPlayers.length)
         }
 
         if (state.gamePhase === 'mistake') {
@@ -78,210 +70,46 @@ export default function PlayView() {
             return () => clearInterval(interval);
         }
         
-    }, [state.gamePhase]);
+    }, [state.gamePhase, dispatch, state]);
 
     useEffect(() => {
         if (countdown === 0) {
             dispatch({ type: 'TRANSITION_TO_PLAYING' });
         }
-    }, [countdown, state.gamePhase]);
+    }, [countdown, state.gamePhase, dispatch]);
 
 
-    if (state.lastRemovedCards.length > 0) {
-        console.log('last removed card: ', state.lastRemovedCards)
-        console.log('game phase', state.gamePhase)
-    }
-
-
-    const pastLevelIndex = state.level.number - 2;
-    const nextLevelIndex = state.level.number - 1;
-
-    const pastLevelReward =
-        levels[pastLevelIndex]?.reward ?? 'None';
-
-    const nextLevelReward =
-        levels[nextLevelIndex]?.reward ?? 'None';
-
-    const showDiscardPile: boolean = state.discardPile ? state.discardPile.length > 0 : false;
-
-    const shurikenDisabled = state.shuriken === 0;
     const inAskToStartPhase = state.readyToStartPlayers.length > 0;
 
     return (
         <View>
             {state.gamePhase === 'playing' || state.gamePhase === 'mistake' ? (
                 <>
-                    <Text>PLAY VIEW</Text>
-                    <Text>LEVEL: {state.level.number}</Text>
-                    <Text>LIVES: {state.lives}</Text>
-                    <Text>SHURIKEN: {state.shuriken}</Text>
-                    <Text>SHURIKEN CALLED: {state.shurikenCalls.length}/{state.players.length}</Text>
-
-                    {players.map(player => (
-                        <View key={player.id} style={styles.playerContainer}>
-
-                         
-                                <View style={styles.buttonContainer}>
-                                    <Button
-                                        onPress={() => dispatch({ type: 'FAKE_PLAY', playerId: player.id })}
-                                    >
-                                        MAKE PLAYER {player.id} PLAY
-                                    </Button>
-                                </View>
-
-                                <View>
-                                    {player.hand.cards.map(card => (
-                                        <View
-                                            style={styles.deckContainer}
-                                            key={`hand-${player.id}-${card.id}`}
-                                          
-                                        >
-                                            <Text>{card.number}</Text>
-                                        </View>
-                                    ))}
-                            </View>
-
-                            <Pressable
-                                disabled={shurikenDisabled}
-                                onPress={() =>
-                                    dispatch({ type: 'CALL_FOR_SHURIKEN', playerId: player.id })
-                                }
-                                style={({ pressed }) => [
-                                    styles.shurikenButton,
-                                    shurikenDisabled && styles.shurikenButtonDisabled,
-                                    pressed && !shurikenDisabled && styles.shurikenButtonPressed,
-                                ]}
-                            >
-                                <Text style={styles.shurikenButtonText}>SHURIKEN</Text>
-                            </Pressable>
-
-
-                        </View>
-                    ))}
+                    <GameplayView agreeToStartVersion={false} />
 
                     {state.gamePhase === 'mistake' ? (
-                        <View style={styles.overlay} >
-                            <View style={styles.overlapText}>
-                            <Text> MISTAKE!</Text>
-                            <Text>
-                                By Player X played incorrectly
-                            </Text>
-                                <Text>Get ready...{countdown}</Text>
-                            </View>
-                        </View>
-                    ) : (<></>)
+                        <MistakeView countdown={countdown} />
+                        ) : (<></>)
                     }
 
-                    <Text>DISCARD PILE</Text>
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-                    {showDiscardPile ? (
-                        <>
-                            {state.discardPile?.map(card => (
-                                <View key={`discard-${card.id}`} style={card.mistakenlyPlayed ? styles.discardPileContainerWrong : styles.discardPileContainerRight}>
-                                    <Text>{card.number}</Text>
-                                </View>
-                            )) }
-                        </>
-                       
-
-                        )
-                   
-                            : (<Text>NO DISCARD YET</Text>)}
-                    </View>
+                        <DiscardPileView />
                  
                 </>
             ) : state.gamePhase === 'transition' ? (
                 <>
                         <Text>TRANSITION</Text>
-                   
-
                         {inAskToStartPhase ?
                             (<Text>START IN: {countdown}</Text>) :
                             (
-                                <>
-                                    <Text>YOU EARNED: {pastLevelReward}</Text>
-                                    <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
-                                    <Text>You will win at level: {state.winLevel}</Text>
-                                    <Text>DISCARD PILE</Text>
-                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-                                        {showDiscardPile ? (
-                                            <>
-                                                {state.discardPile?.map(card => (
-                                                    <View key={`discard-${card.id}`} style={card.mistakenlyPlayed ? styles.discardPileContainerWrong : styles.discardPileContainerRight}>
-                                                        <Text>{card.number}</Text>
-                                                    </View>
-                                                ))}
-                                            </>
-
-
-                                        )
-
-                                            : (<Text>NO DISCARD YET</Text>)}
-                                    </View>
-                                </>
+                                <TransitionView />
                             )}
                     </>
 
             ) : state.gamePhase === 'shuriken' ? (
-                <>
-                    <Text> SHURIKEN CALLED!</Text>
-                            <Text>Looks like you all can agree on something!</Text>
-                    <Text>Removed cards: </Text>
-                    <View>
-                        {state.lastRemovedCards.map(card => (
-                            <View key={`removed-${card.id}`}>
-                                <Text>{card.number}</Text>
-                            </View>
-                        ))}
-                    </View>
-                </>
+                <ShurikenView />
              
-             ) : (state.readyToStartPlayers.length > 0 || state.gamePhase === 'agreeToStart') ? (
-                            <>
-                                <Text>AGREE TO START</Text>
-                                <Text>LEVEL: {state.level.number}</Text>
-                                <Text>LIVES: {state.lives}</Text>
-                                <Text>SHURIKEN: {state.shuriken}</Text>
-                                <Text>WHO IS READY TO START?: {state.readyToStartPlayers.length}/{state.players.length}</Text>
-
-                                {players.map(player => (
-                                    <View key={player.id} style={styles.playerContainer}>
-
-
-                                        <View style={styles.buttonContainer}>
-                                            <Text>{player.name}</Text>
-                                        </View>
-
-                                        <View>
-                                            {player.hand.cards.map(card => (
-                                                <View
-                                                    style={styles.deckContainer}
-                                                    key={`hand-${player.id}-${card.id}`}
-
-                                                >
-                                                    <Text>{card.number}</Text>
-                                                </View>
-                                            ))}
-                                        </View>
-
-                                        <Pressable
-                                            
-                                            onPress={() =>
-                                                dispatch({ type: 'READY_TO_START', playerId: player.id })
-                                            }
-                                            style={({ pressed }) => [
-                                                styles.shurikenButton,
-                                                shurikenDisabled && styles.shurikenButtonDisabled,
-                                                pressed && !shurikenDisabled && styles.shurikenButtonPressed,
-                                            ]}
-                                        >
-                                            <Text style={styles.shurikenButtonText}>READY??</Text>
-                                        </Pressable>
-
-
-                                    </View>
-                                ))}
-                            </>
+            ) : (state.readyToStartPlayers.length > 0 || state.gamePhase === 'agreeToStart') ? (
+                <GameplayView agreeToStartVersion={true} />
 
             ) : (
             <Text>SOMETHING ELSE, maybe loading or something</Text>
@@ -291,66 +119,3 @@ export default function PlayView() {
         </View>
     );
 }
-
-
-const styles = StyleSheet.create({
-    buttonContainer: { 
-        margin: 8,
-    },
-    discardPileContainerRight: {
-        marginTop: 16,
-        backgroundColor: 'green',
-        display: 'flex',
-        alignItems: 'center',
-    }, 
-    discardPileContainerWrong: {
-        marginTop: 16,
-        backgroundColor: 'red',
-        display: 'flex',
-        alignItems: 'center',
-    }, 
-    playerContainer: {
-        marginBottom: 16,
-        outlineWidth: 2,
-        outlineColor: 'blue',
-    },
-    deckContainer: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    disabledButtonContainer: {
-        opacity: 0.4,
-    }, 
-    shurikenButtonPressed: {
-        opacity: 0.8,
-    },
-    shurikenButton: {
-        backgroundColor: '#6c63ff',
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 6,
-        alignItems: 'center',
-    },
-    shurikenButtonDisabled: {
-        backgroundColor: '#aaa',
-        opacity: 0.5,
-    },
-    shurikenButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-    overlay: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.7)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 999,
-    },
-    overlapText: {
-        backgroundColor: 'white',
-    }
-});

@@ -23,7 +23,7 @@ export function gameReducer(
             const lives = determineLives(playerCount);
             const winLevel = determineWinLevel(playerCount);
 
-            return { //TODO add last action to all of these returns
+            return { //TODO add last action to all of these returns, or maybe remove it cause idt anywhere uses it
                 ...state,
                 gamePhase: 'agreeToStart',
                 lives,

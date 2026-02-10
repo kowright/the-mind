@@ -1,6 +1,8 @@
 import { GamePhase } from "./gamePhase";
 
-// events & intent, not how they happenm
+// events & intent, not how they happen
+
+// TODO: group these
 export type GameAction =
     // players
     | { type: 'PLAY_CARD'; cardNumber: number, playerId: number; }

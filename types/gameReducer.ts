@@ -52,7 +52,6 @@ export function gameReducer(
         case 'LEVEL_START':
             {
                 console.log('LEVEL START');
-                // start with all 100 cards
 
                 const shuffledDeck = shuffleDeck(state.deck);
 
@@ -61,7 +60,6 @@ export function gameReducer(
                 const playersWithSortedHands = sortPlayerHands(players);
 
                 state.players.map(player => player.hand.cards.map(card => console.log(card.number)));
-                // put all players in not ready mode TODO: do something for this
 
                 const startDiscardPile: Card[] = [];
                 const startGamePhase: GamePhase = 'agreeToStart';
@@ -230,7 +228,7 @@ export function gameReducer(
                 gamePhase: updatedGamePhase,
                 shuriken: rewardedShuriken,
                 level: updatedLevel,
-                lastRemovedCards: removedCards,// TODO have transition or something to show what happened when someone made a mistake
+                lastRemovedCards: removedCards,
                 readyToStartPlayers: [],
             };
 
@@ -269,20 +267,20 @@ export function gameReducer(
             };
         };
 
-
         case 'CALL_FOR_SHURIKEN': // votes, show shuriken screen
             console.log('CALL FOR SHURIKEN by ', action.playerId);
 
             if (state.gamePhase !== 'playing') return state;
             if (state.shuriken <= 0) return state;
 
-            // Prevent double votes
+            let shurikenCalls: number[] = [...state.shurikenCalls, action.playerId];
+            console.log('shuriken calls', shurikenCalls)
             if (state.shurikenCalls.includes(action.playerId)) {
-                return state; // TODO remove someone's call if clicked again
+                shurikenCalls = state.shurikenCalls.filter(call => call !== action.playerId)
+                console.log('filtered shuriken calls', shurikenCalls)
             }
-
-            const shurikenCalls = [...state.shurikenCalls, action.playerId];
-
+           
+             
             const allAgreed =
                 shurikenCalls.length === state.players.length;
 
@@ -310,13 +308,19 @@ export function gameReducer(
             console.log('game phase', state.gamePhase)
       
             console.log("ready 1")
-            // Prevent double votes
-            if (state.readyToStartPlayers.includes(action.playerId)) {
-                return state; // TODO remove someone's call if clicked again
-            }
-
+         
             console.log("ready 2");
-            const readyToStartPlayers = [...state.readyToStartPlayers, action.playerId];
+
+            let readyToStartPlayers = [...state.readyToStartPlayers];
+            console.log('rady 1', readyToStartPlayers)
+            if (readyToStartPlayers.includes(action.playerId)) {
+                readyToStartPlayers = readyToStartPlayers.filter(player => player !== action.playerId)
+                console.log('rady 2', readyToStartPlayers)
+            }
+            else {
+                readyToStartPlayers = [...readyToStartPlayers, action.playerId]
+            }
+            
             console.log('ready 3', readyToStartPlayers)
             const allReady =
                 readyToStartPlayers.length === state.players.length;

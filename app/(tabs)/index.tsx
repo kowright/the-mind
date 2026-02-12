@@ -9,11 +9,17 @@ import { TabView } from '@/components/tab-view';
 import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
 import { GameAction } from '@/types/gameAction';
+import { websocketService } from '@/services/websocketService';
+import { createContext, useReducer, ReactNode, useEffect } from 'react';
 
- 
 export default function HomeScreen() {
     const { dispatch, state } = useGame();  
     console.log('index.tsc rendering gamePhase: ', state.gamePhase)
+
+
+    useEffect(() => {
+        websocketService.send({ type: "PLAYER_CONNECTION" });
+    }, []);
 
     
   return (
@@ -29,6 +35,8 @@ export default function HomeScreen() {
           <Button onPress={() => startFakeGame(dispatch)}>
               MAKE FAKE GAME
           </Button>
+
+          <Text> There are {state.players.length} players.</Text>
 
       </TabView>
   );

@@ -8,6 +8,7 @@ export type GameAction =
     | { type: 'PLAY_CARD'; cardNumber: number, playerId: number; }
     | { type: 'CALL_FOR_SHURIKEN', playerId: number }
     | { type: 'READY_TO_START', playerId: number }
+    | { type: 'PLAYER_CONNECTION' }
     // game
     | { type: 'FAILED_ORDER' } // PROBABLY LOGIC RETURN USER NAME WHO MESSED UP
     | { type: 'SHURIKEN_CALLED' } // probably want something about which cards are leaving

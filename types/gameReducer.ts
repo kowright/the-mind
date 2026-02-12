@@ -11,6 +11,10 @@ export function gameReducer(
     action: GameAction
 ): GameState {
     switch (action.type) {
+        case 'PLAYER_CONNECTION': 
+            console.log("PLAYER HAS CONNECTED")
+
+
         case 'GAME_START':
             console.log('GAME STARTTO');
 

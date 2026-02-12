@@ -1,11 +1,17 @@
 // server.ts
-const WebSocket = require("ws"); // CommonJS style
+const WebSocket = require("ws");
+require("dotenv").config();
 
-const wss = new WebSocket.Server({ port: 3000, host: "0.0.0.0" });
+
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || "0.0.0.0";
+
+const wss = new WebSocket.Server({ port: PORT, host: HOST });
+
+console.log(`WebSocket running on ws://${HOST}:${PORT}`);
 
 let players: { id: string }[] = [];
 
-console.log("WebSocket server running on ws://localhost:3000");
 
 function generatePlayerId(): string {
     return Math.random().toString(36).substring(2, 10);
@@ -27,7 +33,8 @@ wss.on("connection", (ws: any, req: any) => {
 
     players.push({ id: playerId });
 
-    console.log(`New player connected: ${playerId} from ${ip}`);
+    console.log(`New player connected: ${playerId} from ${ip} `);
+    console.log("NEW CONNECTION", req.socket.remoteAddress);
     broadcastLobby();
 
     ws.on("message", (data: any) => {

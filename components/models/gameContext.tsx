@@ -4,28 +4,34 @@ import { GameAction } from '@/types/gameAction';
 import { GameState, initialGameState } from '@/types/gameState';
 import { websocketService } from '@/services/websocketService';
 import { Platform } from 'react-native';
+import Constants from "expo-constants";
 
+/*const wsUrl = Constants.expoConfig?.extra?.WS_URL;
+*/
 type GameContextType = {
     state: GameState;
     dispatch: React.Dispatch<GameAction>;
 };
 
-const laptopPort: string = 'ws://localhost:3000';
-const mobilePort: string = "ws://192.168.2.16:3000";
-
 export const GameContext = createContext<GameContextType | null>(null);
 
 export function GameProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(gameReducer, initialGameState);
-    const url =
+    console.log('platform', Platform.OS)
+/*    const url =
         Platform.OS === "web"
             ? "ws://localhost:3000"
-;
+            : wsUrl;*/
 
-    useEffect(() => {
+
+    console.log('emv', Constants.expoConfig?.extra?.WS_URL_WEB)
+    const wsURL = Constants.expoConfig?.extra?.WS_URL_WEB;
+    console.log('wsURL', wsURL)
+/*            console.log('url', url)
+*/    useEffect(() => {
 
         if (!websocketService.isConnected()) {
-            websocketService.connect(url, () => {
+            websocketService.connect(wsURL, () => {
                 websocketService.send({ type: "PLAYER_CONNECTION" });
             });
         }

@@ -1,4 +1,6 @@
+
 class WebsocketService {
+
     private socket: WebSocket | null = null;
 
     isConnected() {

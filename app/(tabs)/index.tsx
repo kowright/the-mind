@@ -14,19 +14,19 @@ export default function HomeScreen() {
     const { dispatch, state } = useGame();  
     console.log('index.tsc rendering gamePhase: ', state.gamePhase)
     const [text, setText] = useState('');
-
+    const [enteredName, setEnteredName] = useState(false);
 /*    const players = selectPlayers(state);*/
   
 
     const handleTextChange = (newText: string) => {
         setText(newText);
     };
-/*
-    useEffect(() => {
-        websocketService.send({ type: "PLAYER_CONNECTION" });
-    }, []);
 
-    */
+    useEffect(() => {
+        websocketService.send({ type: "PLAYER_CONNECTION", data: text});
+    }, [enteredName]);
+
+    
   return (
       <TabView>
           <Text style={styles.gameTitle}> THE MIND </Text>
@@ -41,14 +41,21 @@ export default function HomeScreen() {
               MAKE FAKE GAME
           </Button>
      {/*     // hide input on name */}
-          <TextInput
-              style={styles.input}
-              onChangeText={handleTextChange}
-              value={text}
-              placeholder="Enter your name"
-          />
+          {enteredName ? <Text>Hi {text}!</Text> :
+             <>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={handleTextChange}
+                    value={text}
+                    placeholder="Enter your name"
+                />
+                <Button onPress={() => setEnteredName(true)}>
+                    Submit
+                </Button>
+              </>
+          }
 
-          <Text> There are {state.players.length} players.</Text>
+          <Text> There are {state.players.length} players: we got {state.players.map(p => <Text key={p.id}>{p.name ? p.name : '' }</Text>)}</Text>
 
       </TabView>
   );

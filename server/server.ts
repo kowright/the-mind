@@ -59,11 +59,13 @@ wss.on("connection", (ws: any, req: any) => {
     ws.on("message", (data: any) => {
         try {
             const message = JSON.parse(data);
-            console.log(`Received message from ${playerId}:`, message);
+            console.log(`SERVER Received message from ${playerId}:`, message);
            /* broadcastLobby();*/
             console.log('type!', message.type)
-
+            message.playerId = playerId;
             const newState = applyAction(message);
+            console.log("SERVER message new state ", newState)
+            broadcastLobby(newState);
 
          /*   broadcastLobby({
                 type: "STATE_UPDATE",

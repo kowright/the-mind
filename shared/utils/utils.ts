@@ -29,7 +29,7 @@ export function makePlayer(
 ): Player {
     return {
         hand: { cards: [] },
-        name: name ?? 'Player ' + id,
+        name: name ?? '',
         id: id,
     }
 }

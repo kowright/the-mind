@@ -5,24 +5,36 @@ import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDi
 import { Card } from '@/shared/types/card';
 import { Level, levels, RewardType } from "./level";
 import { GameState, initialGameState } from '@/shared/types/gameState';
+import { Player } from '@/shared/types/player';
 
 export function gameReducer(
     state: GameState,
     action: GameAction
 ): GameState {
     switch (action.type) {
-        case 'PLAYER_CONNECTION':
+        case 'PLAYER_CONNECTION': {
             console.log("PLAYER CONNECTION ACTION");
             console.log('player id', action.playerId);
+            console.log('action name', action.data)
+            const name = action?.data || undefined;
+            let player = state.players.find(p => p.id === action.playerId);
+            let players: Player[] = [...state.players]
+            /*let newPlayer = existingPlayer ? existingPlayer : makePlayer(action.playerId, name)*/
+            if (player) {
 
-            const newPlayer = makePlayer(action.playerId)
-            console.log('New player: ', newPlayer.name);
-            
+                player.name = action.data;
+                
+            }
+            else {
+                player = makePlayer(action.playerId, name)
+                players = [...players, player]
+            }
+
             return {
                 ...state,
-                players: [...state.players, newPlayer]
+                players: [...players]
             };
-
+        }
         case 'PLAYER_DISCONNECTION': {
 
       

@@ -11,7 +11,7 @@ export function gameReducer(
     action: GameAction
 ): GameState {
     switch (action.type) {
-        case 'PLAYER_CONNECTION': // server
+        case 'PLAYER_CONNECTION':
             console.log("PLAYER CONNECTION ACTION");
             console.log('player id', action.playerId);
 
@@ -22,6 +22,22 @@ export function gameReducer(
                 ...state,
                 players: [...state.players, newPlayer]
             };
+
+        case 'PLAYER_DISCONNECTION': {
+
+      
+            console.log("PLAYER DISCONNECTION ACTION");
+            console.log('player id', action.playerId);
+
+            let players = state.players;
+            players = players.filter((p) => p.id !== action.playerId);
+
+
+            return {
+                ...state,
+                players: [...players]
+            };
+        }
 
         case 'STATE_UPDATE': // ui
 

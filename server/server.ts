@@ -84,7 +84,12 @@ wss.on("connection", (ws: any, req: any) => {
         let players = state.players;
         players = players.filter((p) => p.id !== playerId); // might need to make this into an immutable
         console.log(`Player disconnected: ${playerId}`);
-        broadcastLobby();
+
+        const newState = applyAction({ type: 'PLAYER_DISCONNECTION', playerId });
+        console.log('SERVER state', newState.players);
+
+        broadcastLobby(newState);
+
     });
 
     ws.on("error", (err: any) => {

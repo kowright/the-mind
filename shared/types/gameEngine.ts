@@ -11,7 +11,7 @@ export function getState(): GameState {
 }
 
 export function applyAction(action: GameAction): GameState {
-    console.log('applyAction')
+    console.log('applyAction', action)
     gameState = gameReducer(gameState, action);
     return gameState;
 }

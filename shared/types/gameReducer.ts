@@ -15,26 +15,36 @@ export function gameReducer(
         case 'PLAYER_CONNECTION': {
             console.log("PLAYER CONNECTION ACTION");
             console.log('player id', action.playerId);
-            console.log('action name', action.data)
-            const name = action?.data || undefined;
-            let player = state.players.find(p => p.id === action.playerId);
-            let players: Player[] = [...state.players]
-            /*let newPlayer = existingPlayer ? existingPlayer : makePlayer(action.playerId, name)*/
-            if (player) {
+  
 
-                player.name = action.data;
-                
-            }
-            else {
-                player = makePlayer(action.playerId, name)
-                players = [...players, player]
-            }
+                /*let newPlayer = existingPlayer ? existingPlayer : makePlayer(action.playerId, name)*/
+
+                let player = makePlayer(action.playerId)
+                let players = [...state.players, player]
+            
 
             return {
                 ...state,
                 players: [...players]
             };
         }
+
+        case 'PLAYER_NAME_CHANGE': {
+            console.log('player name change reducer', action.name)
+            const players = state.players.map(p =>
+                p.id === action.playerId
+                    ? { ...p, name: action.name }
+                    : p
+            );
+            console.log('edited players', players)
+            return {
+                ...state,
+                players
+            };
+        }
+
+
+            
         case 'PLAYER_DISCONNECTION': {
 
       

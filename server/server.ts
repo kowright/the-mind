@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { applyAction, getState } from "../shared/types/gameEngine.js";
 import { GameAction } from "../shared/types/gameAction.js";
 import { GameState } from "../shared/types/gameState"; 
+import { enrichAction } from "../shared/utils/utils.js";
 
 dotenv.config();
 
@@ -50,31 +51,32 @@ wss.on("connection", (ws: any, req: any) => {
 
     broadcastLobby();*/
 
-    const newState = applyAction({ type: 'PLAYER_CONNECTION', playerId });
+    const newState = applyAction({ type: 'PLAYER_CONNECTION', playerId, requiresId: true });
     console.log('SERVER state', newState.players);
 
     // Broadcast updated state to all clients
     broadcastLobby(newState);
 
+   const message = JSON.stringify({ type: 'ASSIGN_PLAYER_ID', playerId: playerId });
+    ws.send(message);
+
     ws.on("message", (data: any) => {
         try {
             const message = JSON.parse(data);
             console.log(`SERVER Received message from ${playerId}:`, message);
-           /* broadcastLobby();*/
+
+            const action = enrichAction(message, playerId);
+            console.log('action', action)
+            if (!action) return;
+            const newState = applyAction(action);
+            broadcastLobby(newState);
+/*
             console.log('type!', message.type)
             message.playerId = playerId;
             const newState = applyAction(message);
             console.log("SERVER message new state ", newState)
             broadcastLobby(newState);
-
-         /*   broadcastLobby({
-                type: "STATE_UPDATE",
-                state: newState
-            });*/
-            //broadcast({
-            //    type: "STATE_UPDATE",
-            //    state: gameState
-            //});
+*/
 
         } catch (err) {
             console.error("Error parsing message:", err);

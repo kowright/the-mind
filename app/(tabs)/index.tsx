@@ -23,7 +23,7 @@ export default function HomeScreen() {
     };
 
     useEffect(() => {
-        websocketService.send({ type: "PLAYER_CONNECTION", data: text});
+        websocketService.send({ type: "PLAYER_NAME_CHANGE", playerId: '', name: text, requiresId: true});
     }, [enteredName]);
 
     
@@ -45,9 +45,13 @@ export default function HomeScreen() {
              <>
                 <TextInput
                     style={styles.input}
-                    onChangeText={handleTextChange}
+                   
                     value={text}
-                    placeholder="Enter your name"
+                      placeholder="Enter your name"
+                      onChangeText={setText}
+                      onBlur={() =>
+                          websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text })
+                      }
                 />
                 <Button onPress={() => setEnteredName(true)}>
                     Submit

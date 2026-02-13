@@ -3,6 +3,7 @@ import { GameState } from "../types/gameState";
 import { Player } from "../types/player";
 import { Card } from "../types/card";
 import { Hand } from "../types/hand";
+import { GameAction } from "../types/gameAction";
 
 export function hasValidPlayerCount(players: Player[]) {
     const playerCount = players.length;
@@ -163,3 +164,19 @@ export function removeCardsLowerThanCardNumber(
 
     return { editedPlayers, removedCards };
 }
+
+export function enrichAction(raw: any, playerId: string): GameAction | null {
+    if (!raw?.type) return null;
+
+    // If the action requires a player ID, inject it
+    if (raw.requiresId) {
+        return {
+            ...raw,
+            playerId
+        } as GameAction;
+    }
+
+    // Otherwise, pass it as-is
+    return raw as GameAction;
+}
+

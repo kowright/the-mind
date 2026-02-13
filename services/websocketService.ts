@@ -1,3 +1,4 @@
+import { GameAction } from "../shared/types/gameAction";
 
 class WebsocketService {
 
@@ -36,12 +37,12 @@ class WebsocketService {
         };
     }
 
-    send(data: any) {
+    send(action: GameAction) {
         if (!this.socket) return;
 
         if (this.socket.readyState === WebSocket.OPEN) {
             console.log("SEND data");
-            this.socket.send(JSON.stringify(data));
+            this.socket.send(JSON.stringify(action));
         } else {
             console.log("Tried to send before socket was open");
         }

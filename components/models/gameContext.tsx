@@ -1,4 +1,4 @@
-import { createContext, useReducer, ReactNode, useEffect } from 'react';
+import { createContext, useReducer, ReactNode, useEffect, useState } from 'react';
 import { gameReducer } from '@/shared/types/gameReducer';
 import { GameAction } from '@/shared/types/gameAction';
 import { GameState, initialGameState } from '@/shared/types/gameState';
@@ -11,12 +11,16 @@ import Constants from "expo-constants";
 type GameContextType = {
     state: GameState;
     dispatch: React.Dispatch<GameAction>;
+    clientPlayerId?: string;
+    setMyPlayerId: (id: string) => void;
+    
 };
 
 export const GameContext = createContext<GameContextType | null>(null); //exposes state and dispatch to any component in the tree
 
 export function GameProvider({ children }: { children: ReactNode }) {
-    const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game state
+    const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game stat
+    const [clientPlayerId, setPlayerId] = useState<string | undefined>();
     console.log('platform', Platform.OS)
 /*    const url =
         Platform.OS === "web"
@@ -24,7 +28,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
             : wsUrl;*/
 
 
-    console.log('emv', Constants.expoConfig?.extra?.WS_URL_WEB)
     const wsURL = Constants.expoConfig?.extra?.WS_URL_WEB;
     console.log('wsURL', wsURL)
 /*            console.log('url', url)
@@ -38,6 +41,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
         websocketService.onMessage((message) => {
             console.log("MESSAGE FROM SERVER from Game Provider:", message);
+            if (message.type === "ASSIGN_PLAYER_ID") {
+                console.log('Got player id: ', message.playerId)
+                setPlayerId(message.playerId);
+                return;
+            }
 
             dispatch(message); 
         });

@@ -1,19 +1,47 @@
-import { GameAction } from '@/types/gameAction';
-import { GamePhase } from '@/types/gamePhase';
-import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber } from '@/utils/utils';
-import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, wasLastPlayWasValid, getLastValidCard, setPlayedCard, areAllHandsEmpty, determineRewards } from '@/types/gameState';
-import { Card } from '@/types/card';
+import { GameAction } from '@/shared/types/gameAction';
+import { GamePhase } from '@/shared/types/gamePhase';
+import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber, makePlayer } from '@/shared/utils/utils';
+import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, wasLastPlayWasValid, getLastValidCard, setPlayedCard, areAllHandsEmpty, determineRewards } from '@/shared/types/gameState';
+import { Card } from '@/shared/types/card';
 import { Level, levels, RewardType } from "./level";
-import { GameState, initialGameState } from '@/types/gameState';
+import { GameState, initialGameState } from '@/shared/types/gameState';
 
 export function gameReducer(
     state: GameState,
     action: GameAction
 ): GameState {
     switch (action.type) {
-        case 'PLAYER_CONNECTION': 
-            console.log("PLAYER HAS CONNECTED")
+        case 'PLAYER_CONNECTION': // server
+            console.log("PLAYER CONNECTION ACTION");
+            console.log('player id', action.playerId);
 
+            const newPlayer = makePlayer(action.playerId)
+            console.log('New player: ', newPlayer.name);
+            
+            return {
+                ...state,
+                players: [...state.players, newPlayer]
+            };
+
+        case 'STATE_UPDATE': // ui
+
+        // action = 
+      /*      new state!
+            { type: 'STATE_UPDATE', state: {… } }
+            state
+            :
+            { players: Array(1), lives: 0, shuriken: 1, level: {… }, deck: Array(100), … }
+            type
+            :
+            "STATE_UPDATE"
+            [[Prototype]]*/
+
+       
+            console.log("new state!", action.state);
+            return {
+                ...state,
+                ...action.state,
+            };
 
         case 'GAME_START':
             console.log('GAME STARTTO');

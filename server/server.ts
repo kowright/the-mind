@@ -1,24 +1,31 @@
-// server.ts
-const WebSocket = require("ws");
-require("dotenv").config();
 
+import { WebSocketServer, WebSocket } from "ws";
+import dotenv from "dotenv";
+import { applyAction, getState } from "../shared/types/gameEngine.js";
+import { GameAction } from "../shared/types/gameAction.js";
+import { GameState } from "../shared/types/gameState"; 
+
+dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || "0.0.0.0";
 
-const wss = new WebSocket.Server({ port: PORT, host: HOST });
+const wss = new WebSocketServer({
+    port: PORT,
+    host: HOST,
+});
 
 console.log(`WebSocket running on ws://${HOST}:${PORT}`);
-
-let players: { id: string }[] = [];
-
 
 function generatePlayerId(): string {
     return Math.random().toString(36).substring(2, 10);
 }
 
-function broadcastLobby() {
-    const message = JSON.stringify({ type: "LOBBY_UPDATE", players });
+function broadcastLobby(state: GameState) {
+    /* const state = getState();*/
+
+ /*   const players = state.players;*/
+    const message = JSON.stringify({ type: "STATE_UPDATE", state });
     wss.clients.forEach((client: any) => {
         if (client.readyState === WebSocket.OPEN) {
             client.send(message);
@@ -31,24 +38,51 @@ wss.on("connection", (ws: any, req: any) => {
     const playerId = generatePlayerId();
     const ip = req.socket.remoteAddress;
 
-    players.push({ id: playerId });
+  /*  players.push({ id: playerId });*/
 
     console.log(`New player connected: ${playerId} from ${ip} `);
-    console.log("NEW CONNECTION", req.socket.remoteAddress);
-    broadcastLobby();
+
+   /* const state = getState(); 
+   
+    const message: GameAction = { type: 'STATE_UPDATE', gameState: state }
+    applyAction(message);
+    console.log('SERVER state', state.players);
+
+    broadcastLobby();*/
+
+    const newState = applyAction({ type: 'PLAYER_CONNECTION', playerId });
+    console.log('SERVER state', newState.players);
+
+    // Broadcast updated state to all clients
+    broadcastLobby(newState);
 
     ws.on("message", (data: any) => {
         try {
             const message = JSON.parse(data);
             console.log(`Received message from ${playerId}:`, message);
-            broadcastLobby();
+           /* broadcastLobby();*/
+            console.log('type!', message.type)
+
+            const newState = applyAction(message);
+
+         /*   broadcastLobby({
+                type: "STATE_UPDATE",
+                state: newState
+            });*/
+            //broadcast({
+            //    type: "STATE_UPDATE",
+            //    state: gameState
+            //});
+
         } catch (err) {
             console.error("Error parsing message:", err);
         }
     });
 
     ws.on("close", () => {
-        players = players.filter((p) => p.id !== playerId);
+        const state = getState();
+        let players = state.players;
+        players = players.filter((p) => p.id !== playerId); // might need to make this into an immutable
         console.log(`Player disconnected: ${playerId}`);
         broadcastLobby();
     });

@@ -1,4 +1,4 @@
-import { PlayerView } from "../components/models/player";
+import { PlayerView } from "../../components/models/player";
 import { GameState } from "../types/gameState";
 import { Player } from "../types/player";
 import { Card } from "../types/card";
@@ -17,11 +17,23 @@ export function makeFakePlayers(
     numberToMake: number
 ): Player[] {
     return Array.from({ length: numberToMake }, (_, i): Player => ({
-        id: i,
+        id: `${i}`,
         name: `Player ${i + 1}`,
         hand: { cards: [] },
     }));
 }
+
+export function makePlayer(
+    id: string,
+    name?: string,
+): Player {
+    return {
+        hand: { cards: [] },
+        name: name ?? 'Player ' + id,
+        id: id,
+    }
+}
+
 
 export function shuffleDeck<T>(array: T[]): T[] {
     const arr = [...array];

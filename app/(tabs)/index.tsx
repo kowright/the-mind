@@ -1,27 +1,32 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Link, router } from 'expo-router';
-import { Text, View } from 'react-native';
+import { Text, View, TextInput } from 'react-native';
 import { TabView } from '@/components/tab-view';
 import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
 import { GameAction } from '@/types/gameAction';
 import { websocketService } from '@/services/websocketService';
-import { createContext, useReducer, ReactNode, useEffect } from 'react';
+import { createContext, useReducer, ReactNode, useEffect, useState } from 'react';
+
 
 export default function HomeScreen() {
     const { dispatch, state } = useGame();  
     console.log('index.tsc rendering gamePhase: ', state.gamePhase)
+    const [text, setText] = useState('');
 
+/*    const players = selectPlayers(state);*/
+  
 
+    const handleTextChange = (newText: string) => {
+        setText(newText);
+    };
+/*
     useEffect(() => {
         websocketService.send({ type: "PLAYER_CONNECTION" });
     }, []);
 
-    
+    */
   return (
       <TabView>
           <Text style={styles.gameTitle}> THE MIND </Text>
@@ -35,6 +40,13 @@ export default function HomeScreen() {
           <Button onPress={() => startFakeGame(dispatch)}>
               MAKE FAKE GAME
           </Button>
+     {/*     // hide input on name */}
+          <TextInput
+              style={styles.input}
+              onChangeText={handleTextChange}
+              value={text}
+              placeholder="Enter your name"
+          />
 
           <Text> There are {state.players.length} players.</Text>
 
@@ -61,17 +73,25 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         transform: [{ scale: 0.50 }],
     },
+    input: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        paddingHorizontal: 10,
+    }
 });
 function startFakeGame(dispatch: React.Dispatch<GameAction>) {
-    dispatch({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
+  /*  dispatch({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
     dispatch({ type: 'GAME_START' });
-    dispatch({ type: 'LEVEL_START' });
+    dispatch({ type: 'LEVEL_START' });*/
+    websocketService.send({ type: 'MAKE_FAKE_GAME', playerCount: 3 });
     router.replace('/play');
 }
 
 function startGame(dispatch: React.Dispatch<GameAction>) {
-    dispatch({ type: 'GAME_START' });
-    dispatch({ type: 'LEVEL_START' });
+    /*dispatch({ type: 'GAME_START' });
+    dispatch({ type: 'LEVEL_START' });*/
+    websocketService.send({ type: 'GAME_START'});
     router.replace('/play');
 }
 

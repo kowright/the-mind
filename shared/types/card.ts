@@ -1,5 +1,5 @@
 // card in game rules
-import { GameState } from '@/types/gameState';
+import { GameState } from '@/shared/types/gameState';
 
 export interface Card {
     id: string;

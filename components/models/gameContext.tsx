@@ -1,7 +1,7 @@
 import { createContext, useReducer, ReactNode, useEffect } from 'react';
-import { gameReducer } from '@/types/gameReducer';
-import { GameAction } from '@/types/gameAction';
-import { GameState, initialGameState } from '@/types/gameState';
+import { gameReducer } from '@/shared/types/gameReducer';
+import { GameAction } from '@/shared/types/gameAction';
+import { GameState, initialGameState } from '@/shared/types/gameState';
 import { websocketService } from '@/services/websocketService';
 import { Platform } from 'react-native';
 import Constants from "expo-constants";
@@ -13,10 +13,10 @@ type GameContextType = {
     dispatch: React.Dispatch<GameAction>;
 };
 
-export const GameContext = createContext<GameContextType | null>(null);
+export const GameContext = createContext<GameContextType | null>(null); //exposes state and dispatch to any component in the tree
 
 export function GameProvider({ children }: { children: ReactNode }) {
-    const [state, dispatch] = useReducer(gameReducer, initialGameState);
+    const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game state
     console.log('platform', Platform.OS)
 /*    const url =
         Platform.OS === "web"
@@ -32,12 +32,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
         if (!websocketService.isConnected()) {
             websocketService.connect(wsURL, () => {
-                websocketService.send({ type: "PLAYER_CONNECTION" });
+                //websocketService.send({ type: "PLAYER_CONNECTION" });
             });
         }
 
         websocketService.onMessage((message) => {
-            console.log("MESSAGE FROM SERVER:", message);
+            console.log("MESSAGE FROM SERVER from Game Provider:", message);
 
             dispatch(message); 
         });

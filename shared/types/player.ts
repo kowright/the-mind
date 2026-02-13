@@ -1,6 +1,6 @@
-import { Hand } from '@/types/hand';
+import { Hand } from '@/shared/types/hand';
 export interface Player {
-    id: number;
+    id: string;
     hand: Hand;
     name: string;
 }

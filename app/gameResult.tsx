@@ -2,7 +2,7 @@
 // and either a win or lose text
 import { Text, View } from 'react-native';
 import { useGame } from '@/hooks/useGame';
-import { isGameWon} from '@/utils/utils';
+import { isGameWon} from '@/shared/utils/utils';
 import { Platform, StyleSheet, Pressable } from 'react-native';
 import { Button } from '@react-navigation/elements';
 

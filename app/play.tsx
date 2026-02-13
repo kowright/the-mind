@@ -4,7 +4,7 @@ import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
 import { Platform, StyleSheet, Pressable } from 'react-native';
 import { CardView } from '@/components/models/card';
-import { Level, levels, RewardType } from "@/types/level";
+import { Level, levels, RewardType } from "@/shared/types/level";
 import { MistakeView } from '@/components/phases/mistake';
 import { GameplayView } from '@/components/phases/gameplayView'
 

@@ -2,9 +2,9 @@
 import { WebSocketServer, WebSocket } from "ws";
 import dotenv from "dotenv";
 import { applyAction, getState } from "../shared/types/gameEngine.js";
-import { GameAction } from "../shared/types/gameAction.js";
+import { GameAction, enrichAction } from "../shared/types/gameAction.js";
 import { GameState } from "../shared/types/gameState"; 
-import { enrichAction } from "../shared/utils/utils.js";
+/*import { enrichAction } from "../shared/utils/utils.js";*/
 
 dotenv.config();
 
@@ -66,7 +66,7 @@ wss.on("connection", (ws: any, req: any) => {
             console.log(`SERVER Received message from ${playerId}:`, message);
 
             const action = enrichAction(message, playerId);
-            console.log('action', action)
+            console.log('enrich action', action)
             if (!action) return;
             const newState = applyAction(action);
             broadcastLobby(newState);

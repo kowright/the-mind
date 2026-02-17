@@ -167,7 +167,8 @@ export function removeCardsLowerThanCardNumber(
 
 export function enrichAction(raw: any, playerId: string): GameAction | null {
     if (!raw?.type) return null;
-
+    console.log('raw')
+    console.log('raw.id', raw.requiresId)
     // If the action requires a player ID, inject it
     if (raw.requiresId) {
         return {

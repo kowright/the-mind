@@ -8,6 +8,7 @@ import { useGame } from '@/hooks/useGame';
 import { GameAction } from '@/types/gameAction';
 import { websocketService } from '@/services/websocketService';
 import { createContext, useReducer, ReactNode, useEffect, useState } from 'react';
+import { ClientAction } from '../../shared/types/gameAction';
 
 
 export default function HomeScreen() {
@@ -22,11 +23,11 @@ export default function HomeScreen() {
         setText(newText);
     };
 
-    useEffect(() => {
-        websocketService.send({ type: "PLAYER_NAME_CHANGE", playerId: '', name: text, requiresId: true});
+  /*  useEffect(() => {
+        websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text});
     }, [enteredName]);
+*/
 
-    
   return (
       <TabView>
           <Text style={styles.gameTitle}> THE MIND </Text>
@@ -49,11 +50,11 @@ export default function HomeScreen() {
                     value={text}
                       placeholder="Enter your name"
                       onChangeText={setText}
-                      onBlur={() =>
+                  /*    onBlur={() =>
                           websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text })
-                      }
+                      }*/
                 />
-                <Button onPress={() => setEnteredName(true)}>
+                  <Button onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}>
                     Submit
                 </Button>
               </>

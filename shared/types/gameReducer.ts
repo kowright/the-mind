@@ -1,4 +1,4 @@
-import { GameAction } from '@/shared/types/gameAction';
+import { GameAction, ServerAction } from '@/shared/types/gameAction';
 import { GamePhase } from '@/shared/types/gamePhase';
 import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber, makePlayer } from '@/shared/utils/utils';
 import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, wasLastPlayWasValid, getLastValidCard, setPlayedCard, areAllHandsEmpty, determineRewards } from '@/shared/types/gameState';
@@ -9,7 +9,7 @@ import { Player } from '@/shared/types/player';
 
 export function gameReducer(
     state: GameState,
-    action: GameAction
+    action: ServerAction
 ): GameState {
     switch (action.type) {
         case 'PLAYER_CONNECTION': {
@@ -31,6 +31,7 @@ export function gameReducer(
 
         case 'PLAYER_NAME_CHANGE': {
             console.log('player name change reducer', action.name)
+            console.log('action', action)
             const players = state.players.map(p =>
                 p.id === action.playerId
                     ? { ...p, name: action.name }

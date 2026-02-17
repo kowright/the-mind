@@ -1,4 +1,4 @@
-import { GameAction } from "../shared/types/gameAction";
+import { ClientAction, GameAction } from "../shared/types/gameAction";
 
 class WebsocketService {
 
@@ -37,7 +37,7 @@ class WebsocketService {
         };
     }
 
-    send(action: GameAction) {
+    send(action: ClientAction) {
         if (!this.socket) return;
 
         if (this.socket.readyState === WebSocket.OPEN) {

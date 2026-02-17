@@ -32,7 +32,7 @@ function broadcastLobby(state: GameState) {
             client.send(message);
         }
     });
-    console.log(`Broadcasted lobby update to ${wss.clients.size} clients`);
+    console.log(`Broadcasted lobby update to ${wss.clients.size} client(s)`);
 }
 
 wss.on("connection", (ws: any, req: any) => {
@@ -51,14 +51,21 @@ wss.on("connection", (ws: any, req: any) => {
 
     broadcastLobby();*/
 
-    const newState = applyAction({ type: 'PLAYER_CONNECTION', playerId, requiresId: true });
+    const action = enrichAction({ type: 'PLAYER_CONNECTION' }, playerId);
+    console.log('player connection action', action)
+    const newState = applyAction(action);
+
+
+    //const newState = applyAction({ type: 'PLAYER_CONNECTION', playerId, requiresId: true });
+    
+
     console.log('SERVER state', newState.players);
 
     // Broadcast updated state to all clients
     broadcastLobby(newState);
 
-   const message = JSON.stringify({ type: 'ASSIGN_PLAYER_ID', playerId: playerId });
-    ws.send(message);
+/*   const message = JSON.stringify({ type: 'ASSIGN_PLAYER_ID', playerId: playerId });
+    ws.send(message);*/
 
     ws.on("message", (data: any) => {
         try {
@@ -90,7 +97,6 @@ wss.on("connection", (ws: any, req: any) => {
         console.log(`Player disconnected: ${playerId}`);
 
         const newState = applyAction({ type: 'PLAYER_DISCONNECTION', playerId });
-        console.log('SERVER state', newState.players);
 
         broadcastLobby(newState);
 

@@ -1,5 +1,5 @@
 import type { GameState } from "./gameState";
-import type { GameAction } from "./gameAction";
+import type { GameAction, ServerAction } from "./gameAction";
 
 const { initialGameState } = require("./gameState");
 const { gameReducer } = require("./gameReducer");
@@ -10,7 +10,7 @@ export function getState(): GameState {
     return gameState;
 }
 
-export function applyAction(action: GameAction): GameState {
+export function applyAction(action: ServerAction): GameState {
     console.log('applyAction', action)
     gameState = gameReducer(gameState, action);
     return gameState;

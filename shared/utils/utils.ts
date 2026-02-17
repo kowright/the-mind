@@ -165,7 +165,7 @@ export function removeCardsLowerThanCardNumber(
     return { editedPlayers, removedCards };
 }
 
-export function enrichAction(raw: any, playerId: string): GameAction | null {
+/*export function enrichAction(raw: any, playerId: string): GameAction | null {
     if (!raw?.type) return null;
     console.log('raw')
     console.log('raw.id', raw.requiresId)
@@ -180,4 +180,4 @@ export function enrichAction(raw: any, playerId: string): GameAction | null {
     // Otherwise, pass it as-is
     return raw as GameAction;
 }
-
+*/

@@ -35,7 +35,7 @@ import { GameState } from "./gameState";
 
 const gameActionSchema = {
     PLAYER_NAME_CHANGE: { requiresPlayerId: true },
-    PLAYER_CONNECTION: { requiresPlayerId: false },
+    PLAYER_CONNECTION: { requiresPlayerId: true },
     PLAYER_DISCONNECTION: { requiresPlayerId: true },
     ASSIGN_PLAYER_ID: { requiresPlayerId: false },
 } as const;
@@ -59,17 +59,13 @@ export type ServerAction = {
     : { type: K } & ActionPayloads[K]
 }[GameActionType];
 
-export function enrichAction(action: ClientAction, playerId: string): ServerAction | null {
+export function enrichAction(action: ClientAction, playerId: string): ServerAction {
     if (!action || typeof action.type !== "string") {
         console.warn("Invalid action:", action);
-        return null;
+        return action;
     }
 
     const schema = gameActionSchema[action.type as GameActionType];
-    if (!schema) {
-        console.warn("Unknown action type:", action.type);
-        return null;
-    }
 
     if (schema.requiresPlayerId) {
         return { ...action, playerId } as ServerAction;

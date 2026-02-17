@@ -1,6 +1,6 @@
 import { createContext, useReducer, ReactNode, useEffect, useState } from 'react';
 import { gameReducer } from '@/shared/types/gameReducer';
-import { GameAction } from '@/shared/types/gameAction';
+import { GameAction, ServerAction } from '@/shared/types/gameAction';
 import { GameState, initialGameState } from '@/shared/types/gameState';
 import { websocketService } from '@/services/websocketService';
 import { Platform } from 'react-native';
@@ -10,9 +10,9 @@ import Constants from "expo-constants";
 */
 type GameContextType = {
     state: GameState;
-    dispatch: React.Dispatch<GameAction>;
-    clientPlayerId?: string;
-    setMyPlayerId: (id: string) => void;
+    dispatch: React.Dispatch<ServerAction>; // this might not even be used
+/*    clientPlayerId?: string;
+    setMyPlayerId: (id: string) => void;*/
     
 };
 
@@ -20,7 +20,7 @@ export const GameContext = createContext<GameContextType | null>(null); //expose
 
 export function GameProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game stat
-    const [clientPlayerId, setPlayerId] = useState<string | undefined>();
+    //const [clientPlayerId, setPlayerId] = useState<string | undefined>();
     console.log('platform', Platform.OS)
 /*    const url =
         Platform.OS === "web"
@@ -41,11 +41,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
         websocketService.onMessage((message) => {
             console.log("MESSAGE FROM SERVER from Game Provider:", message);
-            if (message.type === "ASSIGN_PLAYER_ID") {
-                console.log('Got player id: ', message.playerId)
-                setPlayerId(message.playerId);
-                return;
-            }
+            //if (message.type === "ASSIGN_PLAYER_ID") {
+            //    console.log('Got player id: ', message.playerId)
+            //    setPlayerId(message.playerId);
+            //    return;
+            //}
 
             dispatch(message); 
         });

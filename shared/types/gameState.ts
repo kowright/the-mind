@@ -1,5 +1,5 @@
 import { Card } from "./card";
-import { GameAction } from "./gameAction";
+import { ClientAction, GameAction } from "./gameAction";
 import { GamePhase } from "./gamePhase";
 import { Level, levels, RewardType } from "./level";
 import { Player } from "./player";
@@ -17,7 +17,7 @@ export interface GameState {
     readyToStartPlayers: number[];
     shurikenCalls: number[];
     lastRemovedCards: Card[];
-    lastGameAction?: GameAction; // WHERE IS THIS USED
+    lastGameAction?: ClientAction; // WHERE IS THIS USED
 }
 
 export const initialGameState: GameState = {

@@ -3,18 +3,23 @@ import { Text, View } from 'react-native';
 import { Platform, StyleSheet, Pressable } from 'react-native';
 import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
-
+import { ClientAction } from "../../shared/types/gameAction";
+import { websocketService } from '@/services/websocketService';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
 }
 
 
 export function GameplayView({ agreeToStartVersion = false, ...props }: GameplayViewProps) {
-    const { dispatch, state } = useGame();
+    const { dispatch, state, playerId } = useGame();
     console.log('gameplay view agreetostart?: ', agreeToStartVersion);
+    console.log('gameplay view', )
     const { players } = state;
 
     const shurikenDisabled = state.shuriken === 0;
+    console.log('player id', playerId)
+
+    const clientPlayer = players.find(p => p.id === playerId);
 
     return (
         <>
@@ -22,6 +27,84 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
             <Text>LEVEL: {state.level.number}</Text>
             <Text>LIVES: {state.lives}</Text>
             <Text>SHURIKEN: {state.shuriken}</Text>
+
+            {agreeToStartVersion ? <Text>WHO IS READY TO START?: {state.readyToStartPlayers.length}/{state.players.length}</Text>
+                : <Text>SHURIKEN CALLED: {state.shurikenCalls.length}/{state.players.length}</Text>}
+
+            {clientPlayer !== undefined ? 
+               
+                <View key={clientPlayer.id} style={styles.playerContainer}>
+
+                        {agreeToStartVersion ?
+                            <View style={styles.buttonContainer}>
+                            <Text>{clientPlayer.name}</Text>
+                            </View>
+                            :
+                            <View style={styles.buttonContainer}>
+                                <Button
+                                    onPress={() =>
+                                        //dispatch({ type: 'FAKE_PLAY', playerId: player.id })
+                                        websocketService.send({ type: "FAKE_PLAY" } as ClientAction)
+
+                                    }
+                                >
+                                PLAY
+                                </Button>
+                            </View>
+                        }
+
+
+
+                        <View>
+                        {clientPlayer.hand.cards.map(card => (
+                                <View
+                                    style={styles.deckContainer}
+                                key={`hand-${clientPlayer.id}-${card.id}`}
+
+                                >
+                                    <Text>{card.number}</Text>
+                                </View>
+                            ))}
+                        </View>
+
+                        {agreeToStartVersion ?
+                            <Pressable
+                                onPress={() =>
+                                    //dispatch({ type: 'READY_TO_START', playerId: player.id })
+                                    websocketService.send({ type: "READY_TO_START" } as ClientAction)
+                                }
+                                style={({ pressed }) => [
+                                    styles.shurikenButton,
+                                    shurikenDisabled && styles.shurikenButtonDisabled,
+                                    pressed && !shurikenDisabled && styles.shurikenButtonPressed,
+                                ]}
+                            >
+                                <Text style={styles.shurikenButtonText}>READY??</Text>
+                            </Pressable>
+                            :
+                            <Pressable
+                                disabled={shurikenDisabled}
+                                onPress={() =>
+                                    //    dispatch({ type: 'CALL_FOR_SHURIKEN', playerId: player.id })
+                                    websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)
+
+                                }
+                                style={({ pressed }) => [
+                                    styles.shurikenButton,
+                                    shurikenDisabled && styles.shurikenButtonDisabled,
+                                    pressed && !shurikenDisabled && styles.shurikenButtonPressed,
+                                ]}
+                            >
+                                <Text style={styles.shurikenButtonText}>VOTE TO USE SHURIKEN</Text>
+                            </Pressable>
+                        }
+
+                </View>
+                    : <Text>UNDEFINED PLAYER</Text>
+      
+            }
+
+            { /*
             {agreeToStartVersion ? <Text>WHO IS READY TO START?: {state.readyToStartPlayers.length}/{state.players.length}</Text>
                 : <Text>SHURIKEN CALLED: {state.shurikenCalls.length}/{state.players.length}</Text>}
 
@@ -36,7 +119,11 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                             :
                             <View style={styles.buttonContainer}>
                                 <Button
-                                    onPress={() => dispatch({ type: 'FAKE_PLAY', playerId: player.id })}
+                                    onPress={() =>
+                                        //dispatch({ type: 'FAKE_PLAY', playerId: player.id })
+                                        websocketService.send({ type: "FAKE_PLAY" } as ClientAction)
+
+                                    }
                                 >
                                     MAKE PLAYER {player.id} PLAY
                                 </Button>
@@ -60,7 +147,8 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                         {agreeToStartVersion ?
                             <Pressable
                                 onPress={() =>
-                                    dispatch({ type: 'READY_TO_START', playerId: player.id })
+                                    //dispatch({ type: 'READY_TO_START', playerId: player.id })
+                                    websocketService.send({ type: "READY_TO_START" } as ClientAction)
                                 }
                                 style={({ pressed }) => [
                                     styles.shurikenButton,
@@ -74,7 +162,9 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                             <Pressable
                                 disabled={shurikenDisabled}
                                 onPress={() =>
-                                    dispatch({ type: 'CALL_FOR_SHURIKEN', playerId: player.id })
+                                    //    dispatch({ type: 'CALL_FOR_SHURIKEN', playerId: player.id })
+                                    websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)
+
                                 }
                                 style={({ pressed }) => [
                                     styles.shurikenButton,
@@ -88,7 +178,8 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
 
                     </View>
                 ))
-            }
+} 
+            */}
         </>
     );
 };

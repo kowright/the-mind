@@ -79,8 +79,13 @@ wss.on("connection", (ws: any, req: any) => {
     // Broadcast updated state to all clients
     broadcastLobby(newState);
 
-/*   const message = JSON.stringify({ type: 'ASSIGN_PLAYER_ID', playerId: playerId });
-    ws.send(message);*/
+    //const message = JSON.stringify({ type: 'ASSIGN_PLAYER_ID', playerId: playerId });
+    //ws.send(message);
+
+    const assignIdAction = enrichAction({ type: 'ASSIGN_PLAYER_ID' }, playerId);
+    console.log('assign ID action', action)
+    //const assignIdState = applyAction(assignIdAction);
+    ws.send(JSON.stringify({ type: "ASSIGN_PLAYER_ID", playerId }));
 
     ws.on("message", (data: any) => {
         try {

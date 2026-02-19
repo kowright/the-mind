@@ -11,8 +11,8 @@ import Constants from "expo-constants";
 type GameContextType = {
     state: GameState;
     dispatch: React.Dispatch<ServerAction>; // this might not even be used
-/*    clientPlayerId?: string;
-    setMyPlayerId: (id: string) => void;*/
+    playerId?: string;
+    //setMyPlayerId: (id: string) => void;
     
 };
 
@@ -20,8 +20,8 @@ export const GameContext = createContext<GameContextType | null>(null); //expose
 
 export function GameProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game stat
-    //const [clientPlayerId, setPlayerId] = useState<string | undefined>();
-    console.log('platform', Platform.OS)
+    const [clientPlayerId, setPlayerId] = useState<string | undefined>();
+    //console.log('platform', Platform.OS)
 /*    const url =
         Platform.OS === "web"
             ? "ws://localhost:3000"
@@ -29,7 +29,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
 
     const wsURL = Constants.expoConfig?.extra?.WS_URL_WEB;
-    console.log('wsURL', wsURL)
+//    console.log('wsURL', wsURL)
 /*            console.log('url', url)
 */    useEffect(() => {
 
@@ -41,13 +41,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
         websocketService.onMessage((message) => {
             console.log("MESSAGE FROM SERVER from Game Provider:", message);
-            //if (message.type === "ASSIGN_PLAYER_ID") {
-            //    console.log('Got player id: ', message.playerId)
-            //    setPlayerId(message.playerId);
-            //    return;
-            //}
+            if (message.type === "ASSIGN_PLAYER_ID") {
+                console.log('Got player id: ', message.playerId)
+                setPlayerId(message.playerId);
+                return;
+            }
 
-            dispatch(message); 
+            dispatch(message); //?? 
         });
 
 
@@ -57,9 +57,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }, []);
     
     return (
-        <GameContext.Provider value={{ state, dispatch }}>
+        <GameContext.Provider value={{ state, dispatch, playerId: clientPlayerId }}>
             {children}
         </GameContext.Provider>
     );
 };
 
+type ServerMessage =
+    | { type: "ASSIGN_PLAYER_ID"; playerId: string }
+    | { type: "STATE_UPDATE"; state: GameState };

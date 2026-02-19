@@ -4,12 +4,12 @@ import { Platform, StyleSheet, Pressable } from 'react-native';
 import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
 
-interface GameplayViewProps {
+interface FakeGameplayViewProps {
     agreeToStartVersion: boolean;
 }
+   
 
-
-export function GameplayView({ agreeToStartVersion = false, ...props }: GameplayViewProps) {
+export function FakeGameplayView({agreeToStartVersion = false, ...props }: FakeGameplayViewProps) {
     const { dispatch, state } = useGame();
     console.log('gameplay view agreetostart?: ', agreeToStartVersion);
     const { players } = state;
@@ -29,11 +29,11 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                 players.map(player => (
                     <View key={player.id} style={styles.playerContainer}>
 
-                        {agreeToStartVersion ?
+                        {agreeToStartVersion ? 
                             <View style={styles.buttonContainer}>
                                 <Text>{player.name}</Text>
                             </View>
-                            :
+                            : 
                             <View style={styles.buttonContainer}>
                                 <Button
                                     onPress={() => dispatch({ type: 'FAKE_PLAY', playerId: player.id })}
@@ -43,7 +43,7 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                             </View>
                         }
 
-
+                    
 
                         <View>
                             {player.hand.cards.map(card => (

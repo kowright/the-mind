@@ -6,7 +6,8 @@ import { Platform, StyleSheet, Pressable } from 'react-native';
 import { CardView } from '@/components/models/card';
 import { Level, levels, RewardType } from "@/shared/types/level";
 import { MistakeView } from '@/components/phases/mistake';
-import { GameplayView } from '@/components/phases/gameplayView'
+import { FakeGameplayView } from '@/components/phases/fakeGameplayView';
+import { GameplayView } from '@/components/phases/gamePlayView';
 
 import React, { useEffect, useState } from 'react';
 import { DiscardPileView } from '../components/models/discardPile';

@@ -25,7 +25,14 @@ export default function HomeScreen() {
   /*  useEffect(() => {
         websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text});
     }, [enteredName]);
+
 */
+
+    useEffect(() => {
+        if (state.gamePhase === 'agreeToStart') {
+            router.replace('/play');
+        }
+    }, [state.gamePhase]);
 
   return (
       <TabView>
@@ -100,13 +107,14 @@ function startFakeGame(dispatch: React.Dispatch<ClientAction>) {
     websocketService.send({ type: 'LEVEL_START'});
 
 
-    router.replace('/play');
+    //router.replace('/play');
 }
 
 function startGame(dispatch: React.Dispatch<ClientAction>) {
     /*dispatch({ type: 'GAME_START' });
     dispatch({ type: 'LEVEL_START' });*/
-    websocketService.send({ type: 'GAME_START'});
-    router.replace('/play');
+    websocketService.send({ type: 'GAME_START' });
+    websocketService.send({ type: 'LEVEL_START' });
+    //router.replace('/play');
 }
 

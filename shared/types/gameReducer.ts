@@ -54,18 +54,6 @@ export function gameReducer(
         }
 
         case 'STATE_UPDATE': // ui
-
-        // action = 
-      /*      new state!
-            { type: 'STATE_UPDATE', state: {… } }
-            state
-            :
-            { players: Array(1), lives: 0, shuriken: 1, level: {… }, deck: Array(100), … }
-            type
-            :
-            "STATE_UPDATE"
-            [[Prototype]]*/
-
        
             console.log("new state!", action.state);
             return {
@@ -125,6 +113,8 @@ export function gameReducer(
 
                 const startDiscardPile: Card[] = [];
                 const startGamePhase: GamePhase = 'agreeToStart';
+
+                
                 return {
                     ...state,
                     discardPile: startDiscardPile,

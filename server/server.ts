@@ -5,6 +5,7 @@ import { applyAction, getState } from "../shared/types/gameEngine.js";
 import { GameAction, enrichAction } from "../shared/types/gameAction.js";
 import { GameState } from "../shared/types/gameState"; 
 /*import { enrichAction } from "../shared/utils/utils.js";*/
+import { removeOtherPlayersFromStateForClient } from '@/shared/utils/utils.js'
 
 dotenv.config();
 
@@ -29,7 +30,20 @@ function broadcastLobby(state: GameState) {
     const message = JSON.stringify({ type: "STATE_UPDATE", state });
     wss.clients.forEach((client: any) => {
         if (client.readyState === WebSocket.OPEN) {
-            client.send(message);
+            console.log('original state', state.players)
+            const isolatedState =
+                removeOtherPlayersFromStateForClient(
+                    state,
+                    client.playerId
+                );
+    /*        console.log('isolated state for ' + client.playerId) 
+            console.log(isolatedState.players)*/
+            client.send(JSON.stringify({
+                type: "STATE_UPDATE",
+                state: isolatedState
+            }));
+
+            /*client.send(message); // for debug version*/
         }
     });
     console.log(`Broadcasted lobby update to ${wss.clients.size} client(s)`);
@@ -37,6 +51,7 @@ function broadcastLobby(state: GameState) {
 
 wss.on("connection", (ws: any, req: any) => {
     const playerId = generatePlayerId();
+    ws.playerId = playerId;
     const ip = req.socket.remoteAddress;
 
   /*  players.push({ id: playerId });*/

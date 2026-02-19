@@ -7,7 +7,7 @@ import { GameAction } from "../types/gameAction";
 
 export function hasValidPlayerCount(players: Player[]) {
     const playerCount = players.length;
-    if (playerCount < 1 || playerCount > 4) {
+    if (playerCount < 1 || playerCount > 4) { // TODO: players should be over 1 
         return false;
     }
     return true;
@@ -181,3 +181,25 @@ export function removeCardsLowerThanCardNumber(
     return raw as GameAction;
 }
 */
+
+export function removeOtherPlayersFromStateForClient(
+    state: GameState,
+    playerId: string
+): GameState {
+    const emptyHand: Hand = { cards: [] };
+
+    return {
+        ...state,
+        players: state.players.map(player => {
+            if (player.id === playerId) {
+                return player; // clients get all of their data
+            }
+
+            return {
+                ...player, 
+                hand: emptyHand // clients can't get other clients crucial data
+            };
+        }),
+    };
+}
+

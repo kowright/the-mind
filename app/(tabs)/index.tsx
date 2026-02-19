@@ -5,7 +5,6 @@ import { Text, View, TextInput } from 'react-native';
 import { TabView } from '@/components/tab-view';
 import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
-import { GameAction } from '@/types/gameAction';
 import { websocketService } from '@/services/websocketService';
 import { createContext, useReducer, ReactNode, useEffect, useState } from 'react';
 import { ClientAction } from '../../shared/types/gameAction';
@@ -96,7 +95,11 @@ function startFakeGame(dispatch: React.Dispatch<ClientAction>) {
   /*  dispatch({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
     dispatch({ type: 'GAME_START' });
     dispatch({ type: 'LEVEL_START' });*/
-    websocketService.send({ type: 'MAKE_FAKE_GAME', playerCount: 3 });
+    websocketService.send({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
+    websocketService.send({ type: 'GAME_START'});
+    websocketService.send({ type: 'LEVEL_START'});
+
+
     router.replace('/play');
 }
 

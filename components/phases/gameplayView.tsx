@@ -20,6 +20,11 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
     console.log('player id', playerId)
 
     const clientPlayer = players.find(p => p.id === playerId);
+    const playerCardCounts = players.map(p => {
+        if (p.id !== playerId) {
+            return (<Text key={p.id}>{p.name} card count: {p.cardCount}</Text>)     
+        }
+    })
 
     return (
         <>
@@ -27,6 +32,7 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
             <Text>LEVEL: {state.level.number}</Text>
             <Text>LIVES: {state.lives}</Text>
             <Text>SHURIKEN: {state.shuriken}</Text>
+            {playerCardCounts}
 
             {agreeToStartVersion ? <Text>WHO IS READY TO START?: {state.readyToStartPlayers.length}/{state.players.length}</Text>
                 : <Text>SHURIKEN CALLED: {state.shurikenCalls.length}/{state.players.length}</Text>}

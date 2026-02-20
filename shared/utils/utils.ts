@@ -21,6 +21,7 @@ export function makeFakePlayers(
         id: `${i}`,
         name: `Player ${i + 1}`,
         hand: { cards: [] },
+        cardCount: 0,
     }));
 }
 
@@ -32,6 +33,7 @@ export function makePlayer(
         hand: { cards: [] },
         name: name ?? '',
         id: id,
+        cardCount: 0,
     }
 }
 
@@ -66,13 +68,14 @@ export function dealCards(
         updatedPlayers = updatedPlayers.map(player => {
             const card = deck.shift();
             if (!card) return player;
-
+            const cards = [...player.hand.cards, card];
             return {
                 ...player,
                 hand: {
                     ...player.hand,
-                    cards: [...player.hand.cards, card],
+                    cards,
                 },
+                cardCount: cards.length
             };
         });
     }
@@ -121,6 +124,7 @@ export function removeLowestCardFromAllHands(
         return {
             ...player,
             hand: { cards: rest },
+            cardCount: rest.length,
         };
     });
 
@@ -153,12 +157,15 @@ export function removeCardsLowerThanCardNumber(
 
         removedCards.push(...discarded);
 
+        const hand = {
+            ...player.hand,
+            cards: keptCards
+        }
+
         return {
             ...player,
-            hand: {
-                ...player.hand,
-                cards: keptCards,
-            },
+            hand,
+            cardCount: hand.cards.length
         };
     });
 
@@ -198,6 +205,7 @@ export function removeOtherPlayersFromStateForClient(
             return {
                 ...player, 
                 hand: emptyHand // clients can't get other clients crucial data
+                // card count remains to show other clients know what to display
             };
         }),
     };

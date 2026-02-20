@@ -20,10 +20,13 @@ interface PlayViewProps {
 
 export default function PlayView() {
     console.log("play view rendering");
-    const { dispatch, state } = useGame();
+    const { dispatch, state, playerId } = useGame();
     const [countdown, setCountdown] = useState(3);
 
     console.log('game phase', state.gamePhase)
+
+    const player = state.players.find(p => p.id === playerId);
+
 
     useEffect(() => {
         if (!state) return;
@@ -87,6 +90,7 @@ export default function PlayView() {
 
     return (
         <View>
+            <Text>{player?.name}</Text>
             {state.gamePhase === 'playing' || state.gamePhase === 'mistake' ? (
                 <>
                     <GameplayView agreeToStartVersion={false} />

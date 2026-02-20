@@ -73,7 +73,7 @@ export default function HomeScreen() {
                
                 />
                     <Button onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}>
-                    Submit
+                    Submit your name
                 </Button>
                 </>
             }

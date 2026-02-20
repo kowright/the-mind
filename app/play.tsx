@@ -65,7 +65,7 @@ export default function PlayView() {
 
 
         if (state.gamePhase === 'mistake') {
-            setCountdown(3);
+            setCountdown(5);
 
             const interval = setInterval(() => {
                 setCountdown(prev => prev - 1);

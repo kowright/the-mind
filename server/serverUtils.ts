@@ -55,7 +55,7 @@ export function handlePostActionEffects(
         setTimeout(() => {
             const startLevel = applyAction({ type: 'TRANSITION_TO_PLAYING' })
             broadcastLobby(startLevel)
-        }, 3000);
+        }, 5000);
     }
 
     if (action.type === 'GAME_START' &&

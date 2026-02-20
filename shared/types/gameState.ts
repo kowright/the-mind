@@ -17,6 +17,7 @@ export interface GameState {
     readyToStartPlayers: number[];
     shurikenCalls: number[];
     lastRemovedCards: Card[];
+    lastPlayedCard?: Card;
     lastGameAction?: ClientAction; // WHERE IS THIS USED
 }
 

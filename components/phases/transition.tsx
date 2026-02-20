@@ -23,6 +23,8 @@ export function TransitionView({ }: TransitionViewProps) { //TODO: should probab
     const nextLevelReward =
         levels[nextLevelIndex]?.reward ?? 'None';
 
+        //TODO: say what level we are on now!
+
     return (
         <>
             <Text>YOU EARNED: {pastLevelReward}</Text>

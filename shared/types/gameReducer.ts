@@ -125,6 +125,7 @@ export function gameReducer(
                     players: playersWithSortedHands,
                     shurikenCalls: [],
                     readyToStartPlayers: [],
+                    lastPlayedCard: undefined,
 
                 };
             }
@@ -148,6 +149,7 @@ export function gameReducer(
             if (!playedCard) return state;
 
             console.log('Card played: ', playedCard);
+            let updatedLastPlayedCard = playedCard;
 
             const lastValidCard = getLastValidCard(state.discardPile);
 
@@ -182,6 +184,7 @@ export function gameReducer(
             let wasRightMove: boolean = true;
             const { editedPlayers, removedCards } =
                 removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
+            console.log('removed cards', removedCards)
             if (removedCards.length > 0) {
                 removedCards.map(card => console.log(card.mistakenlyPlayedByPlayerId + ' DID NOT PLAY WHEN THEY WERE SUPPOSED TO'))
                 playedCard = {
@@ -191,7 +194,8 @@ export function gameReducer(
                 };
                 updatedGamePhase = 'mistake';
                 wasRightMove = false;
-                console.log('playedCard', playedCard)
+                updatedLastPlayedCard = playedCard;
+                console.log('playedCard mistake card', playedCard)
                 console.log('cards were removed game phase', updatedGamePhase)
             }
 
@@ -199,6 +203,7 @@ export function gameReducer(
                 state.discardPile,
                 playedCard
             );
+            console.log('updated discard 1', updatedDiscardPile)
 
             updatedDiscardPile = [
                 ...updatedDiscardPile,
@@ -209,7 +214,8 @@ export function gameReducer(
                 editedPlayers.find(ep => ep.id === p.id) ?? p
             );
 
-            
+            console.log('updated discard 2', updatedDiscardPile)
+
 
             let updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
             console.log('updated Lives', updatedLives)
@@ -244,6 +250,7 @@ export function gameReducer(
                     shuriken: rewardedShuriken,
                     level: updatedLevel,
                     lastRemovedCards: removedCards,
+                    lastPlayedCard: updatedLastPlayedCard,
                 };
             }
   
@@ -292,6 +299,7 @@ export function gameReducer(
                 level: updatedLevel,
                 lastRemovedCards: removedCards,
                 readyToStartPlayers: [],
+                lastPlayedCard: updatedLastPlayedCard,
             };
 
 

@@ -8,7 +8,7 @@ import { websocketService } from '@/services/websocketService';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
 }
-
+// show how many cards others have
 
 export function GameplayView({ agreeToStartVersion = false, ...props }: GameplayViewProps) {
     const { dispatch, state, playerId } = useGame();

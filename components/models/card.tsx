@@ -16,17 +16,3 @@ export function CardView({ card, onPlay }: CardViewProps) {
         </>
     );
 }
-
-
-
-// TODO:  might need a handview 
-
-// ideally looks like this
-/*
-<CardView
-    card={card}
-    onPress={() =>
-        dispatch({ type: 'PLAY_CARD', cardId: card.id })
-    }
-/>
-*/

@@ -54,37 +54,11 @@ wss.on("connection", (ws: any, req: any) => {
     ws.playerId = playerId;
     const ip = req.socket.remoteAddress;
 
-  /*  players.push({ id: playerId });*/
-
-    console.log(`New player connected: ${playerId} from ${ip} `);
-
-   /* const state = getState(); 
-   
-    const message: GameAction = { type: 'STATE_UPDATE', gameState: state }
-    applyAction(message);
-    console.log('SERVER state', state.players);
-
-    broadcastLobby();*/
-
-    const action = enrichAction({ type: 'PLAYER_CONNECTION' }, playerId);
-
+    const action = enrichAction({ type: 'PLAYER_CONNECTION' }, playerId); // TODO make this enrich apply broadcast a function
     const newState = applyAction(action);
-
-
-    //const newState = applyAction({ type: 'PLAYER_CONNECTION', playerId, requiresId: true });
-    
-
-    console.log('SERVER state', newState.players);
-
-    // Broadcast updated state to all clients
     broadcastLobby(newState);
 
-    //const message = JSON.stringify({ type: 'ASSIGN_PLAYER_ID', playerId: playerId });
-    //ws.send(message);
 
-    const assignIdAction = enrichAction({ type: 'ASSIGN_PLAYER_ID' }, playerId);
-
-    //const assignIdState = applyAction(assignIdAction);
     ws.send(JSON.stringify({ type: "ASSIGN_PLAYER_ID", playerId }));
 
     ws.on("message", (data: any) => {
@@ -104,19 +78,18 @@ wss.on("connection", (ws: any, req: any) => {
     });
 
     ws.on("close", () => {
-        const state = getState();
-        let players = state.players;
-        players = players.filter((p) => p.id !== playerId); // might need to make this into an immutable
         console.log(`Player disconnected: ${playerId}`);
 
-        const newState = applyAction({ type: 'PLAYER_DISCONNECTION', playerId });
-
+        const action = enrichAction({ type: 'PLAYER_DISCONNECTION' }, playerId);
+        const newState = applyAction(action);
         broadcastLobby(newState);
+        handlePostActionEffects(action, newState);
         // TODO: what happens if you lose too may players for the game
 
     });
 
     ws.on("error", (err: any) => {
         console.error(`WebSocket error for player ${playerId}:`, err);
+        // TODO: probably should send client that it's breaking?
     });
 });

@@ -7,16 +7,11 @@ interface MistakeProps {
     countdown: number; 
 }
 
-// TODO: show card that made the mistake 
-
 export function MistakeView({ countdown }: MistakeProps) {
-    // TODO: show who messed up! 
     const { state } = useGame();
-    console.log('state', state)
 
-    console.log('last card', state.lastPlayedCard?.mistakenPlayerId)
     const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenPlayerId);
-    console.log('WHO MADE THE MISTAKE? ', mistakenPlayer?.name )
+
     return (
         <View style={styles.overlay} >
             <View style={styles.overlapText}>

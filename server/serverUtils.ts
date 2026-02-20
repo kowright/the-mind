@@ -3,7 +3,7 @@ import { ServerAction } from "../shared/types/gameAction";
 import { applyAction } from "../shared/types/gameEngine";
 import { GameState } from "../shared/types/gameState";
 import { broadcastLobby } from "./server";
-import { mistakeWaitTime, shurikenWaitTime, startLevelWaitTime, winLevelWaitTime } from "../shared/utils/utils";
+import { hasValidPlayerCount, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime, winLevelWaitTime } from "../shared/utils/utils";
 
 function waitTime(timeInSeconds: number) {
     return timeInSeconds * 1000;
@@ -68,7 +68,14 @@ export function handlePostActionEffects(
         // passed game start checks. we always start the level on game start.
         const startLevel = applyAction({ type: 'LEVEL_START' })
         broadcastLobby(startLevel)
+    }
 
+    if (action.type === 'PLAYER_DISCONNECTION') {
+        const isGameStillValidFromPlayerCount = hasValidPlayerCount(newState.players)
+        if (!isGameStillValidFromPlayerCount) {
+            const restartGame = applyAction({ type: 'GAME_RESTART' })
+            broadcastLobby(restartGame)
+        }
     }
 
 }

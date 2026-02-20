@@ -27,12 +27,18 @@ export default function HomeScreen() {
 
     const isValidPlayerCount = hasValidPlayerCount(state.players);
 
+    const playerNames = state.players
+        .map(p => p.name)
+        .filter(Boolean)
+        .join(', ');
+
+
     return (
         <TabView>
             <Text style={styles.gameTitle}> THE MIND </Text>
             <Image
-            style={styles.image}
-            source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
+                style={styles.image}
+                source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
             />
             <View style={{ alignItems: 'center' }}>
                 <Pressable onHoverIn={() => setVisible(v => !v)}
@@ -72,8 +78,8 @@ export default function HomeScreen() {
                 </>
             }
 
-            <Text> There are {state.players.length} players: we got {state.players.map(p => <Text key={p.id}>{p.name ? `${p.name} `: ''}</Text>)}</Text>
-
+            <Text>There {state.players.length > 1 ? 'are' : 'is'} {state.players.length} {state.players.length > 1 ? 'players!' : 'player!'}</Text>
+            <Text>We got {playerNames}</Text>
         </TabView>
     );
 }

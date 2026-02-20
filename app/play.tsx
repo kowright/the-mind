@@ -33,7 +33,7 @@ export default function PlayView() {
             if (state.readyToStartPlayers.length > 0) {
                 // agreeToStart to playing transition to show countdown
                 
-                setCountdown(3);
+                setCountdown(3); // TODO: make var for this for server and client 
 
                 const interval = setInterval(() => {
                     setCountdown(prev => prev - 1);
@@ -54,14 +54,15 @@ export default function PlayView() {
         }
 
         if (state.gamePhase === 'shuriken') {
-            dispatch({ type: 'SHURIKEN_CALLED' }); // TODO CHANGE
+            setCountdown(5);
 
-            const timeout = setTimeout(() => {
-                dispatch({ type: 'SHURIKEN_OVER' }); // TODO CHANGE
-            }, 5000);
+            const interval = setInterval(() => {
+                setCountdown(prev => prev - 1);
+            }, 1000);
 
-            return () => clearTimeout(timeout); 
+            return () => clearInterval(interval);
         }
+
 
         if (state.gamePhase === 'mistake') {
             setCountdown(3);
@@ -75,11 +76,11 @@ export default function PlayView() {
         
     }, [state.gamePhase]);
 
-    useEffect(() => {
-        if (countdown === 0) {
-            dispatch({ type: 'TRANSITION_TO_PLAYING' }); // TODO CHANGE
-        }
-    }, [countdown, state.gamePhase, dispatch]);
+    //useEffect(() => {
+    //    if (countdown === 0) {
+    //        dispatch({ type: 'TRANSITION_TO_PLAYING' }); // TODO CHANGE
+    //    }
+    //}, [countdown, state.gamePhase, dispatch]);
 
 
     const inAskToStartPhase = state.readyToStartPlayers.length > 0;
@@ -109,7 +110,7 @@ export default function PlayView() {
                     </>
 
             ) : state.gamePhase === 'shuriken' ? (
-                <ShurikenView />
+                        <ShurikenView countdown={countdown} />
              
             ) : (state.readyToStartPlayers.length > 0 || state.gamePhase === 'agreeToStart') ? (
                 <GameplayView agreeToStartVersion={true} />

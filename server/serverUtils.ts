@@ -8,6 +8,8 @@ export function handlePostActionEffects(
     action: ServerAction,
     newState: GameState
 ) {
+
+    // NOTE: could change to compare oldState to newState than action to newState
     if (
         action.type === 'READY_TO_START' &&
         newState.gamePhase === 'transition'
@@ -33,4 +35,18 @@ export function handlePostActionEffects(
             broadcastLobby(startLevel)
         }, 3000);
     }
+
+    if (action.type === 'CALL_FOR_SHURIKEN' &&
+        newState.gamePhase === 'shuriken') {
+        // we have called for shuriken, show everyone shuriken screen
+        const startLevel = applyAction({ type: 'SHURIKEN_CALLED' })
+        broadcastLobby(startLevel)
+
+        // wait to go back to playing
+        setTimeout(() => {
+            const startLevel = applyAction({ type: 'SHURIKEN_OVER' })
+            broadcastLobby(startLevel)
+        }, 5000);
+    }
+
 }

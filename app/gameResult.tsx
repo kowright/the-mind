@@ -5,6 +5,7 @@ import { useGame } from '@/hooks/useGame';
 import { isGameWon} from '@/shared/utils/utils';
 import { Platform, StyleSheet, Pressable } from 'react-native';
 import { Button } from '@react-navigation/elements';
+import { websocketService } from '../services/websocketService';
 
 interface GameResultProps {
 
@@ -45,7 +46,7 @@ export default function GameResult() {
 
             </View>
             <Text>{snarkyText}</Text>
-            <Button onPress={() => dispatch({ type: 'GAME_RESTART' })}>
+            <Button onPress={() => websocketService.send({ type: 'GAME_RESTART' })}>
                 NEW GAME?
             </Button>
 

@@ -13,7 +13,7 @@ interface GameplayViewProps {
 export function GameplayView({ agreeToStartVersion = false, ...props }: GameplayViewProps) {
     const { dispatch, state, playerId } = useGame();
     console.log('gameplay view agreetostart?: ', agreeToStartVersion);
-    console.log('gameplay view', )
+    console.log('gameplay view phase', state.gamePhase )
     const { players } = state;
 
     const shurikenDisabled = state.shuriken === 0;

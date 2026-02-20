@@ -72,7 +72,8 @@ export function gameReducer(
 
             const lives = determineLives(playerCount);
             const winLevel = determineWinLevel(playerCount);
-
+            console.log('GAME START we are in game phase', state.gamePhase)
+            console.log('going to game phase agreeToStart')
             return { //TODO add last action to all of these returns, or maybe remove it cause idt anywhere uses it
                 ...state,
                 gamePhase: 'agreeToStart',
@@ -113,7 +114,9 @@ export function gameReducer(
 
                 const startDiscardPile: Card[] = [];
                 const startGamePhase: GamePhase = 'agreeToStart';
+                console.log('LEVEL START we are in game phase', state.gamePhase)
 
+                console.log('Going to game phase', startGamePhase)
                 
                 return {
                     ...state,
@@ -174,6 +177,8 @@ export function gameReducer(
 
         
             let updatedGamePhase: GamePhase = state.gamePhase;
+            console.log('fake play ORIGINAL gamePhase1', updatedGamePhase);
+
             let wasRightMove: boolean = true;
             const { editedPlayers, removedCards } =
                 removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
@@ -194,8 +199,7 @@ export function gameReducer(
                 state.discardPile,
                 playedCard
             );
-            console.log('removed cards: ', removedCards);
-            console.log('editedPlayers', editedPlayers);
+
             updatedDiscardPile = [
                 ...updatedDiscardPile,
                 ...removedCards, 
@@ -219,14 +223,15 @@ export function gameReducer(
             let rewardedLives: number = updatedLives;
             let rewardedShuriken: number = state.shuriken;
 
-            console.log('lives: ', updatedLives);
+            //console.log('fake play lives: ', updatedLives);
             const noMoreLives = areAllLivesLost(updatedLives);
 
             updatedGamePhase = noMoreLives ? 'gameOver' : updatedGamePhase;
-            console.log('gamePhase', updatedGamePhase);
+            console.log('fake play gamePhase2', updatedGamePhase);
 
 
             if (noMoreLives) {
+                console.log('No more lives')
                 return {
                     ...state,
                     lastGameAction: { type: 'FAKE_PLAY', playerId: updatedPlayer.id },
@@ -244,6 +249,7 @@ export function gameReducer(
             const noMoreCards = areAllHandsEmpty(updatedPlayers);
             
             if (noMoreCards) {
+                console.log('all hands are empty')
                 const gameWon = isGameWon(state);
                 if (gameWon) {
                     console.log("YAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY GAME WON!")
@@ -253,6 +259,8 @@ export function gameReducer(
                 else {
                     updatedGamePhase = 'transition';
                 }
+                console.log('fake play gamePhase3', updatedGamePhase);
+
                 const nextLevelNumber = updatedLevel.number + 1;
                 console.log('LEVEL WON, onto level ', nextLevelNumber);
 
@@ -270,7 +278,7 @@ export function gameReducer(
           
 
 
-            console.log('fake play last game phase', updatedGamePhase)
+            console.log('fake play last game phase4', updatedGamePhase)
             return {
                 ...state,
                 lastGameAction: {type: 'FAKE_PLAY', playerId: updatedPlayer.id},
@@ -321,7 +329,7 @@ export function gameReducer(
 
         case 'CALL_FOR_SHURIKEN': // votes, show shuriken screen
             console.log('CALL FOR SHURIKEN by ', action.playerId);
-
+            console.log('call for shuriken gamephase', state.gamePhase)
             if (state.gamePhase !== 'playing') return state;
             if (state.shuriken <= 0) return state;
 
@@ -356,27 +364,26 @@ export function gameReducer(
         }
 
         case 'READY_TO_START': // players ready to start level
+            console.log('READY TO START')
             console.log(action.playerId + ' is ready to start!');
-            console.log('game phase', state.gamePhase)
-      
-            console.log("ready 1")
-         
-            console.log("ready 2");
+            console.log('READY TO START we are in game phase', state.gamePhase)
+
 
             let readyToStartPlayers = [...state.readyToStartPlayers];
-            console.log('rady 1', readyToStartPlayers)
+
             if (readyToStartPlayers.includes(action.playerId)) {
                 readyToStartPlayers = readyToStartPlayers.filter(player => player !== action.playerId)
-                console.log('rady 2', readyToStartPlayers)
+           
             }
             else {
                 readyToStartPlayers = [...readyToStartPlayers, action.playerId]
             }
             
-            console.log('ready 3', readyToStartPlayers)
+
             const allReady =
                 readyToStartPlayers.length === state.players.length;
-
+                console.log('ready to start current gamephase', state.gamePhase)
+            console.log('READY TO START change to gamephase: ', allReady ? 'transition' : state.gamePhase)
             return {
                 ...state,
                 readyToStartPlayers,

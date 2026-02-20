@@ -6,6 +6,7 @@ import { GameAction, enrichAction } from "../shared/types/gameAction.js";
 import { GameState } from "../shared/types/gameState"; 
 /*import { enrichAction } from "../shared/utils/utils.js";*/
 import { removeOtherPlayersFromStateForClient } from '@/shared/utils/utils.js'
+import { handlePostActionEffects } from "./serverUtils.js";
 
 dotenv.config();
 
@@ -23,14 +24,13 @@ function generatePlayerId(): string {
     return Math.random().toString(36).substring(2, 10);
 }
 
-function broadcastLobby(state: GameState) {
+export function broadcastLobby(state: GameState) {
     /* const state = getState();*/
 
  /*   const players = state.players;*/
     const message = JSON.stringify({ type: "STATE_UPDATE", state });
     wss.clients.forEach((client: any) => {
         if (client.readyState === WebSocket.OPEN) {
-            console.log('original state', state.players)
             const isolatedState =
                 removeOtherPlayersFromStateForClient(
                     state,
@@ -67,7 +67,7 @@ wss.on("connection", (ws: any, req: any) => {
     broadcastLobby();*/
 
     const action = enrichAction({ type: 'PLAYER_CONNECTION' }, playerId);
-    console.log('player connection action', action)
+
     const newState = applyAction(action);
 
 
@@ -83,7 +83,7 @@ wss.on("connection", (ws: any, req: any) => {
     //ws.send(message);
 
     const assignIdAction = enrichAction({ type: 'ASSIGN_PLAYER_ID' }, playerId);
-    console.log('assign ID action', action)
+
     //const assignIdState = applyAction(assignIdAction);
     ws.send(JSON.stringify({ type: "ASSIGN_PLAYER_ID", playerId }));
 
@@ -93,17 +93,10 @@ wss.on("connection", (ws: any, req: any) => {
             console.log(`SERVER Received message from ${playerId}:`, message);
 
             const action = enrichAction(message, playerId);
-            console.log('enrich action', action)
             if (!action) return;
             const newState = applyAction(action);
             broadcastLobby(newState);
-/*
-            console.log('type!', message.type)
-            message.playerId = playerId;
-            const newState = applyAction(message);
-            console.log("SERVER message new state ", newState)
-            broadcastLobby(newState);
-*/
+            handlePostActionEffects(action, newState);
 
         } catch (err) {
             console.error("Error parsing message:", err);

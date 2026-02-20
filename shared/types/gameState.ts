@@ -145,6 +145,8 @@ export function setPlayedCard(
 }
 
 export function areAllHandsEmpty(players: Player[]): boolean {
+    console.log('are all hands empty')
+    players.map(p => console.log('player hand', p.hand))
     return players.every(player => player.hand.cards.length === 0);
 }
 

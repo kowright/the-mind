@@ -11,7 +11,6 @@ export function getState(): GameState {
 }
 
 export function applyAction(action: ServerAction): GameState {
-    console.log('applyAction', action)
     gameState = gameReducer(gameState, action);
     return gameState;
 }

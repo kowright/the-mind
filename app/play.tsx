@@ -20,18 +20,19 @@ interface PlayViewProps {
 
 export default function PlayView() {
     console.log("play view rendering");
-   
     const { dispatch, state } = useGame();
     const [countdown, setCountdown] = useState(3);
 
+    console.log('game phase', state.gamePhase)
 
     useEffect(() => {
         if (!state) return;
 
-        if (state.gamePhase === 'transition') {
-
+        if (state.gamePhase === 'transition') { 
+            console.log('play screen, in transition phase')
             if (state.readyToStartPlayers.length > 0) {
-                // agreeToStart to playing transition
+                // agreeToStart to playing transition to show countdown
+                
                 setCountdown(3);
 
                 const interval = setInterval(() => {
@@ -41,21 +42,22 @@ export default function PlayView() {
                 return () => clearInterval(interval);
 
             }
-            else {
-                // level to level transition
-                const timeout = setTimeout(() => {
-                    dispatch({ type: 'LEVEL_START' });
-                }, 3000);
+            //else {
+            //    // level to level transition
+            //    console.log('play screen, ready to start is less than 0 so level start')
+            //    const timeout = setTimeout(() => {
+            //        dispatch({ type: 'LEVEL_START' });
+            //    }, 3000);
 
-                return () => clearTimeout(timeout); // cleanup if component unmounts
-            }
+            //    return () => clearTimeout(timeout); // cleanup if component unmounts
+            //}
         }
 
         if (state.gamePhase === 'shuriken') {
-            dispatch({ type: 'SHURIKEN_CALLED' });
+            dispatch({ type: 'SHURIKEN_CALLED' }); // TODO CHANGE
 
             const timeout = setTimeout(() => {
-                dispatch({ type: 'SHURIKEN_OVER' });
+                dispatch({ type: 'SHURIKEN_OVER' }); // TODO CHANGE
             }, 5000);
 
             return () => clearTimeout(timeout); 
@@ -71,11 +73,11 @@ export default function PlayView() {
             return () => clearInterval(interval);
         }
         
-    }, [state.gamePhase, dispatch, state]);
+    }, [state.gamePhase]);
 
     useEffect(() => {
         if (countdown === 0) {
-            dispatch({ type: 'TRANSITION_TO_PLAYING' });
+            dispatch({ type: 'TRANSITION_TO_PLAYING' }); // TODO CHANGE
         }
     }, [countdown, state.gamePhase, dispatch]);
 

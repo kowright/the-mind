@@ -10,8 +10,8 @@ import { DiscardPileView } from "@/components/models/discardPile";
 interface TransitionViewProps {
     // fake props
 }
-
-export function TransitionView({ }: TransitionViewProps) {
+// TODO: probably shouldn't be called the transition screen, it's more of a level result screen
+export function TransitionView({ }: TransitionViewProps) { //TODO: should probably have a button to get off this view 
     const { state } = useGame();
 
     const pastLevelIndex = state.level.number - 2;

@@ -112,6 +112,7 @@ wss.on("connection", (ws: any, req: any) => {
         const newState = applyAction({ type: 'PLAYER_DISCONNECTION', playerId });
 
         broadcastLobby(newState);
+        // TODO: what happens if you lose too may players for the game
 
     });
 

@@ -39,8 +39,8 @@ export function handlePostActionEffects(
     if (action.type === 'CALL_FOR_SHURIKEN' &&
         newState.gamePhase === 'shuriken') {
         // we have called for shuriken, show everyone shuriken screen
-        const startLevel = applyAction({ type: 'SHURIKEN_CALLED' })
-        broadcastLobby(startLevel)
+        const shuriken = applyAction({ type: 'SHURIKEN_CALLED' })
+        broadcastLobby(shuriken)
 
         // wait to go back to playing
         setTimeout(() => {
@@ -57,6 +57,14 @@ export function handlePostActionEffects(
             const startLevel = applyAction({ type: 'TRANSITION_TO_PLAYING' })
             broadcastLobby(startLevel)
         }, 3000);
+    }
+
+    if (action.type === 'GAME_START' &&
+        newState.gamePhase === 'agreeToStart') {
+        // passed game start checks. we always start the level on game start.
+        const startLevel = applyAction({ type: 'LEVEL_START' })
+        broadcastLobby(startLevel)
+
     }
 
 }

@@ -1,5 +1,4 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
 import { Link, router } from 'expo-router';
 import { Text, View, TextInput } from 'react-native';
 import { TabView } from '@/components/tab-view';
@@ -8,6 +7,8 @@ import { useGame } from '@/hooks/useGame';
 import { websocketService } from '@/services/websocketService';
 import { createContext, useReducer, ReactNode, useEffect, useState } from 'react';
 import { ClientAction } from '../../shared/types/gameAction';
+import { hasValidPlayerCount } from '@/shared/utils/utils';
+import { Platform, StyleSheet, Pressable } from 'react-native';
 
 
 export default function HomeScreen() {
@@ -15,18 +16,8 @@ export default function HomeScreen() {
     console.log('index.tsc rendering gamePhase: ', state.gamePhase)
     const [text, setText] = useState('');
     const [enteredName, setEnteredName] = useState(false);
-/*    const players = selectPlayers(state);*/
-  
+    const [visible, setVisible] = useState(false);
 
-    const handleTextChange = (newText: string) => {
-        setText(newText);
-    };
-
-  /*  useEffect(() => {
-        websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text});
-    }, [enteredName]);
-
-*/
 
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {
@@ -34,42 +25,57 @@ export default function HomeScreen() {
         }
     }, [state.gamePhase]);
 
-  return (
-      <TabView>
-          <Text style={styles.gameTitle}> THE MIND </Text>
-          <Image
+    const isValidPlayerCount = hasValidPlayerCount(state.players);
+
+    return (
+        <TabView>
+            <Text style={styles.gameTitle}> THE MIND </Text>
+            <Image
             style={styles.image}
             source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
-          />
-          <Button onPress={() => startGame(dispatch)}>
-            EVERYONE HERE?
-          </Button>
-          <Button onPress={() => startFakeGame(dispatch)}>
-              MAKE FAKE GAME
-          </Button>
-     {/*     // hide input on name */}
-          {enteredName ? <Text>Hi {text}!</Text> :
-             <>
+            />
+            <View style={{ alignItems: 'center' }}>
+                <Pressable onHoverIn={() => setVisible(v => !v)}
+                    onHoverOut={() => setVisible(v => !v)}
+                    style={isValidPlayerCount ? styles.button : styles.disabled}
+                    onPress={() => startGame()}
+                >
+                    <Text>EVERYONE READY?</Text>
+                </Pressable>
+
+                {visible && (
+                    <View style={styles.tooltip}>
+                        <Text style={{ color: 'white' }}>
+                            You need 2 - 4 players to start.
+                        </Text>
+                    </View>
+                )}
+            </View>
+
+
+            <Button onPress={() => startFakeGame()}>
+                MAKE FAKE GAME
+            </Button>
+            {enteredName ? <Text>Hi {text}!</Text> :
+                <>
                 <TextInput
                     style={styles.input}
                    
                     value={text}
-                      placeholder="Enter your name"
-                      onChangeText={setText}
-                  /*    onBlur={() =>
-                          websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text })
-                      }*/
+                        placeholder="Enter your name"
+                        onChangeText={setText}
+               
                 />
-                  <Button onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}>
+                    <Button onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}>
                     Submit
                 </Button>
-              </>
-          }
+                </>
+            }
 
-          <Text> There are {state.players.length} players: we got {state.players.map(p => <Text key={p.id}>{p.name ? p.name : '' }</Text>)}</Text>
+            <Text> There are {state.players.length} players: we got {state.players.map(p => <Text key={p.id}>{p.name ? `${p.name} `: ''}</Text>)}</Text>
 
-      </TabView>
-  );
+        </TabView>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -96,20 +102,37 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         paddingHorizontal: 10,
+    }, 
+    disabled: {
+        backgroundColor: '#aaa',
+        opacity: 0.5,
+        paddingVertical: 10,
+        paddingHorizontal: 16,
+        borderRadius: 6,
+        alignItems: 'center',
+    },
+    button: {
+        backgroundColor: '#6c63ff',
+        paddingVertical: 10,
+        paddingHorizontal: 16,
+        borderRadius: 6,
+        alignItems: 'center',
+
+    }, 
+    tooltip: {
+        position: 'absolute',
+        bottom: 50,
+        backgroundColor: 'black',
+        padding: 8,
+        borderRadius: 6,
     }
 });
-function startFakeGame(dispatch: React.Dispatch<ClientAction>) {
-
+function startFakeGame() {
     websocketService.send({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
     websocketService.send({ type: 'GAME_START'});
-    websocketService.send({ type: 'LEVEL_START'});
-
 }
 
-function startGame(dispatch: React.Dispatch<ClientAction>) {
-
+function startGame() {
     websocketService.send({ type: 'GAME_START' });
-    websocketService.send({ type: 'LEVEL_START' });
-
 }
 

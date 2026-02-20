@@ -64,5 +64,5 @@ export function GameProvider({ children }: { children: ReactNode }) {
 };
 
 type ServerMessage =
-    | { type: "ASSIGN_PLAYER_ID"; playerId: string }
+    | { type: "ASSIGN_PLAYER_ID"; playerId: string } // TODO
     | { type: "STATE_UPDATE"; state: GameState };

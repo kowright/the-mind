@@ -82,11 +82,12 @@ export function gameReducer(
             };
 
         case 'GAME_RESTART':
-            console.log("GAME RESTART"); //TODO player connection lost on game restart?
+            console.log("GAME RESTART");
 
             return {
                 
                 ...initialGameState,
+                players: state.players,
             }
 
 

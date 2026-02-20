@@ -28,12 +28,11 @@ export function handlePostActionEffects(
     if (action.type === 'FAKE_PLAY' &&
         newState.gamePhase === 'transition') {
         // a play was done to win the level, transition was shown, show ready to start screen
-      
 
         setTimeout(() => {
             const startLevel = applyAction({ type: 'LEVEL_START' })
             broadcastLobby(startLevel)
-        }, 3000);
+        }, 10000);
     }
 
     if (action.type === 'CALL_FOR_SHURIKEN' &&

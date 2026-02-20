@@ -18,7 +18,6 @@ export interface GameState {
     shurikenCalls: number[];
     lastRemovedCards: Card[];
     lastPlayedCard?: Card;
-    lastGameAction?: ClientAction; // WHERE IS THIS USED
 }
 
 export const initialGameState: GameState = {
@@ -33,7 +32,6 @@ export const initialGameState: GameState = {
     readyToStartPlayers: [],
     shurikenCalls: [],
     lastRemovedCards: [],
-    lastGameAction: undefined,
 }
 
 
@@ -111,7 +109,7 @@ export function addCardToDiscardPile(
     return [...(discardPile ?? []), card];
 }
 
-export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) { // TODO fix name
+export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) {
     console.log('wasLastPlayWasValid');
     if (!lastCard) {
         console.log('no last card to compare!');

@@ -11,7 +11,7 @@ import { GameplayView } from '@/components/phases/gamePlayView';
 
 import React, { useEffect, useState } from 'react';
 import { DiscardPileView } from '../components/models/discardPile';
-import { TransitionView } from '../components/phases/transition';
+import { LevelResultView } from '../components/phases/levelResult';
 import { ShurikenView } from '../components/phases/shuriken';
 
 interface PlayViewProps {
@@ -109,7 +109,7 @@ export default function PlayView() {
                         {inAskToStartPhase ?
                             (<Text>START IN: {countdown}</Text>) :
                             (
-                                <TransitionView />
+                                <LevelResultView />
                             )}
                     </>
 

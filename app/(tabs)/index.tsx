@@ -49,7 +49,7 @@ export default function HomeScreen() {
                     <Text>EVERYONE READY?</Text>
                 </Pressable>
 
-                {visible && (
+                {visible && !isValidPlayerCount && (
                     <View style={styles.tooltip}>
                         <Text style={{ color: 'white' }}>
                             You need 2 - 4 players to start.

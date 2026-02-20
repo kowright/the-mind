@@ -14,8 +14,8 @@ export function MistakeView({ countdown }: MistakeProps) {
     const { state } = useGame();
     console.log('state', state)
 
-    console.log('last card', state.lastPlayedCard?.mistakenlyPlayedByPlayerId)
-    const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenlyPlayedByPlayerId);
+    console.log('last card', state.lastPlayedCard?.mistakenPlayerId)
+    const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenPlayerId);
     console.log('WHO MADE THE MISTAKE? ', mistakenPlayer?.name )
     return (
         <View style={styles.overlay} >

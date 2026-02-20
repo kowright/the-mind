@@ -74,7 +74,7 @@ export function gameReducer(
             const winLevel = determineWinLevel(playerCount);
             console.log('GAME START we are in game phase', state.gamePhase)
             console.log('going to game phase agreeToStart')
-            return { //TODO add last action to all of these returns, or maybe remove it cause idt anywhere uses it
+            return {
                 ...state,
                 gamePhase: 'agreeToStart',
                 lives,
@@ -164,7 +164,7 @@ export function gameReducer(
                 playedCard = {
                     ...playedCard,
                     mistakenlyPlayed: true,
-                    mistakenlyPlayedByPlayerId: updatedPlayer.id,
+                    mistakenPlayerId: updatedPlayer.id,
                 };
 
 
@@ -187,11 +187,11 @@ export function gameReducer(
                 removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
             console.log('removed cards', removedCards)
             if (removedCards.length > 0) {
-                removedCards.map(card => console.log(card.mistakenlyPlayedByPlayerId + ' DID NOT PLAY WHEN THEY WERE SUPPOSED TO'))
+                removedCards.map(card => console.log(card.mistakenPlayerId + ' DID NOT PLAY WHEN THEY WERE SUPPOSED TO'))
                 playedCard = {
                     ...playedCard,
                     mistakenlyPlayed: true,
-                    mistakenlyPlayedByPlayerId: updatedPlayer.id,
+                    mistakenPlayerId: updatedPlayer.id,
                 };
                 updatedGamePhase = 'mistake';
                 wasRightMove = false;
@@ -243,7 +243,6 @@ export function gameReducer(
                 console.log('No more lives')
                 return {
                     ...state,
-                    lastGameAction: { type: 'FAKE_PLAY', playerId: updatedPlayer.id },
                     players: updatedPlayers,
                     discardPile: updatedDiscardPile,
                     lives: rewardedLives,
@@ -291,7 +290,6 @@ export function gameReducer(
             console.log('fake play last game phase4', updatedGamePhase)
             return {
                 ...state,
-                lastGameAction: {type: 'FAKE_PLAY', playerId: updatedPlayer.id},
                 players: updatedPlayers,
                 discardPile: updatedDiscardPile,   
                 lives: rewardedLives, 

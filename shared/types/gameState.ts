@@ -138,7 +138,7 @@ export function setPlayedCard(
 ): Card {
     return {
         number: card.number,
-        mistakenlyPlayedByPlayerId: playerId,
+        mistakenPlayerId: playerId,
         mistakenlyPlayed: !wasCorrect,
     };
 }

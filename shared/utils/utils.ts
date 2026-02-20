@@ -154,7 +154,7 @@ export function removeCardsLowerThanCardNumber(
         for (const card of player.hand.cards) {
             if (card.number < playedCardNumber) {
                 discarded.push(card);
-                card.mistakenlyPlayedByPlayerId = player.id;
+                card.mistakenPlayerId = player.id;
                 card.mistakenlyPlayed = true;
             } else {
                 keptCards.push(card);

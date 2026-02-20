@@ -25,6 +25,7 @@ const gameActionSchema = {
     TRANSITION: { requiresPlayerId: false },
     GAME_RESTART: { requiresPlayerId: false },  
     TRANSITION_TO_PLAYING: { requiresPlayerId: false },
+    ERROR: { requiresPlayerId: false},
 } as const;
 
 export type GameActionType = keyof typeof gameActionSchema;
@@ -49,7 +50,8 @@ export interface ActionPayloads {
     FAKE_PLAY: {};
     TRANSITION: { nextAction: ServerAction }
     GAME_RESTART: {};
-    TRANSITION_TO_PLAYING: {}
+    TRANSITION_TO_PLAYING: {};
+    ERROR: {};
 }
 export type ClientAction = {
     [K in GameActionType]: { type: K } & ActionPayloads[K]

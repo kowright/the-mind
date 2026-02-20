@@ -10,6 +10,7 @@ export const winLevelWaitTime: number = 10;
 export const startLevelWaitTime: number = 3;
 export const shurikenWaitTime: number = 5;
 export const countdownInterval: number = 1000;
+export const errorWaitTime: number = 5;
 
 export function hasValidPlayerCount(players: Player[]) {
     const playerCount = players.length;

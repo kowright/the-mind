@@ -14,6 +14,7 @@ import { DiscardPileView } from '../components/models/discardPile';
 import { LevelResultView } from '../components/phases/levelResult';
 import { ShurikenView } from '../components/phases/shuriken';
 import { countdownInterval, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime } from '../shared/utils/utils';
+import { ErrorView } from '../components/phases/error';
 
 interface PlayViewProps {
 
@@ -23,7 +24,7 @@ export default function PlayView() {
     console.log("play view rendering");
     const { state, playerId } = useGame();
     const [countdown, setCountdown] = useState(3);
-
+    console.log('gamephase', state.gamePhase)
     const player = state.players.find(p => p.id === playerId);
 
     // TODO: loading screen
@@ -97,6 +98,8 @@ export default function PlayView() {
                                 <LevelResultView />
                             )}
                     </>
+            ) : state.gamePhase === 'error' ? (
+                    <ErrorView />
 
             ) : state.gamePhase === 'shuriken' ? (
                         <ShurikenView countdown={countdown} />
@@ -104,7 +107,7 @@ export default function PlayView() {
             ) : (state.readyToStartPlayers.length > 0 || state.gamePhase === 'agreeToStart') ? (
                 <GameplayView agreeToStartVersion={true} />
 
-            ) : (
+            ): (
             <Text>SOMETHING ELSE, maybe loading or something</Text>
             )
 

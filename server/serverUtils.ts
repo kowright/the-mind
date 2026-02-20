@@ -3,7 +3,7 @@ import { ServerAction } from "../shared/types/gameAction";
 import { applyAction } from "../shared/types/gameEngine";
 import { GameState } from "../shared/types/gameState";
 import { broadcastLobby } from "./server";
-import { hasValidPlayerCount, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime, winLevelWaitTime } from "../shared/utils/utils";
+import { errorWaitTime, hasValidPlayerCount, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime, winLevelWaitTime } from "../shared/utils/utils";
 
 function waitTime(timeInSeconds: number) {
     return timeInSeconds * 1000;
@@ -73,8 +73,16 @@ export function handlePostActionEffects(
     if (action.type === 'PLAYER_DISCONNECTION') {
         const isGameStillValidFromPlayerCount = hasValidPlayerCount(newState.players)
         if (!isGameStillValidFromPlayerCount) {
-            const restartGame = applyAction({ type: 'GAME_RESTART' })
-            broadcastLobby(restartGame)
+            console.log('not enough players on disconnection')
+            // notify players that game cannot continue 
+            const showError = applyAction({ type: 'ERROR' })
+            broadcastLobby(showError);
+
+            // then restart game
+            setTimeout(() => {
+                const restartGame = applyAction({ type: 'GAME_RESTART' })
+                broadcastLobby(restartGame)
+            }, waitTime(errorWaitTime));
         }
     }
 

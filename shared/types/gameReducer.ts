@@ -407,6 +407,14 @@ export function gameReducer(
 
             }
 
+        case 'ERROR':
+            console.log('error reducer')
+            return {
+                ...state,
+                gamePhase: 'error',
+
+            }
+
 
         default:
             return state;

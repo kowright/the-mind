@@ -9,6 +9,7 @@ interface MistakeProps {
 // TODO: show card that made the mistake 
 
 export function MistakeView({ countdown }: MistakeProps) {
+    // TODO: show who messed up! 
     return (
         <View style={styles.overlay} >
             <View style={styles.overlapText}>

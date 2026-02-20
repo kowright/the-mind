@@ -49,4 +49,14 @@ export function handlePostActionEffects(
         }, 5000);
     }
 
+    if (action.type === 'FAKE_PLAY' &&
+        newState.gamePhase === 'mistake') {
+        // someone made a mistake, mistake screen was shown, show playing screen again
+
+        setTimeout(() => {
+            const startLevel = applyAction({ type: 'TRANSITION_TO_PLAYING' })
+            broadcastLobby(startLevel)
+        }, 3000);
+    }
+
 }

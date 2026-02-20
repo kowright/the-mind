@@ -82,7 +82,7 @@ export function gameReducer(
             };
 
         case 'GAME_RESTART':
-            console.log("GAME RESTART");
+            console.log("GAME RESTART"); //TODO player connection lost on game restart?
 
             return {
                 
@@ -212,7 +212,9 @@ export function gameReducer(
             
 
             let updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
-            updatedLives = removedCards.length > 0 ? loseLife(updatedLives) : updatedLives;
+            console.log('updated Lives', updatedLives)
+            updatedLives = removedCards.length > 1 ? loseLife(updatedLives) : updatedLives;
+            console.log('updated Lives', updatedLives)
 
 
 

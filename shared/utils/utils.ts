@@ -5,6 +5,11 @@ import { Card } from "../types/card";
 import { Hand } from "../types/hand";
 import { GameAction } from "../types/gameAction";
 
+export const mistakeWaitTime: number = 5;
+export const winLevelWaitTime: number = 10;
+export const startLevelWaitTime: number = 3;
+export const shurikenWaitTime: number = 5;
+
 export function hasValidPlayerCount(players: Player[]) {
     const playerCount = players.length;
     if (playerCount < 2 || playerCount > 4) {

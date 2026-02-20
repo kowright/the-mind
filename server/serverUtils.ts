@@ -3,6 +3,11 @@ import { ServerAction } from "../shared/types/gameAction";
 import { applyAction } from "../shared/types/gameEngine";
 import { GameState } from "../shared/types/gameState";
 import { broadcastLobby } from "./server";
+import { mistakeWaitTime, shurikenWaitTime, startLevelWaitTime, winLevelWaitTime } from "../shared/utils/utils";
+
+function waitTime(timeInSeconds: number) {
+    return timeInSeconds * 1000;
+}
 
 export function handlePostActionEffects(
     action: ServerAction,
@@ -22,7 +27,7 @@ export function handlePostActionEffects(
             });
 
             broadcastLobby(playingState);
-        }, 3000);
+        }, waitTime(startLevelWaitTime));
     }
 
     if (action.type === 'FAKE_PLAY' &&
@@ -32,7 +37,7 @@ export function handlePostActionEffects(
         setTimeout(() => {
             const startLevel = applyAction({ type: 'LEVEL_START' })
             broadcastLobby(startLevel)
-        }, 10000);
+        }, waitTime(winLevelWaitTime));
     }
 
     if (action.type === 'CALL_FOR_SHURIKEN' &&
@@ -45,7 +50,7 @@ export function handlePostActionEffects(
         setTimeout(() => {
             const startLevel = applyAction({ type: 'SHURIKEN_OVER' })
             broadcastLobby(startLevel)
-        }, 5000);
+        }, waitTime(shurikenWaitTime));
     }
 
     if (action.type === 'FAKE_PLAY' &&
@@ -55,7 +60,7 @@ export function handlePostActionEffects(
         setTimeout(() => {
             const startLevel = applyAction({ type: 'TRANSITION_TO_PLAYING' })
             broadcastLobby(startLevel)
-        }, 5000);
+        }, waitTime(mistakeWaitTime));
     }
 
     if (action.type === 'GAME_START' &&

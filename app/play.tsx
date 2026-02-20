@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { DiscardPileView } from '../components/models/discardPile';
 import { LevelResultView } from '../components/phases/levelResult';
 import { ShurikenView } from '../components/phases/shuriken';
+import { countdownInterval, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime } from '../shared/utils/utils';
 
 interface PlayViewProps {
 
@@ -20,13 +21,12 @@ interface PlayViewProps {
 
 export default function PlayView() {
     console.log("play view rendering");
-    const { dispatch, state, playerId } = useGame();
+    const { state, playerId } = useGame();
     const [countdown, setCountdown] = useState(3);
-
-    console.log('game phase', state.gamePhase)
 
     const player = state.players.find(p => p.id === playerId);
 
+    // TODO: loading screen
 
     useEffect(() => {
         if (!state) return;
@@ -36,54 +36,39 @@ export default function PlayView() {
             if (state.readyToStartPlayers.length > 0) {
                 // agreeToStart to playing transition to show countdown
                 
-                setCountdown(3); // TODO: make var for this for server and client 
+                setCountdown(startLevelWaitTime);
 
                 const interval = setInterval(() => {
                     setCountdown(prev => prev - 1);
-                }, 1000);
+                }, countdownInterval);
 
                 return () => clearInterval(interval);
 
             }
-            //else {
-            //    // level to level transition
-            //    console.log('play screen, ready to start is less than 0 so level start')
-            //    const timeout = setTimeout(() => {
-            //        dispatch({ type: 'LEVEL_START' });
-            //    }, 3000);
-
-            //    return () => clearTimeout(timeout); // cleanup if component unmounts
-            //}
         }
 
         if (state.gamePhase === 'shuriken') {
-            setCountdown(5);
+            setCountdown(shurikenWaitTime);
 
             const interval = setInterval(() => {
                 setCountdown(prev => prev - 1);
-            }, 1000);
+            }, countdownInterval);
 
             return () => clearInterval(interval);
         }
 
 
         if (state.gamePhase === 'mistake') {
-            setCountdown(5);
+            setCountdown(mistakeWaitTime);
 
             const interval = setInterval(() => {
                 setCountdown(prev => prev - 1);
-            }, 1000);
+            }, countdownInterval);
 
             return () => clearInterval(interval);
         }
         
     }, [state.gamePhase]);
-
-    //useEffect(() => {
-    //    if (countdown === 0) {
-    //        dispatch({ type: 'TRANSITION_TO_PLAYING' }); // TODO CHANGE
-    //    }
-    //}, [countdown, state.gamePhase, dispatch]);
 
 
     const inAskToStartPhase = state.readyToStartPlayers.length > 0;

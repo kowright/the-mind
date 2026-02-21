@@ -1,5 +1,5 @@
 import { Card } from "../../shared/types/card";
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 
 interface CardViewProps {
     card: Card;

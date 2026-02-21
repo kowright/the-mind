@@ -1,30 +1,29 @@
-import { ClientAction, GameAction } from "../shared/types/gameAction";
+import { ClientAction } from "../shared/types/gameAction";
+import { createLogger } from "../shared/types/logger";
 
+const log = createLogger('WEBSOCKET SERVICE')
 class WebsocketService {
 
     private socket: WebSocket | null = null;
 
     isConnected() {
-        console.log('this.socket?.readyState === WebSocket.OPEN', this.socket?.readyState === WebSocket.OPEN)
         return this.socket?.readyState === WebSocket.OPEN;
     }
 
     connect(url: string, onOpen?: () => void) {
-        console.log("CONNECTING...");
-
         this.socket = new WebSocket(url);
 
         this.socket.onopen = () => {
-            console.log("SOCKET OPEN");
+            log.info('Connected to websocket')
             onOpen?.();
         };
 
         this.socket.onerror = (err) => {
-            console.log("SOCKET ERROR", err);
+            log.error('error', err)
         };
 
         this.socket.onclose = () => {
-            console.log("SOCKET CLOSED");
+            log.info('Disconnected to websocket')
         };
     }
 
@@ -41,10 +40,9 @@ class WebsocketService {
         if (!this.socket) return;
 
         if (this.socket.readyState === WebSocket.OPEN) {
-            console.log("SEND data");
             this.socket.send(JSON.stringify(action));
         } else {
-            console.log("Tried to send before socket was open");
+            log.warn('Tried to send before socket was open')
         }
     }
 

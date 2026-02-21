@@ -1,14 +1,7 @@
-// actual card showing view
 import { Text, View } from 'react-native';
-import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
-import { Platform, StyleSheet, Pressable } from 'react-native';
-import { CardView } from '@/components/models/card';
-import { Level, levels, RewardType } from "@/shared/types/level";
 import { MistakeView } from '@/components/phases/mistake';
-import { FakeGameplayView } from '@/components/phases/fakeGameplayView';
 import { GameplayView } from '@/components/phases/gamePlayView';
-
 import React, { useEffect, useState } from 'react';
 import { DiscardPileView } from '../components/models/discardPile';
 import { LevelResultView } from '../components/phases/levelResult';
@@ -21,19 +14,15 @@ interface PlayViewProps {
 }
 
 export default function PlayView() {
-    console.log("play view rendering");
     const { state, playerId } = useGame();
     const [countdown, setCountdown] = useState(3);
-    console.log('gamephase', state.gamePhase)
-    const player = state.players.find(p => p.id === playerId);
 
-    // TODO: loading screen
+    const player = state.players.find(p => p.id === playerId);
 
     useEffect(() => {
         if (!state) return;
 
         if (state.gamePhase === 'transition') { 
-            console.log('play screen, in transition phase')
             if (state.readyToStartPlayers.length > 0) {
                 // agreeToStart to playing transition to show countdown
                 
@@ -77,6 +66,7 @@ export default function PlayView() {
     return (
         <View>
             <Text>{player?.name}</Text>
+
             {state.gamePhase === 'playing' || state.gamePhase === 'mistake' ? (
                 <>
                     <GameplayView agreeToStartVersion={false} />
@@ -108,7 +98,7 @@ export default function PlayView() {
                 <GameplayView agreeToStartVersion={true} />
 
             ): (
-            <Text>SOMETHING ELSE, maybe loading or something</Text>
+            <Text>Loading...!</Text>
             )
 
             } 

@@ -1,16 +1,12 @@
-import { Card } from "../../shared/types/card";
-import { Text, View } from 'react-native';
-import { Platform, StyleSheet, Pressable } from 'react-native';
-import { Button } from '@react-navigation/elements';
+import { Text } from 'react-native';
 import { useGame } from '@/hooks/useGame';
-import { Level, levels, RewardType } from "@/shared/types/level";
+import { levels } from "@/shared/types/level";
 import { DiscardPileView } from "@/components/models/discardPile";
-
 
 interface LevelResultProps {
     // fake props
 }
-export function LevelResultView({ }: LevelResultProps) {
+export function LevelResultView() {
     const { state } = useGame();
 
     const pastLevelIndex = state.level.number - 2;

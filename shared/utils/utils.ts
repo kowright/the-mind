@@ -1,9 +1,7 @@
-import { PlayerView } from "../../components/models/player";
 import { GameState } from "../types/gameState";
 import { Player } from "../types/player";
 import { Card } from "../types/card";
 import { Hand } from "../types/hand";
-import { GameAction } from "../types/gameAction";
 
 export const mistakeWaitTime: number = 5;
 export const winLevelWaitTime: number = 10;
@@ -44,7 +42,6 @@ export function makePlayer(
     }
 }
 
-
 export function shuffleDeck<T>(array: T[]): T[] {
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
@@ -62,7 +59,7 @@ export function dealCards(
     players: Player[],
     shuffledDeck: Card[],
     level: number
-): { players: Player[]; remainingDeck: Card[] } {
+): { players: Player[] } {
 
     let deck = [...shuffledDeck];
 
@@ -87,7 +84,7 @@ export function dealCards(
         });
     }
 
-    return { players: updatedPlayers, remainingDeck: deck };
+    return { players: updatedPlayers };
 }
 
 
@@ -101,11 +98,9 @@ export function sortPlayerHands(players: Player[]) {
     }));
 }
 
-
 export function loseLife(lives: number): number {
     return Math.max(lives - 1, 0);
 }
-
 
 export function areAllLivesLost(lives: number) {
     return lives === 0;
@@ -138,7 +133,6 @@ export function removeLowestCardFromAllHands(
     return { players: updatedPlayers, removedCards };
 }
 
-
 export function removeCardsLowerThanCardNumber(
     players: Player[],
     playedCardNumber: number,
@@ -147,7 +141,6 @@ export function removeCardsLowerThanCardNumber(
     removedCards: Card[];
     } {
     const removedCards: Card[] = [];
-    console.log('remove cards lower than: ', playedCardNumber);
     const editedPlayers = players.map(player => {
         const keptCards: Card[] = [];
         const discarded: Card[] = [];
@@ -178,23 +171,6 @@ export function removeCardsLowerThanCardNumber(
 
     return { editedPlayers, removedCards };
 }
-
-/*export function enrichAction(raw: any, playerId: string): GameAction | null {
-    if (!raw?.type) return null;
-    console.log('raw')
-    console.log('raw.id', raw.requiresId)
-    // If the action requires a player ID, inject it
-    if (raw.requiresId) {
-        return {
-            ...raw,
-            playerId
-        } as GameAction;
-    }
-
-    // Otherwise, pass it as-is
-    return raw as GameAction;
-}
-*/
 
 export function removeOtherPlayersFromStateForClient(
     state: GameState,

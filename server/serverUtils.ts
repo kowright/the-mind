@@ -1,4 +1,3 @@
-import { start } from "repl";
 import { ServerAction } from "../shared/types/gameAction";
 import { applyAction } from "../shared/types/gameEngine";
 import { GameState } from "../shared/types/gameState";
@@ -30,7 +29,7 @@ export function handlePostActionEffects(
         }, waitTime(startLevelWaitTime));
     }
 
-    if (action.type === 'FAKE_PLAY' &&
+    if (action.type === 'PLAY' &&
         newState.gamePhase === 'transition') {
         // a play was done to win the level, transition was shown, show ready to start screen
 
@@ -53,7 +52,7 @@ export function handlePostActionEffects(
         }, waitTime(shurikenWaitTime));
     }
 
-    if (action.type === 'FAKE_PLAY' &&
+    if (action.type === 'PLAY' &&
         newState.gamePhase === 'mistake') {
         // someone made a mistake, mistake screen was shown, show playing screen again
 

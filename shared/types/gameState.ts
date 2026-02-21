@@ -14,8 +14,8 @@ export interface GameState {
     // players who want shuriken
     gamePhase: GamePhase;
     winLevel: number;
-    readyToStartPlayers: number[];
-    shurikenCalls: number[];
+    readyToStartPlayers: string[];
+    shurikenCalls: string[];
     lastRemovedCards: Card[];
     lastPlayedCard?: Card;
 }

@@ -1,6 +1,5 @@
-import { Card } from "../../shared/types/card";
 import { Text, View } from 'react-native';
-import { Platform, StyleSheet, Pressable } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 
 interface MistakeProps {
@@ -28,9 +27,6 @@ export function MistakeView({ countdown }: MistakeProps) {
         </View>
     );
 }
-
-
-
 
 const styles = StyleSheet.create({
     overlay: {

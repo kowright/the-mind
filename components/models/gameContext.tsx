@@ -1,11 +1,11 @@
 import { createContext, useReducer, ReactNode, useEffect, useState } from 'react';
 import { gameReducer } from '@/shared/types/gameReducer';
-import { GameAction, ServerAction } from '@/shared/types/gameAction';
+import { ServerAction } from '@/shared/types/gameAction';
 import { GameState, initialGameState } from '@/shared/types/gameState';
 import { websocketService } from '@/services/websocketService';
-import { Platform } from 'react-native';
 import Constants from "expo-constants";
 import { ServerMessage } from '../../shared/types/serverMessage';
+import { createLogger } from '../../shared/types/logger';
 
 type GameContextType = {
     state: GameState;
@@ -13,10 +13,12 @@ type GameContextType = {
     playerId?: string;    
 };
 
+const log = createLogger('GAME CONTEXT')
+
 export const GameContext = createContext<GameContextType | null>(null); //exposes state and dispatch to any component in the tree
 
 export function GameProvider({ children }: { children: ReactNode }) {
-    const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game stat
+    const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game stat, it may not be used TODO 
     const [clientPlayerId, setPlayerId] = useState<string | undefined>();
 
 
@@ -30,7 +32,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
         }
 
         websocketService.onMessage((message: ServerMessage) => {
-            console.log("MESSAGE FROM SERVER from Game Provider:", message);
+            log.info("MESSAGE FROM SERVER from Game Provider:", message)
+
             if (message.type === "ASSIGN_PLAYER_ID") {
                 setPlayerId(message.playerId);
                 return;
@@ -39,7 +42,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
                 dispatch(message);
             }
             else {
-                console.warn('unidentified server message')
+                log.warn("Unidentified server message")
             }
         });
 

@@ -1,19 +1,18 @@
 import { Image } from 'expo-image';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import { Text, View, TextInput } from 'react-native';
 import { TabView } from '@/components/tab-view';
 import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
 import { websocketService } from '@/services/websocketService';
-import { createContext, useReducer, ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ClientAction } from '../../shared/types/gameAction';
 import { hasValidPlayerCount } from '@/shared/utils/utils';
-import { Platform, StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 
 
 export default function HomeScreen() {
-    const { dispatch, state } = useGame();  
-    console.log('index.tsc rendering gamePhase: ', state.gamePhase)
+    const { state } = useGame();  
     const [text, setText] = useState('');
     const [enteredName, setEnteredName] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -58,7 +57,6 @@ export default function HomeScreen() {
                 )}
             </View>
 
-
             <Button onPress={() => startFakeGame()}>
                 MAKE FAKE GAME
             </Button>
@@ -73,7 +71,7 @@ export default function HomeScreen() {
                
                 />
                     <Button onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}>
-                    Submit your name
+                    Give yourself a name
                 </Button>
                 </>
             }

@@ -10,8 +10,8 @@ const gameActionSchema = {
     ASSIGN_PLAYER_ID: { requiresPlayerId: false },
     PLAY_CARD: { requiresPlayerId: true },
     STATE_UPDATE: { requiresPlayerId: false },
-    CALL_FOR_SHURIKEN: { requiresPlayerId: true },
-    READY_TO_START: { requiresPlayerId: true },
+    CALL_FOR_SHURIKEN: { requiresPlayerId: true }, // sends when a player votes to use a shuriken 
+    READY_TO_START: { requiresPlayerId: true }, // sends when a player votes to start the level
     FAILED_ORDER: { requiresPlayerId: false },
     SHURIKEN_CALLED: { requiresPlayerId: false },
     SHURIKEN_OVER: { requiresPlayerId: false },
@@ -19,9 +19,9 @@ const gameActionSchema = {
     GAME_WON: { requiresPlayerId: false },
     GAME_LOST: { requiresPlayerId: false },
     LEVEL_START: { requiresPlayerId: false },
-    LEVEL_END: { requiresPlayerId: false },
+    LEVEL_END: { requiresPlayerId: false }, //not used
     MAKE_FAKE_PLAYERS: { requiresPlayerId: false },
-    FAKE_PLAY: { requiresPlayerId: true },
+    PLAY: { requiresPlayerId: true },
     TRANSITION: { requiresPlayerId: false },
     GAME_RESTART: { requiresPlayerId: false },  
     TRANSITION_TO_PLAYING: { requiresPlayerId: false },
@@ -47,7 +47,7 @@ export interface ActionPayloads {
     LEVEL_START: {};
     LEVEL_END: {};
     MAKE_FAKE_PLAYERS: { playerCount: number };
-    FAKE_PLAY: {};
+    PLAY: {};
     TRANSITION: { nextAction: ServerAction }
     GAME_RESTART: {};
     TRANSITION_TO_PLAYING: {};

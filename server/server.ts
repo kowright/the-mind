@@ -2,7 +2,7 @@
 import { WebSocketServer, WebSocket } from "ws";
 import dotenv from "dotenv";
 import { applyAction, getState } from "../shared/types/gameEngine.js";
-import { GameAction, enrichAction } from "../shared/types/gameAction.js";
+import { ClientAction, GameAction, enrichAction } from "../shared/types/gameAction.js";
 import { GameState } from "../shared/types/gameState"; 
 /*import { enrichAction } from "../shared/utils/utils.js";*/
 import { removeOtherPlayersFromStateForClient } from '@/shared/utils/utils.js'
@@ -49,14 +49,23 @@ export function broadcastLobby(state: GameState) {
     console.log(`Broadcasted lobby update to ${wss.clients.size} client(s)`);
 }
 
+function broadcastAction(clientAction: ClientAction, playerId: string) {
+    const action = enrichAction(clientAction, playerId);
+    if (!action) return;
+    const newState = applyAction(action);
+    broadcastLobby(newState);
+    handlePostActionEffects(action, newState);
+}
+
 wss.on("connection", (ws: any, req: any) => {
     const playerId = generatePlayerId();
     ws.playerId = playerId;
     const ip = req.socket.remoteAddress;
 
-    const action = enrichAction({ type: 'PLAYER_CONNECTION' }, playerId); // TODO make this enrich apply broadcast a function
-    const newState = applyAction(action);
-    broadcastLobby(newState);
+    //const action = enrichAction({ type: 'PLAYER_CONNECTION' }, playerId); // TODO make this enrich apply broadcast a function
+    //const newState = applyAction(action);
+    //broadcastLobby(newState);
+    broadcastAction({type: 'PLAYER_CONNECTION'}, playerId)
 
 
     ws.send(JSON.stringify({ type: "ASSIGN_PLAYER_ID", playerId }));
@@ -66,11 +75,12 @@ wss.on("connection", (ws: any, req: any) => {
             const message = JSON.parse(data);
             console.log(`SERVER Received message from ${playerId}:`, message);
 
-            const action = enrichAction(message, playerId);
-            if (!action) return;
-            const newState = applyAction(action);
-            broadcastLobby(newState);
-            handlePostActionEffects(action, newState);
+            //const action = enrichAction(message, playerId);
+            //if (!action) return;
+            //const newState = applyAction(action);
+            //broadcastLobby(newState);
+            //handlePostActionEffects(action, newState);
+            broadcastAction(message, playerId)
 
         } catch (err) {
             console.error("Error parsing message:", err);
@@ -80,16 +90,15 @@ wss.on("connection", (ws: any, req: any) => {
     ws.on("close", () => {
         console.log(`Player disconnected: ${playerId}`);
 
-        const action = enrichAction({ type: 'PLAYER_DISCONNECTION' }, playerId);
-        const newState = applyAction(action);
-        broadcastLobby(newState);
-        handlePostActionEffects(action, newState);
-        // TODO: what happens if you lose too may players for the game
+        //const action = enrichAction({ type: 'PLAYER_DISCONNECTION' }, playerId);
+        //const newState = applyAction(action);
+        //broadcastLobby(newState);
+        //handlePostActionEffects(action, newState);
+        broadcastAction({type: 'PLAYER_DISCONNECTION'}, playerId)
 
     });
 
     ws.on("error", (err: any) => {
         console.error(`WebSocket error for player ${playerId}:`, err);
-        // TODO: probably should send client that it's breaking?
     });
 });

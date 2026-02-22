@@ -16,8 +16,6 @@ export function gameReducer(
 ): GameState {
     switch (action.type) {
         case 'PLAYER_CONNECTION': {
-            console.log("PLAYER CONNECTION ACTION");
-
             let player = makePlayer(action.playerId)
             let players = [...state.players, player]
             
@@ -41,8 +39,6 @@ export function gameReducer(
         }
 
         case 'PLAYER_DISCONNECTION': {
-            console.log("PLAYER DISCONNECTION ACTION");
-
             let players = state.players;
             players = players.filter((p) => p.id !== action.playerId);
 
@@ -78,7 +74,7 @@ export function gameReducer(
             };
 
         case 'GAME_RESTART':
-            console.log("GAME RESTART");
+            log.info('Game is restarting')
 
             return {
                 ...initialGameState,
@@ -322,7 +318,7 @@ export function gameReducer(
             }
 
         case 'ERROR':
-            console.log('error reducer')
+            log.warn('Error in reducer')
             return {
                 ...state,
                 gamePhase: 'error',

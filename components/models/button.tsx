@@ -5,28 +5,61 @@ import { theme } from "../../theme/theme";
 
 interface ButtonProps {
     text: string;
-    //button shape/size
     onPress: () => void;
     showTooltip?: boolean;
     disabled?: boolean;
     tooltipText?: string;
+    circleShape?: boolean;
 }
 
-export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false }: ButtonProps) {
+export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false, circleShape = false }: ButtonProps) {
     const [visible, setVisible] = useState(false);
+
+    const handlePress = () => {
+        if (disabled) return;
+        onPress();
+    };
+
+    const buttonShape = circleShape ? 
+        [
+            styles.button,
+            styles.buttonCircle,
+            disabled && styles.disabled
+        ] : 
+        [
+            styles.button,
+            disabled && styles.disabled
+        ]
+    const buttonText = circleShape ?
+        [
+            styles.buttonText,
+            styles.buttonCircleText,
+            disabled && styles.disabledText
+        ] :
+        [
+            styles.buttonText,
+            disabled && styles.disabled
+        ]
+    const tooltip = circleShape ? 
+        [
+            styles.tooltip,
+            styles.tooltipCircle
+        ] :
+        styles.tooltip
+
 
     return (
         <View style={styles.buttonContainer}>
             <Pressable onHoverIn={() => setVisible(v => !v)}
                 onHoverOut={() => setVisible(v => !v)}
-                style={disabled ? styles.button && styles.disabled : styles.button}
-                onPress={onPress}
+                style={buttonShape}
+                onPress={handlePress}
             >
-                <Text style={styles.buttonText}>{text}</Text>
+                <Text style={buttonText}>{text}</Text>
             </Pressable>
 
             {visible && showTooltip && (
-                <View style={styles.tooltip}>
+                <View style={tooltip}>
                     <Text style={styles.tooltipText}>
                         {tooltipText}
                     </Text>
@@ -45,6 +78,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#aaa',
         opacity: 0.5,
     },
+    disabledText: {
+        fontWeight: 'normal',
+    },
     button: {
         backgroundColor: theme.colors.primary,
         paddingVertical: 10,
@@ -62,10 +98,13 @@ const styles = StyleSheet.create({
     },
     tooltip: {
         position: 'absolute',
-        bottom: 50,
+        bottom: 45,
         backgroundColor: 'black',
         padding: 8,
         borderRadius: 6,
+    },
+    tooltipCircle: {
+        bottom: 412,
     },
     tooltipText: {
         color: 'white',

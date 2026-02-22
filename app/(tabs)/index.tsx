@@ -2,7 +2,6 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { Text, View, TextInput } from 'react-native';
 import { TabView } from '@/components/tab-view';
-import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
 import { websocketService } from '@/services/websocketService';
 import { useEffect, useState } from 'react';
@@ -32,57 +31,43 @@ export default function HomeScreen() {
         .map(p => p.name)
         .filter(Boolean)
         .join(', ');
-
+    console.log('validplayercount', isValidPlayerCount)
 
     return (
         <TabView>
-            <Text style={styles.gameTitle}> THE MIND </Text>
-            <Image
-                style={styles.image}
-                source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
-            />
-            <View style={{ alignItems: 'center' }}>
-                <Pressable onHoverIn={() => setVisible(v => !v)}
-                    onHoverOut={() => setVisible(v => !v)}
-                    style={isValidPlayerCount ? styles.button : styles.disabled}
-                    onPress={() => startGame()}
-                >
-                    <Text>EVERYONE READY?</Text>
-                </Pressable>
+            <View style={styles.container}>
+                <Text style={styles.gameTitle}> THE MIND </Text>
+                <Image
+                    style={styles.image}
+                    source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
+                />
+                <ButtonView 
+                    onPress={startGame}
+                    text='EVERYONE READY?'
+                    disabled={!isValidPlayerCount}
+                    showTooltip={!isValidPlayerCount}
+                    tooltipText='You need 2-4 players to start'
+                    circleShape={true}
+                />
 
-                {visible && !isValidPlayerCount && (
-                    <View style={styles.tooltip}>
-                        <Text style={{ color: 'white' }}>
-                            You need 2 - 4 players to start.
-                        </Text>
-                    </View>
-                )}
-            </View>
-
-            {/*<Button onPress={() => startFakeGame()}>*/}
-            {/*    MAKE FAKE GAME*/}
-            {/*</Button>*/}
-            {enteredName ? <Text>Hi {text}!</Text> :
-                <>
-                <TextInput
-                    style={styles.input}
+                {enteredName ? <Text>Hi {text}!</Text> :
+                    <>
+                    <TextInput
+                        style={styles.input}
                    
-                    value={text}
-                        placeholder="Enter your name"
-                        onChangeText={setText}
+                        value={text}
+                            placeholder="Enter your name"
+                            onChangeText={setText}
                
-                    />
-                    <View style={{ alignItems: 'center' }}>
-                    <Pressable style={styles.button} onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}>
-                    Give yourself a name
-                        </Pressable>
-                        <ButtonView text='Give yourself a name!'
-                            onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}
                         />
-                </View>
-                </>
-            }
 
+                            <ButtonView text='Give yourself a name!'
+                                onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}
+                            />
+       
+                    </>
+                }
+            </View>
             <Text>There {state.players.length > 1 ? 'are' : 'is'} {state.players.length} {state.players.length > 1 ? 'players!' : 'player!'}</Text>
             <Text>We got {playerNames}</Text>
         </TabView>
@@ -90,6 +75,10 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+        gap: 16,
+    },
     background: {
         backgroundColor: 'white',
         flex: 1,
@@ -102,12 +91,12 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     image: {
-        flex: 1,
-        width: '100%',
-        height: 10,
+        width: 300,
+        height: 200,
         resizeMode: 'cover',
-        transform: [{ scale: 0.50 }],
+        borderRadius: 12,
     },
+
     input: {
         height: 40,
         borderColor: 'gray',

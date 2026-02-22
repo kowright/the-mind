@@ -36,7 +36,7 @@ export function FakeGameplayView({agreeToStartVersion = false, ...props }: FakeG
                             : 
                             <View style={styles.buttonContainer}>
                                 <Button
-                                    onPress={() => dispatch({ type: 'FAKE_PLAY', playerId: player.id })}
+                                    onPress={() => dispatch({ type: 'PLAY', playerId: player.id })}
                                 >
                                     MAKE PLAYER {player.id} PLAY
                                 </Button>

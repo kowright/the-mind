@@ -4,6 +4,7 @@ import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
 import { ClientAction } from "../../shared/types/gameAction";
 import { websocketService } from '@/services/websocketService';
+import { CardView } from '../models/card';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
 }
@@ -56,13 +57,14 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
 
                         <View>
                         {clientPlayer.hand.cards.map(card => (
-                                <View
-                                    style={styles.deckContainer}
-                                key={`hand-${clientPlayer.id}-${card.id}`}
-                                >
-                                    <Text>{card.number}</Text>
-                                </View>
-                            ))}
+                                //<View
+                                //    style={styles.deckContainer}
+                                //key={`hand-${clientPlayer.id}-${card.id}`}
+                                //>
+                                //    <Text>{card.number}</Text>
+                            //</View>
+                            <CardView key={`hand-${clientPlayer.id}-${card.id}`}  card={card} /> ))}
+                            
                         </View>
 
                         {agreeToStartVersion ?

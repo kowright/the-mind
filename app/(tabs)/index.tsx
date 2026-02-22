@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { ClientAction } from '../../shared/types/gameAction';
 import { hasValidPlayerCount } from '@/shared/utils/utils';
 import { StyleSheet, Pressable } from 'react-native';
+import { theme } from '../../theme/theme';
+import { ButtonView } from '../../components/models/button';
 
 
 export default function HomeScreen() {
@@ -57,9 +59,9 @@ export default function HomeScreen() {
                 )}
             </View>
 
-            <Button onPress={() => startFakeGame()}>
-                MAKE FAKE GAME
-            </Button>
+            {/*<Button onPress={() => startFakeGame()}>*/}
+            {/*    MAKE FAKE GAME*/}
+            {/*</Button>*/}
             {enteredName ? <Text>Hi {text}!</Text> :
                 <>
                 <TextInput
@@ -69,10 +71,15 @@ export default function HomeScreen() {
                         placeholder="Enter your name"
                         onChangeText={setText}
                
-                />
-                    <Button onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}>
+                    />
+                    <View style={{ alignItems: 'center' }}>
+                    <Pressable style={styles.button} onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}>
                     Give yourself a name
-                </Button>
+                        </Pressable>
+                        <ButtonView text='Give yourself a name!'
+                            onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}
+                        />
+                </View>
                 </>
             }
 
@@ -116,13 +123,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     button: {
-        backgroundColor: '#6c63ff',
+        backgroundColor: theme.colors.primary,
         paddingVertical: 10,
         paddingHorizontal: 16,
         borderRadius: 6,
         alignItems: 'center',
-
+        color: theme.colors.textPrimary,
+        maxWidth: '50%',
     }, 
+    buttonHovered: {
+        backgroundColor: theme.colors.hover,
+    },
     tooltip: {
         position: 'absolute',
         bottom: 50,

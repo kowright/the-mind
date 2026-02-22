@@ -10,9 +10,11 @@ import { hasValidPlayerCount } from '@/shared/utils/utils';
 import { StyleSheet, Pressable } from 'react-native';
 import { theme } from '../../theme/theme';
 import { ButtonView } from '../../components/models/button';
+import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 
 
 export default function HomeScreen() {
+    const theme = useResponsiveTheme();
     const { state } = useGame();  
     const [text, setText] = useState('');
     const [enteredName, setEnteredName] = useState(false);
@@ -33,104 +35,152 @@ export default function HomeScreen() {
         .join(', ');
     console.log('validplayercount', isValidPlayerCount)
 
+    //return (
+    //    <TabView>
+    //        <View style={styles.container}>
+    //            <Text style={styles.gameTitle}> THE MIND </Text>
+    //            <Image
+    //                style={styles.image}
+    //                source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
+    //            />
+    //            <ButtonView
+    //                onPress={startGame}
+    //                text='EVERYONE READY?'
+    //                disabled={!isValidPlayerCount}
+    //                showTooltip={!isValidPlayerCount}
+    //                tooltipText='You need 2-4 players to start'
+    //                circleShape={true}
+    //            />
+
+    //            {enteredName ? <Text>Hi {text}!</Text> :
+    //                <>
+    //                <TextInput
+    //                    style={styles.input}
+
+    //                    value={text}
+    //                        placeholder="Enter your name"
+    //                        onChangeText={setText}
+
+    //                    />
+
+    //                        <ButtonView text='Give yourself a name!'
+    //                            onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}
+    //                        />
+
+    //                </>
+    //            }
+    //        </View>
+    //        <Text>There {state.players.length > 1 ? 'are' : 'is'} {state.players.length} {state.players.length > 1 ? 'players!' : 'player!'}</Text>
+    //        <Text>We got {playerNames}</Text>
+    //    </TabView>
+    //);
+
     return (
         <TabView>
-            <View style={styles.container}>
-                <Text style={styles.gameTitle}> THE MIND </Text>
-                <Image
-                    style={styles.image}
-                    source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
-                />
-                <ButtonView 
-                    onPress={startGame}
-                    text='EVERYONE READY?'
-                    disabled={!isValidPlayerCount}
-                    showTooltip={!isValidPlayerCount}
-                    tooltipText='You need 2-4 players to start'
-                    circleShape={true}
-                />
+            <View style={styles.screen}>
+                <View style={styles.content}>
+                    <Text style={styles.gameTitle}>THE MIND</Text>
+{/*
+                    <Image
+                        style={styles.image}
+                        source={{ uri: 'https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg' }}
+                    />*/}
 
-                {enteredName ? <Text>Hi {text}!</Text> :
-                    <>
-                    <TextInput
-                        style={styles.input}
-                   
-                        value={text}
-                            placeholder="Enter your name"
-                            onChangeText={setText}
-               
-                        />
+                    <ButtonView
+                        onPress={startGame}
+                        text="EVERYONE READY?"
+                        disabled={!isValidPlayerCount}
+                        showTooltip={!isValidPlayerCount}
+                        tooltipText="You need 2-4 players to start"
+                        circleShape
+                    />
 
-                            <ButtonView text='Give yourself a name!'
-                                onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}
+                    {!enteredName ? (
+                        <>
+                            <TextInput
+                                style={styles.input}
+                                value={text}
+                                placeholder="Enter your name"
+                                onChangeText={setText}
                             />
-       
-                    </>
-                }
+
+                            <ButtonView
+                                text="Give yourself a name!"
+                                onPress={() => {
+                                    setEnteredName(true);
+                                    websocketService.send({
+                                        type: "PLAYER_NAME_CHANGE",
+                                        name: text,
+                                    } as ClientAction);
+                                }}
+                            />
+                        </>
+                    ) : (
+                        <Text>Hi {text}!</Text>
+                    )}
+
+                    <Text style={styles.meta}>
+                        There {state.players.length > 1 ? 'are' : 'is'} {state.players.length}{' '}
+                        {state.players.length > 1 ? 'players!' : 'player!'}
+                    </Text>
+
+                    <Text style={styles.meta}>
+                        We got {playerNames}
+                    </Text>
+                </View>
             </View>
-            <Text>There {state.players.length > 1 ? 'are' : 'is'} {state.players.length} {state.players.length > 1 ? 'players!' : 'player!'}</Text>
-            <Text>We got {playerNames}</Text>
         </TabView>
     );
+
 }
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        gap: 16,
-    },
-    background: {
-        backgroundColor: 'white',
+    screen: {
         flex: 1,
-        marginTop: 36,
+        padding: 24,
     },
+
+    content: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+        // THIS is the magic for desktop
+        maxWidth: 800,
+        alignSelf: 'center',
+        width: '100%',
+        gap: 20,
+    },
+
     gameTitle: {
-        fontSize: 32,
+        fontSize: theme.typography.title,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: 16,
     },
+
     image: {
-        width: 300,
-        height: 200,
-        resizeMode: 'cover',
+        width: '100%',
+        maxWidth: 225,
+        height: 125,
         borderRadius: 12,
+        resizeMode: 'cover',
     },
 
     input: {
+        width: '100%',
+        maxWidth: 400,
         height: 40,
-        borderColor: 'gray',
         borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 8,
         paddingHorizontal: 10,
-    }, 
-    disabled: {
-        backgroundColor: '#aaa',
-        opacity: 0.5,
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 6,
-        alignItems: 'center',
     },
-    button: {
-        backgroundColor: theme.colors.primary,
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 6,
-        alignItems: 'center',
-        color: theme.colors.textPrimary,
-        maxWidth: '50%',
-    }, 
-    buttonHovered: {
-        backgroundColor: theme.colors.hover,
+
+    meta: {
+        textAlign: 'center',
     },
-    tooltip: {
-        position: 'absolute',
-        bottom: 50,
-        backgroundColor: 'black',
-        padding: 8,
-        borderRadius: 6,
-    }
 });
+
 function startFakeGame() {
     websocketService.send({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
     websocketService.send({ type: 'GAME_START'});

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Text, View } from 'react-native';
 import { StyleSheet, Pressable } from 'react-native';
 import { theme } from "../../theme/theme";
+import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
 
 interface ButtonProps {
     text: string;
@@ -14,6 +15,22 @@ interface ButtonProps {
 
 export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false, circleShape = false }: ButtonProps) {
     const [visible, setVisible] = useState(false);
+    const theme = useResponsiveTheme();
+
+    const circleSize = theme.size.circleSize;
+    const dynamicCircleStyle = {
+        width: circleSize,
+        height: circleSize,
+        borderRadius: circleSize / 2,
+    };
+    const dynamicTooltipStyle = circleShape
+        ? { bottom: circleSize + 12 }
+        : null;
+    const dynamicTextStyle = circleShape
+        ? { fontSize: theme.typography.heading }
+        : null;
+
+        console.log("dynamuc text style", dynamicTextStyle)
 
     const handlePress = () => {
         if (disabled) return;
@@ -23,7 +40,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
     const buttonShape = circleShape ? 
         [
             styles.button,
-            styles.buttonCircle,
+            circleShape && dynamicCircleStyle,
             disabled && styles.disabled
         ] : 
         [
@@ -33,7 +50,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
     const buttonText = circleShape ?
         [
             styles.buttonText,
-            styles.buttonCircleText,
+            circleShape && dynamicTextStyle,
             disabled && styles.disabledText
         ] :
         [
@@ -43,7 +60,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
     const tooltip = circleShape ? 
         [
             styles.tooltip,
-            styles.tooltipCircle
+            dynamicTooltipStyle
         ] :
         styles.tooltip
 
@@ -72,51 +89,44 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
 const styles = StyleSheet.create({
     buttonContainer: {
         alignItems: 'center',
-        maxWidth: '50%',
+        maxWidth: '75%',
     },
     disabled: {
-        backgroundColor: '#aaa',
-        opacity: 0.5,
+        backgroundColor: theme.colors.disabled,
+        opacity: theme.opacity.disabled,
     },
     disabledText: {
-        fontWeight: 'normal',
+        fontWeight: theme.fontWeight.normal,
     },
     button: {
         backgroundColor: theme.colors.primary,
         paddingVertical: 10,
         paddingHorizontal: 16,
-        borderRadius: 6,
+        borderRadius: theme.border.radius.sm,
         alignItems: 'center',
         color: theme.colors.textPrimary,
+        justifyContent: 'center'
     },
     buttonHovered: {
         backgroundColor: theme.colors.hover,
     },
     buttonText: {
-        color: 'white',
-        fontWeight: 500,
+        color: theme.colors.textPrimary,
+        fontWeight: theme.fontWeight.normal,
+        textAlign: 'center',
     },
     tooltip: {
         position: 'absolute',
         bottom: 45,
         backgroundColor: 'black',
         padding: 8,
-        borderRadius: 6,
-    },
-    tooltipCircle: {
-        bottom: 412,
+        borderRadius: theme.border.radius.sm,
     },
     tooltipText: {
-        color: 'white',
-    },
-    buttonCircle: {
-        height: 400,
-        width: 400,
-        borderRadius: 200,
-        justifyContent: 'center',
+        color: theme.colors.textPrimary,
     },
     buttonCircleText: {
-        fontSize: 48,
-        textAlign: 'center',
+        //fontSize: theme.typography.heading,
+        //textAlign: 'center',
     }
 });

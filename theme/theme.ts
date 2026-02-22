@@ -2,7 +2,7 @@ export const theme = {
     colors: {
         background: 'white',
         primary: '#194298',
-        secondary:'#F49320',
+        secondary: '#F49320',
         textPrimary: 'white',
         error: '#red',
         disabled: '#aaa',
@@ -22,8 +22,8 @@ export const theme = {
     typography: {
         small: 12,
         body: 16,
-        title: 20,
         heading: 28,
+        title: 32,
     },
 
     radius: {
@@ -34,6 +34,20 @@ export const theme = {
     },
 
     border: {
-        sm: 16,
+        radius: {
+            sm: 6,
+        }  
+    },
+
+    size: {
+        circleSize: 400,
+    },
+
+    fontWeight: {
+        normal: "500" as const, // use as const for the union type, not a generic string
+    },
+
+    opacity: {
+        disabled: 0.5,
     }
 };

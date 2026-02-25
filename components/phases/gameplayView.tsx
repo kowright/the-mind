@@ -25,7 +25,9 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
 
     // TODO: put space between READY?? and handView, can't see scroll on mobile && between handview and vote to use shuriken
 
-    //TODO: there's a random purple line between shuriken called and the play button on mobile
+    // TODO: there's a random purple line between shuriken called and the play button on mobile
+
+    // TODO: change text of button after it's clicked so local user knows they pressed it 
 
     return (
         <>

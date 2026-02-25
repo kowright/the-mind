@@ -5,12 +5,15 @@ import { CardView } from './card';
 import { ScrollView } from 'react-native';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { theme } from '../../theme/theme';
+import { useRef } from 'react';
 interface DiscardPileProps {
 } 
 
 export function DiscardPileView() {
     const { state } = useGame();
     console.log('discard state', state.gamePhase)
+
+    const scrollRef = useRef<ScrollView>(null);
     const theme = useResponsiveTheme();
     theme.size.cardWidth
 
@@ -24,10 +27,10 @@ export function DiscardPileView() {
     const showDiscardPile: boolean = state.discardPile ? state.discardPile.length > 0 : false;
 
     const isPlayingorMistake: boolean = state.gamePhase === 'playing' || state.gamePhase === 'mistake';
-    // on transition or gameOver, do straight layout
-    // on playing, do stacked layout
 
-    //TODO: only on level result page, mobile has cards very very spread out in the scroll view
+    // TODO: color cards according to mistake
+
+    // TODO: contentContainerStyle for scrollview needs to go in styles
 
     return (
         <>
@@ -50,10 +53,7 @@ export function DiscardPileView() {
                             <ScrollView
                                 horizontal
                                 showsHorizontalScrollIndicator
-                                contentContainerStyle={{
-                                    flexDirection: 'row', // line cards horizontally
-                                    paddingHorizontal: 8, // optional padding on sides
-                                }}
+                         
                             >
                                 {state.discardPile?.map((card, index) => (
                                     <View

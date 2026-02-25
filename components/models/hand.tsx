@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Card } from "../../shared/types/card";
 import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
@@ -10,9 +10,20 @@ interface HandProps {
     clientPlayer: Player;
 }
 
-export function HandView({clientPlayer}: HandProps) {
+export function HandView({ clientPlayer }: HandProps) {
+
+    const scrollRef = useRef<ScrollView>(null);
+
     return (
-        <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={true}
+            ref={scrollRef}
+
+            onContentSizeChange={() => 
+               
+                    scrollRef.current?.scrollToEnd({ animated: false })
+                
+            }
+        >
 
         <View style={styles.handContainer}>
             <View style={styles.hand}>

@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { StyleSheet, Pressable } from 'react-native';
 import { theme } from "../../theme/theme";
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
-
+import { Platform } from 'react-native';
 interface ButtonProps {
     text: string;
     onPress: () => void;
@@ -33,7 +33,13 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         console.log("dynamuc text style", dynamicTextStyle)
 
     const handlePress = () => {
-        if (disabled) return;
+        if (disabled) {
+            if (Platform.OS !== 'web') {
+                showTemporaryTooltip();
+            }
+            return;
+        }
+
         onPress();
     };
 
@@ -41,21 +47,25 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         [
             styles.button,
             circleShape && dynamicCircleStyle,
-            disabled && styles.disabled
+            disabled && styles.disabled,
+            visible && styles.disabledHovered,
         ] : 
         [
             styles.button,
-            disabled && styles.disabled
+            disabled && styles.disabled,
+            visible && styles.disabledHovered,
         ]
     const buttonText = circleShape ?
         [
             styles.buttonText,
             circleShape && dynamicTextStyle,
-            disabled && styles.disabledText
+            disabled && styles.disabledText,
+
         ] :
         [
             styles.buttonText,
-            disabled && styles.disabled
+            disabled && styles.disabled,
+ 
         ]
     const tooltip = circleShape ? 
         [
@@ -64,11 +74,18 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         ] :
         styles.tooltip
 
+    const showTemporaryTooltip = () => {
+        setVisible(true);
+        setTimeout(() => {
+            setVisible(false);
+        }, 1500);
+    };
+
 
     return (
         <View style={styles.buttonContainer}>
-            <Pressable onHoverIn={() => setVisible(v => !v)}
-                onHoverOut={() => setVisible(v => !v)}
+            <Pressable onHoverIn={() => setVisible(true)}
+                onHoverOut={() => setVisible(false)}
                 style={buttonShape}
                 onPress={handlePress}
             >
@@ -97,6 +114,9 @@ const styles = StyleSheet.create({
     },
     disabledText: {
         fontWeight: theme.fontWeight.normal,
+    },
+    disabledHovered: {
+        backgroundColor: 'purple' // TODO
     },
     button: {
         backgroundColor: theme.colors.primary,

@@ -78,7 +78,7 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
 
     return (
         <Pressable
-            onPress={() => total - 1 === index ? onPress() : ''} >
+            onPress={() =>!discarded && total - 1 === index ? onPress() : ''} >
         <View style={dynamicCardContainer}>
             {/* Top Left */}
             <Text style={[styles.cornerText, topLeft, { fontSize: cornerFontSize }]}>

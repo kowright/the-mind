@@ -8,14 +8,14 @@ interface CardViewProps {
     card: Card;
     //onPlay: (card: Card) => void;
     //onSelected: (card: Card) => void;
-    //onPress: (card: Card) => void;
+    onPress: () => void;
     index: number;
     total: number;
     discarded?: boolean;
     rotate?: boolean;
 }
 
-export function CardView({ card, total, index, discarded = false, rotate = false }: CardViewProps) {
+export function CardView({ card, total, index, onPress, discarded = false, rotate = false }: CardViewProps) {
     console.log('total', total)
     console.log('index', index)
     const theme = useResponsiveTheme();
@@ -77,6 +77,8 @@ export function CardView({ card, total, index, discarded = false, rotate = false
 
 
     return (
+        <Pressable
+            onPress={() => total - 1 === index ? onPress() : ''} >
         <View style={dynamicCardContainer}>
             {/* Top Left */}
             <Text style={[styles.cornerText, topLeft, { fontSize: cornerFontSize }]}>
@@ -117,7 +119,8 @@ export function CardView({ card, total, index, discarded = false, rotate = false
             <Text style={[styles.cornerText, bottomRight, { fontSize: cornerFontSize }]}>
                 {card.number}
             </Text>
-        </View>
+            </View>
+        </Pressable>
     );
 }
 

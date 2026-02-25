@@ -8,9 +8,10 @@ import { ScrollView } from 'react-native';
 
 interface HandProps {
     clientPlayer: Player;
+    onPressCard: () => void;
 }
 
-export function HandView({ clientPlayer }: HandProps) {
+export function HandView({ clientPlayer, onPressCard }: HandProps) {
 
     const scrollRef = useRef<ScrollView>(null);
 
@@ -36,6 +37,7 @@ export function HandView({ clientPlayer }: HandProps) {
                             card={card}
                             index={index}
                             total={sortedCards.length}
+                            onPress={onPressCard}
                         />
                     ))}
             </View>

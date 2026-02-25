@@ -68,7 +68,10 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                     {/*        <CardView key={`hand-${clientPlayer.id}-${card.id}`} card={card} index={index}*/}
                     {/*            total={clientPlayer.hand.cards.length} />))}*/}
                             
-                    <HandView clientPlayer={clientPlayer} />
+                    <HandView clientPlayer={clientPlayer}  onPressCard={() =>
+                        websocketService.send({ type: "PLAY" } as ClientAction)
+                    }
+                    />
 
                     {agreeToStartVersion ?
                

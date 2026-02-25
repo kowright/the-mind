@@ -117,8 +117,7 @@ const styles = StyleSheet.create({
     },
     playerContainer: {
         marginBottom: 16,
-        outlineWidth: 2,
-        outlineColor: 'blue',
+ 
     },
     deckContainer: {
         display: 'flex',

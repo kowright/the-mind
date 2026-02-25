@@ -16,7 +16,7 @@ interface ButtonProps {
 export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false, circleShape = false }: ButtonProps) {
     const [visible, setVisible] = useState(false);
     const theme = useResponsiveTheme();
-    // TODO: why is the hover state not working??
+
     const circleSize = theme.size.circleSize;
     const dynamicCircleStyle = {
         width: circleSize,

@@ -9,23 +9,46 @@ interface CardViewProps {
     //onPlay: (card: Card) => void;
     //onSelected: (card: Card) => void;
     //onPress: (card: Card) => void;
+    index: number;
+    total: number;
 }
 
-export function CardView({ card, onPlay }: CardViewProps) {
+export function CardView({ card, total, index }: CardViewProps) {
+    console.log('total', total)
+    console.log('index', index)
     const theme = useResponsiveTheme();
     console.log('card height', theme.size.cardHeight)
-    const dynamicCardContainerSize = {
-        height: theme.size.cardHeight,
-        width: theme.size.cardWidth,
-    }
 
-    const dynamicCardContainer = [
-        dynamicCardContainerSize, 
-        styles.cardContainer
-    ]
 
     const cardWidth = theme.size.cardWidth;
     const cardHeight = theme.size.cardHeight;
+
+    // const overlapAmount = cardWidth * -0.75; // cover 75% of left card
+
+
+    //const translateX = index * overlapAmount;
+
+    //const dynamicCardContainer = [
+    //    {
+    //        height: cardHeight,
+    //        width: cardWidth,
+    //        transform: [{ translateX }],
+    //        zIndex: index, // higher index = on top
+    //    },
+    //    styles.cardContainer,
+    //]
+
+    const overlapAmount = cardWidth * 0.75;
+
+    const dynamicCardContainer = [
+        {
+            height: cardHeight,
+            width: cardWidth,
+            marginLeft: index === 0 ? 0 : -overlapAmount,
+            zIndex: index,
+        },
+        styles.cardContainer,
+    ];
 
     const cornerFontSize = cardWidth * 0.12;
     const centerFontSize = cardWidth * 0.35;
@@ -84,7 +107,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderRadius: 16,
         padding: 12,
-        position: 'relative', // important
+        position: 'relative',
+        boxShadow: '5px 5px 15px 5px #888888',
     },
 
     cornerText: {

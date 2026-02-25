@@ -5,6 +5,7 @@ import { useGame } from '@/hooks/useGame';
 import { ClientAction } from "../../shared/types/gameAction";
 import { websocketService } from '@/services/websocketService';
 import { CardView } from '../models/card';
+import { HandView } from '../models/hand';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
 }
@@ -55,17 +56,13 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
 
 
 
-                        <View>
-                        {clientPlayer.hand.cards.map(card => (
-                                //<View
-                                //    style={styles.deckContainer}
-                                //key={`hand-${clientPlayer.id}-${card.id}`}
-                                //>
-                                //    <Text>{card.number}</Text>
-                            //</View>
-                            <CardView key={`hand-${clientPlayer.id}-${card.id}`}  card={card} /> ))}
+                    {/*<View style={styles.hand}>*/}
+                    {/*      {clientPlayer.hand.cards.map((card, index) => (*/}
+                      
+                    {/*        <CardView key={`hand-${clientPlayer.id}-${card.id}`} card={card} index={index}*/}
+                    {/*            total={clientPlayer.hand.cards.length} />))}*/}
                             
-                        </View>
+                    <HandView clientPlayer={clientPlayer} />
 
                         {agreeToStartVersion ?
                             <Pressable
@@ -135,4 +132,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
     },
+    //hand: {
+    //    display: 'flex',
+    //    flexDirection: 'row',
+    //},
+    //handContainer: {
+    //    display: 'flex',
+    //    alignItems: 'center', // could align things flex-end so that top card is always at the end to tap quickly
+    //},
 });

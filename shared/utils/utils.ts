@@ -51,6 +51,20 @@ export function shuffleDeck<T>(array: T[]): T[] {
     return arr;
 }
 
+export function resetAllCardMistakes(players: Player[]): Player[] {
+    return players.map(player => ({
+        ...player,
+        hand: {
+            ...player.hand,
+            cards: player.hand.cards.map(card => ({
+                ...card,
+                mistakenlyPlayed: false,
+                mistakenPlayerId: undefined,
+            })),
+        },
+    }));
+}
+
 /**
  * Deal cards- each card from the top of the deck goes to a different player.
  * Removes cards from shuffledDeck as they are dealt.

@@ -1,6 +1,6 @@
 import { ServerAction } from '@/shared/types/gameAction';
 import { GamePhase } from '@/shared/types/gamePhase';
-import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber, makePlayer } from '@/shared/utils/utils';
+import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber, makePlayer, resetAllCardMistakes } from '@/shared/utils/utils';
 import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, getLastValidCard, areAllHandsEmpty, determineRewards } from '@/shared/types/gameState';
 import { Card } from '@/shared/types/card';
 import { Level, levels } from "./level";
@@ -103,6 +103,8 @@ export function gameReducer(
             
                 const playersWithSortedHands = sortPlayerHands(players);
 
+                const playersWithResetHands = resetAllCardMistakes(playersWithSortedHands)
+
                 const startDiscardPile: Card[] = [];
                 const startGamePhase: GamePhase = 'agreeToStart';
                 
@@ -110,7 +112,7 @@ export function gameReducer(
                     ...state,
                     discardPile: startDiscardPile,
                     gamePhase: startGamePhase,
-                    players: playersWithSortedHands,
+                    players: playersWithResetHands,
                     shurikenCalls: [],
                     readyToStartPlayers: [],
                     lastPlayedCard: undefined,

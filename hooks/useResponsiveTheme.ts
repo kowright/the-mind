@@ -1,13 +1,13 @@
 import { useWindowDimensions } from 'react-native';
 import { theme } from '@/theme/theme';
 export function useResponsiveTheme() {
-  const { width,height } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const isDesktop = width >= 1024;
 
     const scale50 = isDesktop ? 1.5 : 1; 
     const scale100 = isDesktop ? 2 : 1;
-
+    console.log('DESKTOP?', isDesktop)
     const cardWidth = Math.min(width * 0.3, 220);
     const cardHeight = cardWidth * 1.4;
 
@@ -24,6 +24,10 @@ export function useResponsiveTheme() {
           circleSize: Math.min(width * 0.7, 400),
           cardWidth: Math.min(width * 0.25, 200),
           cardHeight,
+      },
+
+      spacing: {
+          cornerNumberSpacing: theme.spacing.sm * scale50,
       }
   };
 }

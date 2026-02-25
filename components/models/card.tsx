@@ -19,34 +19,21 @@ export function CardView({ card, total, index, discarded = false, rotate = false
     console.log('total', total)
     console.log('index', index)
     const theme = useResponsiveTheme();
-    console.log('card height', theme.size.cardHeight)
+    console.log('card height', theme.spacing.cornerNumberSpacing)
 
 
     const cardWidth = theme.size.cardWidth;
     const cardHeight = theme.size.cardHeight;
-
-    // const overlapAmount = cardWidth * -0.75; // cover 75% of left card
-
-
-    //const translateX = index * overlapAmount;
-
-    //const dynamicCardContainer = [
-    //    {
-    //        height: cardHeight,
-    //        width: cardWidth,
-    //        transform: [{ translateX }],
-    //        zIndex: index, // higher index = on top
-    //    },
-    //    styles.cardContainer,
-    //]
+    console.log('card', card)
+    const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
 
     const overlapAmount = !discarded ? cardWidth * 0.65 : 0;
     const marginLeft = !discarded ? (index === 0 ? 0 : -overlapAmount) : (index === 0 ? 0 : -cardWidth);
-    console.log('overlap', overlapAmount)
+
     const degrees = discarded && rotate ? index * 30 : 0;
     const degreeString = degrees + 'deg';
     const transform = [{ rotate: degreeString }]
-    console.log('degree string', degreeString)
+ 
     const dynamicCardContainer = [
         {
             height: cardHeight,
@@ -54,9 +41,33 @@ export function CardView({ card, total, index, discarded = false, rotate = false
             marginLeft,
             zIndex: index,
             transform: discarded ? transform : undefined,
+            backgroundColor,
         },
+
+
         styles.cardContainer,
     ];
+
+    const topLeft= [ {
+        top: theme.spacing.cornerNumberSpacing,
+        left: theme.spacing.cornerNumberSpacing,
+    }]
+
+     const topRight= [{
+         top: theme.spacing.cornerNumberSpacing,
+         right: theme.spacing.cornerNumberSpacing,
+    }]
+
+     const bottomLeft= [{
+         bottom: theme.spacing.cornerNumberSpacing,
+         left: theme.spacing.cornerNumberSpacing,
+    }]
+
+     const bottomRight= [{
+         bottom: theme.spacing.cornerNumberSpacing,
+         right: theme.spacing.cornerNumberSpacing,
+    }]
+
 
     const cornerFontSize = cardWidth * 0.15;
     const centerFontSize = cardWidth * 0.35;
@@ -68,12 +79,12 @@ export function CardView({ card, total, index, discarded = false, rotate = false
     return (
         <View style={dynamicCardContainer}>
             {/* Top Left */}
-            <Text style={[styles.cornerText, styles.topLeft, { fontSize: cornerFontSize }]}>
+            <Text style={[styles.cornerText, topLeft, { fontSize: cornerFontSize }]}>
                 {card.number}
             </Text>
 
             {/* Top Right */}
-            <Text style={[styles.cornerText, styles.topRight, {fontSize: cornerFontSize}]}>
+            <Text style={[styles.cornerText, topRight, {fontSize: cornerFontSize}]}>
                 {card.number}
             </Text>
 
@@ -98,12 +109,12 @@ export function CardView({ card, total, index, discarded = false, rotate = false
             </View>
 
             {/* Bottom Left */}
-            <Text style={[styles.cornerText, styles.bottomLeft, { fontSize: cornerFontSize }]}>
+            <Text style={[styles.cornerText, bottomLeft, { fontSize: cornerFontSize }]}>
                 {card.number}
             </Text>
 
             {/* Bottom Right */}
-            <Text style={[styles.cornerText, styles.bottomRight, { fontSize: cornerFontSize }]}>
+            <Text style={[styles.cornerText, bottomRight, { fontSize: cornerFontSize }]}>
                 {card.number}
             </Text>
         </View>
@@ -112,7 +123,7 @@ export function CardView({ card, total, index, discarded = false, rotate = false
 
 const styles = StyleSheet.create({
     cardContainer: {
-        backgroundColor: 'black',
+        //backgroundColor: 'black',
         borderRadius: 16,
         padding: 12,
         position: 'relative',
@@ -125,25 +136,25 @@ const styles = StyleSheet.create({
         //fontSize: 20,
     },
 
-    topLeft: {
-        top: 12,
-        left: 12,
-    },
+    //topLeft: {
+    //    top: 12,
+    //    left: 12,
+    //},
 
-    topRight: {
-        top: 12,
-        right: 12,
-    },
+    //topRight: {
+    //    top: 12,
+    //    right: 12,
+    //},
 
-    bottomLeft: {
-        bottom: 12,
-        left: 12,
-    },
+    //bottomLeft: {
+    //    bottom: 12,
+    //    left: 12,
+    //},
 
-    bottomRight: {
-        bottom: 12,
-        right: 12,
-    },
+    //bottomRight: {
+    //    bottom: 12,
+    //    right: 12,
+    //},
 
     centerContainer: {
         flex: 1,

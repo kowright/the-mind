@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Player } from "../../shared/types/player";
 import { CardView } from "./card";
+import { ScrollView } from 'react-native';
 
 interface HandProps {
     clientPlayer: Player;
@@ -11,6 +12,8 @@ interface HandProps {
 
 export function HandView({clientPlayer}: HandProps) {
     return (
+        <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+
         <View style={styles.handContainer}>
             <View style={styles.hand}>
 
@@ -25,7 +28,8 @@ export function HandView({clientPlayer}: HandProps) {
                         />
                     ))}
             </View>
-        </View>
+            </View>
+        </ScrollView>
     );
 }
 

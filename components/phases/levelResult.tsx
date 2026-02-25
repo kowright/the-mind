@@ -18,6 +18,7 @@ export function LevelResultView() {
     const nextLevelReward =
         levels[nextLevelIndex]?.reward ?? 'None';
 
+
     return (
         <>
             <Text>YOU EARNED: {pastLevelReward}</Text>

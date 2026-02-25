@@ -11,6 +11,7 @@ export function MistakeView({ countdown }: MistakeProps) {
 
     const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenPlayerId);
 
+    //TODO : space out last removed cards numbers
     return (
         <View style={styles.overlay} >
             <View style={styles.overlapText}>

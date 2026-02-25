@@ -23,6 +23,10 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
         }
     })
 
+    // TODO: put space between READY?? and handView, can't see scroll on mobile && between handview and vote to use shuriken
+
+    //TODO: there's a random purple line between shuriken called and the play button on mobile
+
     return (
         <>
             <Text>GAMEPLAY VIEW {agreeToStartVersion ? 'AGREE TO START' : ''}</Text>
@@ -64,7 +68,8 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                             
                     <HandView clientPlayer={clientPlayer} />
 
-                        {agreeToStartVersion ?
+                    {agreeToStartVersion ?
+               
                             <Pressable
                                 onPress={() =>
                                     websocketService.send({ type: "READY_TO_START" } as ClientAction)

@@ -11,9 +11,11 @@ interface CardViewProps {
     //onPress: (card: Card) => void;
     index: number;
     total: number;
+    discarded?: boolean;
+    rotate?: boolean;
 }
 
-export function CardView({ card, total, index }: CardViewProps) {
+export function CardView({ card, total, index, discarded = false, rotate = false }: CardViewProps) {
     console.log('total', total)
     console.log('index', index)
     const theme = useResponsiveTheme();
@@ -38,19 +40,25 @@ export function CardView({ card, total, index }: CardViewProps) {
     //    styles.cardContainer,
     //]
 
-    const overlapAmount = cardWidth * 0.75;
-
+    const overlapAmount = !discarded ? cardWidth * 0.65 : 0;
+    const marginLeft = !discarded ? (index === 0 ? 0 : -overlapAmount) : (index === 0 ? 0 : -cardWidth);
+    console.log('overlap', overlapAmount)
+    const degrees = discarded && rotate ? index * 30 : 0;
+    const degreeString = degrees + 'deg';
+    const transform = [{ rotate: degreeString }]
+    console.log('degree string', degreeString)
     const dynamicCardContainer = [
         {
             height: cardHeight,
             width: cardWidth,
-            marginLeft: index === 0 ? 0 : -overlapAmount,
+            marginLeft,
             zIndex: index,
+            transform: discarded ? transform : undefined,
         },
         styles.cardContainer,
     ];
 
-    const cornerFontSize = cardWidth * 0.12;
+    const cornerFontSize = cardWidth * 0.15;
     const centerFontSize = cardWidth * 0.35;
 
     const circleWidth = cardWidth * 0.6;
@@ -108,7 +116,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         padding: 12,
         position: 'relative',
-        boxShadow: '5px 5px 15px 5px #888888',
+        boxShadow: '5px 0px 15px 2px #888888',
     },
 
     cornerText: {

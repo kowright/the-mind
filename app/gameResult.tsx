@@ -4,6 +4,7 @@ import { isGameWon} from '@/shared/utils/utils';
 import { StyleSheet } from 'react-native';
 import { Button } from '@react-navigation/elements';
 import { websocketService } from '../services/websocketService';
+import { DiscardPileView } from '../components/models/discardPile';
 
 interface GameResultProps {
 
@@ -23,13 +24,9 @@ export default function GameResult() {
             <Text>LIVES: {state.lives}</Text>
             <Text>You made it to Level {levelAchieved}</Text>
             <Text>DISCARD PILE</Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+            <View>
                 <>
-                    {state.discardPile?.map(card => (
-                        <View key={`discard-${card.id}`} style={card.mistakenlyPlayed ? styles.discardPileContainerWrong : styles.discardPileContainerRight}>
-                            <Text>{card.number}</Text>
-                        </View>
-                    ))}
+                    <DiscardPileView />
                 </>
             </View>
             <Text>{snarkyText}</Text>

@@ -38,7 +38,7 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
 
     //TODO: every round the left and right players get more and more into the center?
 
-    // TODO: why does phone seem to jump between screens and laptop doesn't?
+    // TODO: why does phone seem to jump between screens and laptop doesn't? /or flash
     return (
         <View>
             { /*<Text>LEVEL: {state.level.number}</Text>

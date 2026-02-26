@@ -74,6 +74,7 @@ export function gameReducer(
             };
 
         case 'GAME_RESTART':
+            //TODO: why doesn't my phone also restart the game?
             log.info('Game is restarting')
 
             return {

@@ -3,28 +3,19 @@ import { StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
 
-interface MistakeProps {
+interface TransitionProps {
     countdown: number;
 }
 
-export function MistakeView({ countdown }: MistakeProps) {
-    const { state } = useGame();
+export function TransitionView({ countdown }: TransitionProps) {
 
-    const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenPlayerId);
 
     //TODO : space out last removed cards numbers
     return (
         <GameOverlayView>
             <View style={styles.overlapText}>
-                <Text> MISTAKE!</Text>
-                <Text>
-                    By {mistakenPlayer?.name} played wrong by playing {state.lastPlayedCard?.number}
-                </Text>
-                <Text>
-                    Had to remove {state.lastRemovedCards.map(c => <Text key={c.id}>{c.number}</Text>) }
-                </Text>
-
-                <Text>Get ready...{countdown}</Text>
+                <Text> GET READY IN </Text>
+                <Text>{countdown}</Text>
             </View>
         </GameOverlayView>
     );

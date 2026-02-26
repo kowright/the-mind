@@ -3,7 +3,7 @@ import { useGame } from '@/hooks/useGame';
 import { MistakeView } from '@/components/phases/mistake';
 import { GameplayView } from '@/components/phases/gamePlayView';
 import React, { useEffect, useState } from 'react';
-import { DiscardPileView } from '../components/models/discardPile';
+import { TransitionView } from '../components/phases/transition';
 import { LevelResultView } from '../components/phases/levelResult';
 import { ShurikenView } from '../components/phases/shuriken';
 import { countdownInterval, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime } from '../shared/utils/utils';
@@ -58,7 +58,7 @@ export default function PlayView() {
             return () => clearInterval(interval);
         }
         
-    }, [state.gamePhase]);
+    }, [state.gamePhase, state.readyToStartPlayers.length]);
 
 
     const inAskToStartPhase = state.readyToStartPlayers.length > 0;
@@ -78,7 +78,10 @@ export default function PlayView() {
                         <MistakeView countdown={countdown} />
                         ) : (<></>)
                     }
-
+                    {/* {state.gamePhase === 'transition' && inAskToStartPhase ? 
+                        <TransitionView countdown={countdown} />
+                        : <></>
+                    } */}
                   
                  
                 </>
@@ -86,10 +89,13 @@ export default function PlayView() {
                 <>
                         <Text>TRANSITION</Text>
                         {inAskToStartPhase ?
-                            (<Text>START IN: {countdown}</Text>) :
-                            (
-                                <LevelResultView />
-                            )}
+                            <>
+                             <GameplayView agreeToStartVersion={false} />
+                                <TransitionView countdown={countdown} />
+                            </>
+                            :
+                            <LevelResultView />
+                            }
                     </>
             ) : state.gamePhase === 'error' ? (
                     <ErrorView />

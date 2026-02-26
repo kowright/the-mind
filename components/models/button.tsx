@@ -30,8 +30,6 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         ? { fontSize: theme.typography.heading }
         : null;
 
-        console.log("dynamuc text style", dynamicTextStyle)
-
     const handlePress = () => {
         if (disabled) {
             if (Platform.OS !== 'web') {
@@ -43,30 +41,6 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         onPress();
     };
 
-    const buttonShape = circleShape ? 
-        [
-            styles.button,
-            circleShape && dynamicCircleStyle,
-            disabled && styles.disabled,
-            visible && styles.disabledHovered,
-        ] : 
-        [
-            styles.button,
-            disabled && styles.disabled,
-            visible && styles.disabledHovered,
-        ]
-    const buttonText = circleShape ?
-        [
-            styles.buttonText,
-            circleShape && dynamicTextStyle,
-            disabled && styles.disabledText,
-
-        ] :
-        [
-            styles.buttonText,
-            disabled && styles.disabled,
- 
-        ]
     const tooltip = circleShape ? 
         [
             styles.tooltip,
@@ -85,11 +59,24 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
     return (
         <View style={styles.buttonContainer}>
             <Pressable onHoverIn={() => setVisible(true)}
-                onHoverOut={() => setVisible(false)}
-                style={buttonShape}
+        
                 onPress={handlePress}
+                style={({ pressed, hovered }) => [
+                    styles.button,
+                    circleShape && dynamicCircleStyle,
+                    disabled && styles.disabled,
+                    hovered && !disabled && styles.buttonHovered,
+                    pressed && !disabled && styles.buttonPressed,
+                ]}
             >
-                <Text style={buttonText}>{text}</Text>
+                <Text
+                    style={[
+                        styles.buttonText,
+                        circleShape && dynamicTextStyle,
+                        disabled && styles.disabledText,
+                    ]}
+                >
+                    {text}</Text>
             </Pressable>
 
             {visible && showTooltip && (
@@ -130,6 +117,9 @@ const styles = StyleSheet.create({
     buttonHovered: {
         backgroundColor: theme.colors.hover,
     },
+    buttonPressed: {
+        backgroundColor: 'yellow', // TODO 
+    },
     buttonText: {
         color: theme.colors.textPrimary,
         fontWeight: theme.fontWeight.normal,
@@ -145,8 +135,4 @@ const styles = StyleSheet.create({
     tooltipText: {
         color: theme.colors.textPrimary,
     },
-    buttonCircleText: {
-        //fontSize: theme.typography.heading,
-        //textAlign: 'center',
-    }
 });

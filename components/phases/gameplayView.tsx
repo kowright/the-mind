@@ -6,6 +6,7 @@ import { ClientAction } from "../../shared/types/gameAction";
 import { websocketService } from '@/services/websocketService';
 import { CardView } from '../models/card';
 import { HandView } from '../models/hand';
+import { ButtonView } from '../models/button';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
 }
@@ -15,8 +16,16 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
 
     const { players } = state;
 
+    console.log('ready to start people', state.readyToStartPlayers)
     const shurikenDisabled = state.shuriken === 0;
     const clientPlayer = players.find(p => p.id === playerId);
+;
+    const amReadyToStart = state.readyToStartPlayers.includes(playerId)
+    const readyButtonText = amReadyToStart ? 'YOU ARE READY, waiting on others...' : 'READY??';
+
+    const askedForShuriken = state.shurikenCalls.includes(playerId);
+    const shurikenButtonText = askedForShuriken ? 'YOU WANT TO USE A SHURIKEN!' : 'Vote to use shuriken';
+
     const playerCardCounts = players.map(p => {
         if (p.id !== playerId) {
             return (<Text key={p.id}>{p.name} card count: {p.cardCount}</Text>)     
@@ -24,11 +33,6 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
     })
 
     // TODO: put space between READY?? and handView, can't see scroll on mobile && between handview and vote to use shuriken
-
-    // TODO: there's a random purple line between shuriken called and the play button on mobile
-
-    // TODO: change text of button after it's clicked so local user knows they pressed it 
-
     return (
         <>
             <Text>GAMEPLAY VIEW {agreeToStartVersion ? 'AGREE TO START' : ''}</Text>
@@ -46,63 +50,40 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
 
                         {agreeToStartVersion ?
                             <View style={styles.buttonContainer}>
-                            <Text>{clientPlayer.name}</Text>
+                                <Text>{clientPlayer.name}</Text>
                             </View>
                             :
-                            <View style={styles.buttonContainer}>
-                                <Button
-                                    onPress={() =>
-                                        websocketService.send({ type: "PLAY" } as ClientAction)
-                                    }
-                                >
-                                PLAY
-                                </Button>
-                            </View>
+                            <ButtonView
+                                onPress={() => websocketService.send({ type: "PLAY" } as ClientAction)}
+                                text='PLAY CARD'
+                                circleShape={false}
+                                disabled={false}
+                                showTooltip={false}
+                            />
                         }
-
-
-
-                    {/*<View style={styles.hand}>*/}
-                    {/*      {clientPlayer.hand.cards.map((card, index) => (*/}
-                      
-                    {/*        <CardView key={`hand-${clientPlayer.id}-${card.id}`} card={card} index={index}*/}
-                    {/*            total={clientPlayer.hand.cards.length} />))}*/}
                             
-                    <HandView clientPlayer={clientPlayer}  onPressCard={() =>
-                        websocketService.send({ type: "PLAY" } as ClientAction)
-                    }
+                        <HandView clientPlayer={clientPlayer}  onPressCard={() =>
+                            websocketService.send({ type: "PLAY" } as ClientAction)
+                        }
                     />
 
                     {agreeToStartVersion ?
-               
-                            <Pressable
-                                onPress={() =>
-                                    websocketService.send({ type: "READY_TO_START" } as ClientAction)
-                                }
-                                style={({ pressed }) => [
-                                    styles.shurikenButton,
-                                    shurikenDisabled && styles.shurikenButtonDisabled,
-                                    pressed && !shurikenDisabled && styles.shurikenButtonPressed,
-                                ]}
-                            >
-                                <Text style={styles.shurikenButtonText}>READY??</Text>
-                            </Pressable>
-                            :
-                            <Pressable
-                                disabled={shurikenDisabled}
-                                onPress={() =>
-                                    websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)
-
-                                }
-                                style={({ pressed }) => [
-                                    styles.shurikenButton,
-                                    shurikenDisabled && styles.shurikenButtonDisabled,
-                                    pressed && !shurikenDisabled && styles.shurikenButtonPressed,
-                                ]}
-                            >
-                                <Text style={styles.shurikenButtonText}>VOTE TO USE SHURIKEN</Text>
-                            </Pressable>
-                        }
+                        <ButtonView
+                            onPress={() => websocketService.send({ type: "READY_TO_START" } as ClientAction)}
+                            text={readyButtonText}
+                            circleShape={false}
+                            disabled={false}
+                            showTooltip={false}
+                            />
+                        :
+                        <ButtonView
+                            onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
+                            text={shurikenButtonText}
+                            circleShape={false}
+                            disabled={shurikenDisabled}
+                            showTooltip={false}
+                        />
+                    }
 
                 </View>
                 : <Text>UNDEFINED PLAYER</Text>
@@ -119,28 +100,28 @@ const styles = StyleSheet.create({
         marginBottom: 16,
  
     },
-    deckContainer: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    shurikenButtonPressed: {
-        opacity: 0.8,
-    },
-    shurikenButton: {
-        backgroundColor: '#6c63ff',
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 6,
-        alignItems: 'center',
-    },
-    shurikenButtonDisabled: {
-        backgroundColor: '#aaa',
-        opacity: 0.5,
-    },
-    shurikenButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
+    //deckContainer: {
+    //    display: 'flex',
+    //    alignItems: 'center',
+    //},
+    //shurikenButtonPressed: {
+    //    opacity: 0.8,
+    //},
+    //shurikenButton: {
+    //    backgroundColor: '#6c63ff',
+    //    paddingVertical: 10,
+    //    paddingHorizontal: 16,
+    //    borderRadius: 6,
+    //    alignItems: 'center',
+    //},
+    //shurikenButtonDisabled: {
+    //    backgroundColor: '#aaa',
+    //    opacity: 0.5,
+    //},
+    //shurikenButtonText: {
+    //    color: 'white',
+    //    fontWeight: 'bold',
+    //},
     //hand: {
     //    display: 'flex',
     //    flexDirection: 'row',

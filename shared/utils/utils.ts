@@ -121,7 +121,10 @@ export function areAllLivesLost(lives: number) {
 }
 
 export function isGameWon(gameState: GameState) {
+
     const atWinLevel = gameState.level.number === gameState.winLevel;
+    console.log('Level', gameState.level.number)
+    console.log('win at', gameState.winLevel)
     return atWinLevel
 }
 

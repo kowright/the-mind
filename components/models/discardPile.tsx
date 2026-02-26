@@ -28,13 +28,13 @@ export function DiscardPileView() {
 
     const isPlayingorMistake: boolean = state.gamePhase === 'playing' || state.gamePhase === 'mistake';
 
-    // TODO: color cards according to mistake
+  // TODO: discard empty is not centered
 
     // TODO: contentContainerStyle for scrollview needs to go in styles
 
     return (
         <>
-            <Text>DISCARD PILE</Text>
+  
             <View style={styles.discardContainer}>
                 {isPlayingorMistake && showDiscardPile ?
                     (

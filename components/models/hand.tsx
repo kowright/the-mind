@@ -33,7 +33,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
 
                 <View style={styles.handContainer}>
                     <View style={styles.hand}>
-
+                  
                         {clientPlayer.cardCount !== 0 ? Array.from({ length: clientPlayer.cardCount }).map((_, index, arr) => (
                             <CardView
                                 key={`enemy-${clientPlayer.id}-${index}`}
@@ -49,7 +49,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                             />
                         ))
                             :
-                            <Text>{clientPlayer.name} has no more cards</Text>
+                            <Text>NO MORE CARDS</Text>
                         }
                     </View>
                 </View>
@@ -87,4 +87,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center', // could align things flex-end so that top card is always at the end to tap quickly - USERTEST
     },
+    clientPlayerName: {
+
+    }
 });

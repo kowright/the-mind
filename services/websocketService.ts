@@ -19,7 +19,7 @@ class WebsocketService {
         };
 
         this.socket.onerror = (err) => {
-            log.error('error', err)
+            log.info('error', err)
         };
 
         this.socket.onclose = () => {

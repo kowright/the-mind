@@ -7,6 +7,8 @@ import { websocketService } from '@/services/websocketService';
 import { CardView } from '../models/card';
 import { HandView } from '../models/hand';
 import { ButtonView } from '../models/button';
+import { DiscardPileView } from '../models/discardPile';
+import { theme } from '../../theme/theme';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
 }
@@ -32,17 +34,22 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
         }
     })
 
-    // TODO: put space between READY?? and handView, can't see scroll on mobile && between handview and vote to use shuriken
+    const enemies = players.filter(p => p.id !== playerId);
+
+    //TODO: every round the left and right players get more and more into the center?
+
+    // TODO: why does phone seem to jump between screens and laptop doesn't?
     return (
-        <>
-            <Text>GAMEPLAY VIEW {agreeToStartVersion ? 'AGREE TO START' : ''}</Text>
-            <Text>LEVEL: {state.level.number}</Text>
+        <View>
+            { /*<Text>LEVEL: {state.level.number}</Text>
             <Text>LIVES: {state.lives}</Text>
             <Text>SHURIKEN: {state.shuriken}</Text>
             {playerCardCounts}
 
             {agreeToStartVersion ? <Text>WHO IS READY TO START?: {state.readyToStartPlayers.length}/{state.players.length}</Text>
                 : <Text>SHURIKEN CALLED: {state.shurikenCalls.length}/{state.players.length}</Text>}
+                 */}
+
 
             {clientPlayer !== undefined ? 
                
@@ -51,24 +58,81 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                  
       
                     {agreeToStartVersion ?
-                           
+                          
                             <View style={styles.buttonContainer}>
                                 <Text>{clientPlayer.name}</Text>
                             </View>
        
                         :
                         <>
-                            {state.players.map(player =>
+                            {/* {state.players.map(player =>
                                 player.id !== playerId ? (
-                                    <HandView
-                                        key={`player-${player.id}-hand`}
-                                        clientPlayer={player}
-                                        onPressCard={() => console.log('You cannot make me')}
-                                        enemyPlayer={true}
-                                    />
+                                   
+                                        <HandView
+                                            key={`player-${player.id}-hand`}
+                                            clientPlayer={player}
+                                            onPressCard={() => console.log('You cannot make me')}
+                                            enemyPlayer={true}
+                                         />
+                               
                                 ) : null
                             )}
+                            */}
 
+ 
+                                <>
+                                    {/* Top Enemy (if exists) */}
+                                    {enemies[0] && (
+                                    <View style={styles.topEnemy}>
+                                        <Text>{enemies[0].name}</Text>
+                                            <HandView
+                                                clientPlayer={enemies[0]}
+                                                enemyPlayer
+                                                onPressCard={() => { }}
+                                            />
+                                        </View>
+                                    )}
+
+                    
+
+                                {enemies[1] && (
+                                    <View style={styles.leftEnemy}>
+                                        <Text>{enemies[1].name}</Text>
+                                        <HandView
+                                            clientPlayer={enemies[1]}
+                                            enemyPlayer
+                                            onPressCard={() => { }}
+                                        />
+                                    </View>
+                                )}
+
+                                {enemies[2] && (
+                                    <View style={styles.rightEnemy}>
+                                        <Text>{enemies[2].name}</Text>
+                                        <HandView
+                                            clientPlayer={enemies[2]}
+                                            enemyPlayer
+                                            onPressCard={() => { }}
+                                        />
+                                    </View>
+                                )}
+
+                                    {/* Center Area */}
+                                    <View style={styles.centerArea}>
+                                        <DiscardPileView />
+
+
+                          
+                                      
+                                    </View>
+                                </>
+                 
+
+                      
+
+           
+
+                            {/* 
                             <ButtonView
                                 onPress={() => websocketService.send({ type: "PLAY" } as ClientAction)}
                                 text='PLAY CARD'
@@ -76,36 +140,60 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                                 disabled={clientPlayer.hand.cards.length === 0}
                                 showTooltip={false}
                             />
+                            */}
+
                             </>
                         }
                             
-                    <HandView clientPlayer={clientPlayer} enemyPlayer={false}  onPressCard={() =>
-                            websocketService.send({ type: "PLAY" } as ClientAction)
-                        }
-                    />
+                    {/*<HandView clientPlayer={clientPlayer} enemyPlayer={false}  onPressCard={() =>*/}
+                    {/*        websocketService.send({ type: "PLAY" } as ClientAction)*/}
+                    {/*    }*/}
+                    {/*/>*/}
 
-                    {agreeToStartVersion ?
-                        <ButtonView
-                            onPress={() => websocketService.send({ type: "READY_TO_START" } as ClientAction)}
-                            text={readyButtonText}
-                            circleShape={false}
-                            disabled={false}
-                            showTooltip={false}
-                            />
-                        :
-                        <ButtonView
-                            onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
-                            text={shurikenButtonText}
-                            circleShape={false}
-                            disabled={shurikenDisabled}
-                            showTooltip={false}
+                    <View style={styles.playerArea}>
+                        {!agreeToStartVersion &&
+                            <ButtonView
+                                onPress={() =>
+                                    websocketService.send({ type: "PLAY" } as ClientAction)
+                                }
+                                text="PLAY CARD"
+                                circleShape={false}
+                                disabled={clientPlayer.hand.cards.length === 0}
+                                showTooltip={false}
+                            /> }
+                        <HandView
+                            clientPlayer={clientPlayer}
+                            enemyPlayer={false}
+                            onPressCard={() =>
+                                websocketService.send({ type: "PLAY" } as ClientAction)
+                            }
                         />
-                    }
+
+
+                        {agreeToStartVersion ?
+                            <ButtonView
+                                onPress={() => websocketService.send({ type: "READY_TO_START" } as ClientAction)}
+                                text={readyButtonText}
+                                circleShape={false}
+                                disabled={false}
+                                showTooltip={false}
+                            />
+                            :
+                            <ButtonView
+                                onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
+                                text={shurikenButtonText}
+                                circleShape={false}
+                                disabled={shurikenDisabled}
+                                showTooltip={false}
+                            />
+                        }
+                    </View>
+
 
                 </View>
                 : <Text>UNDEFINED PLAYER</Text>
             }
-        </>
+        </View>
     );
 };
 
@@ -116,6 +204,58 @@ const styles = StyleSheet.create({
     playerContainer: {
         marginBottom: 16,
  
+    },
+    twoPlayerView: {
+        flex: 1,
+        justifyContent: 'space-between',
+    },
+
+    topEnemy: {
+        alignItems: 'center',
+        height: 50,
+        overflow: 'hidden',
+        justifyContent: 'flex-end',
+        transform: [{ rotate: '180deg' }],
+    },
+
+    middleEnemyRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+    },
+
+    sideEnemy: {
+        width: '40%',
+        height: 100,
+        overflow: 'hidden',
+        justifyContent: 'flex-end',
+    },
+
+    centerArea: {
+        alignItems: 'center',
+        marginVertical: 75,
+    },
+
+    playerArea: { 
+        backgroundColor: 'green',
+        alignItems: 'center',
+        gap: theme.spacing.sm,
+    },
+    leftEnemy: {
+        position: 'absolute',
+        left: -90,
+        top: '20%',
+        transform: [{ rotate: '90deg' }],
+        height: 200,
+        alignItems: 'center',
+    },
+    rightEnemy: {
+        alignItems: 'center',
+        position: 'absolute',
+        right: -100,
+        top: '20%',
+        transform: [{ rotate: '-90deg' }],
+        height: 200,
     },
     //deckContainer: {
     //    display: 'flex',

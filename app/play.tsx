@@ -70,7 +70,7 @@ export default function PlayView() {
             {state.gamePhase === 'playing' || state.gamePhase === 'mistake' ? (
                 <>
 
-                    <DiscardPileView />
+              
 
                     <GameplayView agreeToStartVersion={false} />
 

@@ -30,7 +30,9 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
 
         const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
       
-    
+    // TODO: bottom numbers should be reversed 180
+
+    // TODO: who made mistake on mistaken cards on transition
 
     const overlapAmount = !discarded ? cardWidth * 0.65 : 0;
     const marginLeft = !discarded ? (index === 0 ? 0 : -overlapAmount) : (index === 0 ? 0 : -cardWidth);
@@ -75,7 +77,7 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
 
 
     const cornerFontSize = cardWidth * 0.15;
-    const centerFontSize = cardWidth * 0.35;
+    const centerFontSize = cardWidth * 0.3;
 
     const circleWidth = cardWidth * 0.6;
     const circleHeight = cardHeight * 0.5;

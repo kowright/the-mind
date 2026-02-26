@@ -70,7 +70,18 @@ export function DiscardPileView() {
                     :
 
 
-                    (<Text>NO DISCARD YET</Text>)
+                        <CardView
+                           
+                            card={{
+                                id: `discard-placeholder`,
+                                number: 0,
+                                mistakenlyPlayed: false,
+                            }}
+                            index={-1}
+                            total={-1}
+                            hideNumbers={true}
+                            onPress={() => console.log('cannot press me')}
+                        />
                 }
                 
             </View>

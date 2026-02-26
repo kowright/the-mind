@@ -16,6 +16,8 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
 
     const scrollRef = useRef<ScrollView>(null);
     console.log('client player', clientPlayer)
+
+    // TODO fix enemy hand onPress
     return (
         <ScrollView horizontal showsHorizontalScrollIndicator={true}
             ref={scrollRef}

@@ -26,7 +26,11 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
     const cardWidth = theme.size.cardWidth;
     const cardHeight = theme.size.cardHeight;
     console.log('card', card)
-    const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
+    const isDiscardEmptyPlaceholder = index === -1;
+
+        const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
+      
+    
 
     const overlapAmount = !discarded ? cardWidth * 0.65 : 0;
     const marginLeft = !discarded ? (index === 0 ? 0 : -overlapAmount) : (index === 0 ? 0 : -cardWidth);
@@ -45,7 +49,7 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
             backgroundColor,
         },
 
-
+        isDiscardEmptyPlaceholder ? styles.discardEmpty : '',
         styles.cardContainer,
     ];
 
@@ -138,6 +142,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         color: 'white',
         //fontSize: 20,
+    },
+    discardEmpty: {
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        borderColor: 'black',
+        borderStyle: 'dotted',
     },
 
     //topLeft: {

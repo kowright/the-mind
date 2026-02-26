@@ -13,9 +13,10 @@ interface CardViewProps {
     total: number;
     discarded?: boolean;
     rotate?: boolean;
+    hideNumbers?: boolean;
 }
 
-export function CardView({ card, total, index, onPress, discarded = false, rotate = false }: CardViewProps) {
+export function CardView({ card, total, index, onPress, discarded = false, rotate = false, hideNumbers = false }: CardViewProps) {
     console.log('total', total)
     console.log('index', index)
     const theme = useResponsiveTheme();
@@ -82,12 +83,12 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
         <View style={dynamicCardContainer}>
             {/* Top Left */}
             <Text style={[styles.cornerText, topLeft, { fontSize: cornerFontSize }]}>
-                {card.number}
+                    {!hideNumbers && card.number}
             </Text>
 
             {/* Top Right */}
             <Text style={[styles.cornerText, topRight, {fontSize: cornerFontSize}]}>
-                {card.number}
+                    {!hideNumbers && card.number}
             </Text>
 
             {/* Center */}
@@ -105,19 +106,19 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
                         styles.centerText,
                         { fontSize: centerFontSize },
                     ]}>
-                        {card.number}
+                            {!hideNumbers && card.number}
                     </Text>
                 </View>
             </View>
 
             {/* Bottom Left */}
             <Text style={[styles.cornerText, bottomLeft, { fontSize: cornerFontSize }]}>
-                {card.number}
+                    {!hideNumbers && card.number}
             </Text>
 
             {/* Bottom Right */}
             <Text style={[styles.cornerText, bottomRight, { fontSize: cornerFontSize }]}>
-                {card.number}
+                    {!hideNumbers && card.number}
             </Text>
             </View>
         </Pressable>

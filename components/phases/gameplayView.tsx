@@ -21,10 +21,10 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
     const clientPlayer = players.find(p => p.id === playerId);
 ;
     const amReadyToStart = state.readyToStartPlayers.includes(playerId)
-    const readyButtonText = amReadyToStart ? 'YOU ARE READY, waiting on others...' : 'READY??';
+    const readyButtonText = amReadyToStart ? 'Undo' : 'READY??';
 
     const askedForShuriken = state.shurikenCalls.includes(playerId);
-    const shurikenButtonText = askedForShuriken ? 'YOU WANT TO USE A SHURIKEN!' : 'Vote to use shuriken';
+    const shurikenButtonText = askedForShuriken ? 'Remove shuriken vote' : 'Vote to use shuriken';
 
     const playerCardCounts = players.map(p => {
         if (p.id !== playerId) {
@@ -47,22 +47,39 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
             {clientPlayer !== undefined ? 
                
                 <View key={clientPlayer.id} style={styles.playerContainer}>
-
-                        {agreeToStartVersion ?
+                
+                 
+      
+                    {agreeToStartVersion ?
+                           
                             <View style={styles.buttonContainer}>
                                 <Text>{clientPlayer.name}</Text>
                             </View>
-                            :
+       
+                        :
+                        <>
+                            {state.players.map(player =>
+                                player.id !== playerId ? (
+                                    <HandView
+                                        key={`player-${player.id}-hand`}
+                                        clientPlayer={player}
+                                        onPressCard={() => console.log('You cannot make me')}
+                                        enemyPlayer={true}
+                                    />
+                                ) : null
+                            )}
+
                             <ButtonView
                                 onPress={() => websocketService.send({ type: "PLAY" } as ClientAction)}
                                 text='PLAY CARD'
                                 circleShape={false}
-                                disabled={false}
+                                disabled={clientPlayer.hand.cards.length === 0}
                                 showTooltip={false}
                             />
+                            </>
                         }
                             
-                        <HandView clientPlayer={clientPlayer}  onPressCard={() =>
+                    <HandView clientPlayer={clientPlayer} enemyPlayer={false}  onPressCard={() =>
                             websocketService.send({ type: "PLAY" } as ClientAction)
                         }
                     />

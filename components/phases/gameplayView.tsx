@@ -12,9 +12,10 @@ import { theme } from '../../theme/theme';
 import { ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
+    discardPileStacked: boolean; // keep the discard pile stacked and not straight
 }
 
-export function GameplayView({ agreeToStartVersion = false, ...props }: GameplayViewProps) {
+export function GameplayView({ agreeToStartVersion = false, discardPileStacked = true, ...props }: GameplayViewProps) {
     const { state, playerId } = useGame();
 
     const { players } = state;
@@ -101,7 +102,7 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
 
                                     {/* Center Area */}
                                     <View style={styles.centerArea}>
-                                        <DiscardPileView />
+                                        <DiscardPileView keepStacked={discardPileStacked} />
 
 
 

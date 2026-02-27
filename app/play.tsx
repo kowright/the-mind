@@ -70,11 +70,8 @@ export default function PlayView() {
 
           
 
-            {state.gamePhase === 'playing' || state.gamePhase === 'agreeToStart' || state.gamePhase === 'mistake' || state.gamePhase === 'shuriken' || state.gamePhase === 'error' ? (
-                <GameplayView agreeToStartVersion={state.gamePhase === 'agreeToStart'} />
-            ) : state.gamePhase === 'transition' && !inAskToStartPhase ? (
-                <LevelResultView />
-            ) : null}
+            <GameplayView agreeToStartVersion={state.gamePhase === 'agreeToStart'} discardPileStacked={true} />
+            
    
           
 
@@ -99,6 +96,13 @@ export default function PlayView() {
                 <Text>HI</Text>
            
             )}
+
+            {state.gamePhase === 'transition' && !inAskToStartPhase && (
+
+                <LevelResultView />
+
+            )}
+
         </View>
     );
 

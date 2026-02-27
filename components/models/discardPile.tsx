@@ -7,9 +7,10 @@ import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { theme } from '../../theme/theme';
 import { useRef } from 'react';
 interface DiscardPileProps {
+    keepStacked: boolean;
 } 
 
-export function DiscardPileView() {
+export function DiscardPileView({keepStacked}: DiscardPileProps) {
     const { state } = useGame();
     console.log('discard state', state.gamePhase)
 
@@ -36,7 +37,7 @@ export function DiscardPileView() {
         <>
   
             <View style={styles.discardContainer}>
-                {isPlayingorMistake && showDiscardPile ?
+                {isPlayingorMistake && showDiscardPile || keepStacked && showDiscardPile ?
                     (
                         <>
                             {/* show cards stacked and rotated */ }

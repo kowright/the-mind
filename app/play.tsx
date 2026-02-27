@@ -64,53 +64,42 @@ export default function PlayView() {
     const inAskToStartPhase = state.readyToStartPlayers.length > 0;
 
     return (
-        <View style={{flex: 1}}>
+
+        <View style={{ flex: 1 }}>
             <Text>{player?.name}</Text>
 
-            {state.gamePhase === 'playing' || state.gamePhase === 'mistake' ? (
-                <>
+          
 
-              
+            {state.gamePhase === 'playing' || state.gamePhase === 'agreeToStart' || state.gamePhase === 'mistake' || state.gamePhase === 'shuriken' || state.gamePhase === 'error' ? (
+                <GameplayView agreeToStartVersion={state.gamePhase === 'agreeToStart'} />
+            ) : state.gamePhase === 'transition' && !inAskToStartPhase ? (
+                <LevelResultView />
+            ) : null}
+   
+          
 
-                    <GameplayView agreeToStartVersion={false} />
+            {state.gamePhase === 'mistake' && (
+                <MistakeView countdown={countdown} />
+            )}
 
-                    {state.gamePhase === 'mistake' ? (
-                        <MistakeView countdown={countdown} />
-                        ) : (<></>)
-                    }
-                    {/* {state.gamePhase === 'transition' && inAskToStartPhase ? 
-                        <TransitionView countdown={countdown} />
-                        : <></>
-                    } */}
-                  
-                 
-                </>
-            ) : state.gamePhase === 'transition' ? (
-                <>
-                        <Text>TRANSITION</Text>
-                        {inAskToStartPhase ?
-                            <>
-                             <GameplayView agreeToStartVersion={false} />
-                                <TransitionView countdown={countdown} />
-                            </>
-                            :
-                            <LevelResultView />
-                            }
-                    </>
-            ) : state.gamePhase === 'error' ? (
-                    <ErrorView />
+            {state.gamePhase === 'transition' && inAskToStartPhase && (
+                <TransitionView countdown={countdown} />
+            )}
 
-            ) : state.gamePhase === 'shuriken' ? (
-                        <ShurikenView countdown={countdown} />
-             
-            ) : (state.readyToStartPlayers.length > 0 || state.gamePhase === 'agreeToStart') ? (
-                <GameplayView agreeToStartVersion={true} />
+            {state.gamePhase === 'shuriken' && (
+                <ShurikenView countdown={countdown} />
+            )}
 
-            ): (
-            <Text>Loading...!</Text>
-            )
+            {state.gamePhase === 'error' && (
+                <ErrorView />
+            )}
 
-            } 
+            {state.gamePhase === 'transition' && inAskToStartPhase && (
+                
+                <Text>HI</Text>
+           
+            )}
         </View>
     );
+
 }

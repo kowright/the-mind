@@ -9,6 +9,7 @@ import { HandView } from '../models/hand';
 import { ButtonView } from '../models/button';
 import { DiscardPileView } from '../models/discardPile';
 import { theme } from '../../theme/theme';
+import { ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
 }

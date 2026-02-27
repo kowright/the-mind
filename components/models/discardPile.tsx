@@ -78,7 +78,7 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
                                 number: 0,
                                 mistakenlyPlayed: false,
                             }}
-                            index={-1}
+                            index={0}
                             total={-1}
                             hideNumbers={true}
                             onPress={() => console.log('cannot press me')}

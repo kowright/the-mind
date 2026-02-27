@@ -27,7 +27,7 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
     const cardWidth = theme.size.cardWidth;
     const cardHeight = theme.size.cardHeight;
     console.log('card', card)
-    const isDiscardEmptyPlaceholder = index === -1;
+    const isDiscardEmptyPlaceholder = total === -1;
 
         const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
       

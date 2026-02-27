@@ -54,7 +54,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
             setVisible(false);
         }, 1500);
     };
-
+    console.log("Button text:", text);
 
     return (
         <View style={styles.buttonContainer}>

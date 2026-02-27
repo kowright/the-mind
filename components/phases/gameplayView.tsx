@@ -40,20 +40,11 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
 
     // TODO: why does phone seem to jump between screens and laptop doesn't? /or flash
     return (
-        <View>
-            { /*<Text>LEVEL: {state.level.number}</Text>
-            <Text>LIVES: {state.lives}</Text>
-            <Text>SHURIKEN: {state.shuriken}</Text>
-            {playerCardCounts}
-
-            {agreeToStartVersion ? <Text>WHO IS READY TO START?: {state.readyToStartPlayers.length}/{state.players.length}</Text>
-                : <Text>SHURIKEN CALLED: {state.shurikenCalls.length}/{state.players.length}</Text>}
-                 */}
-
-
+        <View style={styles.container} >
+            <View style={styles.gameBoard }>
             {clientPlayer !== undefined ? 
                
-                <View key={clientPlayer.id} style={styles.playerContainer}>
+                    <View key={clientPlayer.id} style={styles.playerContainer}>
                 
                  
       
@@ -64,27 +55,17 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                             </View>
        
                         :
-                        <>
-                            {/* {state.players.map(player =>
-                                player.id !== playerId ? (
-                                   
-                                        <HandView
-                                            key={`player-${player.id}-hand`}
-                                            clientPlayer={player}
-                                            onPressCard={() => console.log('You cannot make me')}
-                                            enemyPlayer={true}
-                                         />
-                               
-                                ) : null
-                            )}
-                            */}
-
+                            <>
  
+                
+      
+
                                 <>
+
                                     {/* Top Enemy (if exists) */}
                                     {enemies[0] && (
-                                    <View style={styles.topEnemy}>
-                                        <Text>{enemies[0].name}</Text>
+                                        <View style={styles.topEnemy}>
+                                            <Text>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
                                             <HandView
                                                 clientPlayer={enemies[0]}
                                                 enemyPlayer
@@ -93,62 +74,43 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                                         </View>
                                     )}
 
-                    
 
-                                {enemies[1] && (
-                                    <View style={styles.leftEnemy}>
-                                        <Text>{enemies[1].name}</Text>
-                                        <HandView
-                                            clientPlayer={enemies[1]}
-                                            enemyPlayer
-                                            onPressCard={() => { }}
-                                        />
-                                    </View>
-                                )}
 
-                                {enemies[2] && (
-                                    <View style={styles.rightEnemy}>
-                                        <Text>{enemies[2].name}</Text>
-                                        <HandView
-                                            clientPlayer={enemies[2]}
-                                            enemyPlayer
-                                            onPressCard={() => { }}
-                                        />
-                                    </View>
-                                )}
+                                    {enemies[1] && (
+                                        <View style={styles.leftEnemy}>
+                                            <Text>{enemies[1].name}</Text>
+                                            <HandView
+                                                clientPlayer={enemies[1]}
+                                                enemyPlayer
+                                                onPressCard={() => { }}
+                                            />
+                                        </View>
+                                    )}
+
+                                    {enemies[2] && (
+                                        <View style={styles.rightEnemy}>
+                                            <Text>{enemies[2].name}</Text>
+                                            <HandView
+                                                clientPlayer={enemies[2]}
+                                                enemyPlayer
+                                                onPressCard={() => { }}
+                                            />
+                                        </View>
+                                    )}
 
                                     {/* Center Area */}
                                     <View style={styles.centerArea}>
                                         <DiscardPileView />
 
 
-                          
-                                      
+
+
                                     </View>
                                 </>
-                 
-
-                      
-
-           
-
-                            {/* 
-                            <ButtonView
-                                onPress={() => websocketService.send({ type: "PLAY" } as ClientAction)}
-                                text='PLAY CARD'
-                                circleShape={false}
-                                disabled={clientPlayer.hand.cards.length === 0}
-                                showTooltip={false}
-                            />
-                            */}
 
                             </>
                         }
                             
-                    {/*<HandView clientPlayer={clientPlayer} enemyPlayer={false}  onPressCard={() =>*/}
-                    {/*        websocketService.send({ type: "PLAY" } as ClientAction)*/}
-                    {/*    }*/}
-                    {/*/>*/}
 
                     <View style={styles.playerArea}>
                         {!agreeToStartVersion &&
@@ -193,6 +155,7 @@ export function GameplayView({ agreeToStartVersion = false, ...props }: Gameplay
                 </View>
                 : <Text>UNDEFINED PLAYER</Text>
             }
+            </View>
         </View>
     );
 };
@@ -202,8 +165,8 @@ const styles = StyleSheet.create({
         margin: 8,
     },
     playerContainer: {
-        marginBottom: 16,
- 
+        marginBottom: 13,
+        gap: 32,
     },
     twoPlayerView: {
         flex: 1,
@@ -233,7 +196,7 @@ const styles = StyleSheet.create({
 
     centerArea: {
         alignItems: 'center',
-        marginVertical: 75,
+
     },
 
     playerArea: { 
@@ -257,6 +220,16 @@ const styles = StyleSheet.create({
         transform: [{ rotate: '-90deg' }],
         height: 200,
     },
+    container: {
+        flex: 1,
+        backgroundColor: 'blue',
+    },
+    gameBoard: {
+        flex: 1, 
+        position: 'relative',
+        backgroundColor: 'orange',
+        marginTop: 16,
+    }
     //deckContainer: {
     //    display: 'flex',
     //    alignItems: 'center',

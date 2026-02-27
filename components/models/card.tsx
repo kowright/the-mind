@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         padding: 12,
         position: 'relative',
-        boxShadow: '5px 0px 15px 2px #888888',
+        boxShadow: '5px 0px 30px 2px #888888',
     },
 
     cornerText: {

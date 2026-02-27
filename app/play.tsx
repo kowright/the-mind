@@ -64,7 +64,7 @@ export default function PlayView() {
     const inAskToStartPhase = state.readyToStartPlayers.length > 0;
 
     return (
-        <View>
+        <View style={{flex: 1}}>
             <Text>{player?.name}</Text>
 
             {state.gamePhase === 'playing' || state.gamePhase === 'mistake' ? (

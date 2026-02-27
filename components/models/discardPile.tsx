@@ -7,10 +7,10 @@ import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { theme } from '../../theme/theme';
 import { useRef } from 'react';
 interface DiscardPileProps {
-    keepStacked: boolean;
+    keepStacked?: boolean;
 } 
 
-export function DiscardPileView({keepStacked}: DiscardPileProps) {
+export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
     const { state } = useGame();
     console.log('discard state', state.gamePhase)
 
@@ -60,7 +60,7 @@ export function DiscardPileView({keepStacked}: DiscardPileProps) {
                                     <View
                                         key={card.id}
                                         style={{
-                                            marginLeft: index === 0 ? 0 : theme.size.cardWidth, // gap between cards
+                                            marginLeft: index === 0 ? 0 : theme.size.cardWidth, // gap between cards TODO: put in var
                                         }}
                                     >
                                         <CardView card={card} index={index} total={state.discardPile?.length} key={`discard-${card.id}`} discarded={true} rotate={false} />

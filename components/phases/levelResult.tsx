@@ -26,12 +26,12 @@ export function LevelResultView() {
     return (
         <>
             <GameOverlayView>
-                <View style={styles.overlapText}>
+                <View style={styles.overlap}>
             <Text>YOU EARNED: {pastLevelReward}</Text>
             <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
             <Text>You will win at level: {state.winLevel}</Text>
             <Text>YOU ARE NOW ON LEVEL {state.level.number}</Text>
-                    <DiscardPileView />
+                    <DiscardPileView keepStacked={false} />
                 </View>
                 </GameOverlayView>
         </>
@@ -39,18 +39,11 @@ export function LevelResultView() {
 }
 
 const styles = StyleSheet.create({
-    //overlay: {
-    //    position: 'absolute',
-    //    top: 0,
-    //    left: 0,
-    //    right: 0,
-    //    bottom: 0,
-    //    backgroundColor: 'rgba(0,0,0,0.7)',
-    //    justifyContent: 'center',
-    //    alignItems: 'center',
-    //    zIndex: 999,
-    //},
-    overlapText: {
+    overlap: {
         backgroundColor: 'white',
+        padding: 16,
+        borderRadius: 16,
+        display: 'flex',
+        alignItems: 'center',
     },
 });

@@ -39,8 +39,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
     const enemies = players.filter(p => p.id !== playerId);
 
     //TODO: every round the left and right players get more and more into the center?
-
-    // TODO: why does phone seem to jump between screens and laptop doesn't? /or flash
+    // TODO: show the level progression rewards somewhere
+    // TODO: make it so cards can't be played in agreeToStart or other phases
     return (
         <View style={styles.container} >
             <View style={styles.gameBoard }>

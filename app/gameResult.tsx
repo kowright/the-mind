@@ -26,7 +26,7 @@ export default function GameResult() {
             <Text>DISCARD PILE</Text>
             <View>
                 <>
-                    <DiscardPileView />
+                    <DiscardPileView keepStacked={false} />
                 </>
             </View>
             <Text>{snarkyText}</Text>

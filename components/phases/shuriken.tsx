@@ -2,6 +2,7 @@ import { Text, View } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
 import { StyleSheet } from 'react-native';
+import { CardView } from '../models/card';
 
 interface ShurikenViewProps {
     countdown: number;
@@ -10,18 +11,26 @@ interface ShurikenViewProps {
 export function ShurikenView({ countdown }: ShurikenViewProps) {
     const { state } = useGame();
 
+    //TODO: make overlay look better
+
     return (
         <GameOverlayView>
-            <View style={styles.overlapText}>
+            <View style={styles.overlap}>
                 <Text> SHURIKEN CALLED!</Text>
                 <Text>Looks like you all can agree on something!</Text>
                 <Text>Removed cards: </Text>
                 <Text>GET READY TO PLAY IN... {countdown}</Text>
-                <View>
-                    {state.lastRemovedCards.map(card => (
-                        <View key={`removed-${card.id}`}>
-                            <Text>{card.number}</Text>
-                        </View>
+                <View style={styles.removedCardsContainer}>
+                    {state.lastRemovedCards.map((card, index) => (
+                        <CardView
+                            card={card}
+                            index={index}
+                            total={state.lastRemovedCards.length}
+                            key={`removed-${card.id}`}
+                            discarded={true}
+                            rotate={true} // assuming it doesn't matter where shuriken cards came from 
+                            onPress={() => console.log('I do nothing')}
+                        />
                     ))}
                 </View>
             </View>
@@ -30,18 +39,18 @@ export function ShurikenView({ countdown }: ShurikenViewProps) {
 }
 
 const styles = StyleSheet.create({
-    //overlay: {
-    //    position: 'absolute',
-    //    top: 0,
-    //    left: 0,
-    //    right: 0,
-    //    bottom: 0,
-    //    backgroundColor: 'rgba(0,0,0,0.7)',
-    //    justifyContent: 'center',
-    //    alignItems: 'center',
-    //    zIndex: 999,
-    //},
-    overlapText: {
+    overlap: {
         backgroundColor: 'white',
+        padding: 16,
+        borderRadius: 16,
+        display: 'flex',
+        alignItems: 'center',
+    },
+    removedCardsContainer: {
+        flexDirection: 'row',     
+        justifyContent: 'center',
+        alignItems: 'center',     
+        gap: 8,                    
+        marginTop: 16,
     },
 });

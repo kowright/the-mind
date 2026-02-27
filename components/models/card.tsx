@@ -30,8 +30,6 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
 
         const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
       
-    // TODO: bottom numbers should be reversed 180
-
     // TODO: who made mistake on mistaken cards on transition
 
     const overlapAmount = !discarded ? cardWidth * 0.65 : 0;
@@ -68,11 +66,13 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
      const bottomLeft= [{
          bottom: theme.spacing.cornerNumberSpacing,
          left: theme.spacing.cornerNumberSpacing,
+         transform: [{ rotate: '180deg' }]
     }]
 
      const bottomRight= [{
          bottom: theme.spacing.cornerNumberSpacing,
          right: theme.spacing.cornerNumberSpacing,
+         transform: [{ rotate: '180deg' }]
     }]
 
 

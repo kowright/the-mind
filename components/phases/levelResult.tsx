@@ -44,6 +44,6 @@ const styles = StyleSheet.create({
         padding: 16,
         borderRadius: 16,
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'stretch',
     },
 });

@@ -148,12 +148,15 @@ export function gameReducer(
 
             const { editedPlayers, removedCards } =
                 removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
+            console.log('removed cards', removedCards.map(c => console.log('removed card: ', c)))
             if (removedCards.length > 0) {
+           
                 playedCard = {
                     ...playedCard,
                     mistakenlyPlayed: true,
                     mistakenPlayerId: updatedPlayer.id,
                 };
+                console.log('played card', playedCard)
                 updatedGamePhase = 'mistake';
                 wasRightMove = false;
                 updatedLastPlayedCard = playedCard;
@@ -163,11 +166,14 @@ export function gameReducer(
                 state.discardPile,
                 playedCard
             );
+            console.log('updated discard pile', updatedDiscardPile)
+
 
             updatedDiscardPile = [
                 ...updatedDiscardPile,
                 ...removedCards, 
             ];
+            console.log('updated discard pile', updatedDiscardPile)
 
             updatedPlayers = updatedPlayers.map(p =>
                 editedPlayers.find(ep => ep.id === p.id) ?? p

@@ -5,7 +5,7 @@ interface ErrorProps {
 }
 
 export function ErrorView() {
-
+    //TODO: put white background and all that stuff on it 
     return (
         <>
             <GameOverlayView>

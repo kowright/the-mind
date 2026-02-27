@@ -3,6 +3,7 @@ import { Card } from "../../shared/types/card";
 import { Text, View } from 'react-native';
 import { StyleSheet, Pressable } from 'react-native';
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
+import { useGame } from "../../hooks/useGame";
 
 interface CardViewProps {
     card: Card;
@@ -31,6 +32,9 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
         const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
       
     // TODO: who made mistake on mistaken cards on transition
+    const { state } = useGame();
+
+    const mistakenPlayer = state.players.find(p => p.id === card.mistakenPlayerId);
 
     const overlapAmount = !discarded ? cardWidth * 0.65 : 0;
     const marginLeft = !discarded ? (index === 0 ? 0 : -overlapAmount) : (index === 0 ? 0 : -cardWidth);
@@ -81,7 +85,8 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
 
     const circleWidth = cardWidth * 0.6;
     const circleHeight = cardHeight * 0.5;
-
+    console.log('card mistake? ', card.mistakenlyPlayed)
+    console.log('mistaken player', mistakenPlayer?.name)
 
     return (
         <Pressable
@@ -113,7 +118,12 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
                         { fontSize: centerFontSize },
                     ]}>
                             {!hideNumbers && card.number}
-                    </Text>
+                        </Text>
+                        {card.mistakenlyPlayed && <Text style={[
+                            styles.mistakenPlayerText
+                        ]}>
+                            {mistakenPlayer?.name}
+                        </Text>}
                 </View>
             </View>
 
@@ -182,6 +192,18 @@ const styles = StyleSheet.create({
         color: 'black',
         //fontSize: 72,
         fontWeight: 'bold',
+    },
+
+    mistakenPlayerText: {
+        fontSize: 16,
+  
+        position: 'absolute',
+        transform: [{ rotate: '45deg' }],
+        backgroundColor: 'purple',
+        color: 'white',
+        padding: 4,
+        //paddingHorizontal: 32,
+       zIndex: 10,
     },
 
     middleCircle: {

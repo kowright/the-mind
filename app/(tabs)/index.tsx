@@ -11,6 +11,8 @@ import { StyleSheet, Pressable } from 'react-native';
 import { theme } from '../../theme/theme';
 import { ButtonView } from '../../components/models/button';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 
 export default function HomeScreen() {
@@ -33,48 +35,9 @@ export default function HomeScreen() {
         .map(p => p.name)
         .filter(Boolean)
         .join(', ');
-    console.log('validplayercount', isValidPlayerCount)
 
-    //return (
-    //    <TabView>
-    //        <View style={styles.container}>
-    //            <Text style={styles.gameTitle}> THE MIND </Text>
-    //            <Image
-    //                style={styles.image}
-    //                source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
-    //            />
-    //            <ButtonView
-    //                onPress={startGame}
-    //                text='EVERYONE READY?'
-    //                disabled={!isValidPlayerCount}
-    //                showTooltip={!isValidPlayerCount}
-    //                tooltipText='You need 2-4 players to start'
-    //                circleShape={true}
-    //            />
 
-    //            {enteredName ? <Text>Hi {text}!</Text> :
-    //                <>
-    //                <TextInput
-    //                    style={styles.input}
-
-    //                    value={text}
-    //                        placeholder="Enter your name"
-    //                        onChangeText={setText}
-
-    //                    />
-
-    //                        <ButtonView text='Give yourself a name!'
-    //                            onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}
-    //                        />
-
-    //                </>
-    //            }
-    //        </View>
-    //        <Text>There {state.players.length > 1 ? 'are' : 'is'} {state.players.length} {state.players.length > 1 ? 'players!' : 'player!'}</Text>
-    //        <Text>We got {playerNames}</Text>
-    //    </TabView>
-    //);
-
+        //TODO: on web, tooltip is continually omn after hovering on it, doesn't come off
     return (
         <TabView>
             <View style={styles.screen}>
@@ -94,7 +57,8 @@ export default function HomeScreen() {
                         tooltipText="You need 2-4 players to start"
                         circleShape
                     />
-
+   
+                    
                     {!enteredName ? (
                         <>
                             <TextInput

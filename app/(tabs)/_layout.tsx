@@ -7,11 +7,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+  // TODO: tab names are cutt off only on desktop
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: 'blue', //TODO change to theme color
         headerShown: false,
         tabBarButton: HapticTab,
       }}>
@@ -26,14 +26,14 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
         }}
           />
         <Tabs.Screen
             name="rules"
             options={{
                 title: 'Rules',
-                tabBarIcon: ({ color }) => <IconSymbol size={28} name="info" color={color} />,
+                tabBarIcon: ({ color }) => <IconSymbol size={28} name="book.fill" color={color} />,
             }}
         />
     </Tabs>

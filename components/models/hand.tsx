@@ -55,7 +55,8 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                 </View>
                 :
                 <View style={styles.handContainer}>
-                    <View style={styles.hand}>
+
+                    {clientPlayer.cardCount > 0 ? <View style={styles.hand}>
 
                         {[...clientPlayer.hand.cards]
                             .sort((a, b) => b.number - a.number)
@@ -69,7 +70,20 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                                     hideNumbers={enemyPlayer}
                                 />
                             ))}
-                    </View>
+                    </View> :
+                        <CardView
+
+                            card={{
+                                id: `hand-placeholder`,
+                                number: 0,
+                                mistakenlyPlayed: false,
+                            }}
+                            index={0}
+                            total={-1}
+                            hideNumbers={true}
+                            onPress={() => console.log('cannot press me')}
+                        />
+                    }
                 </View>
             }
 

@@ -67,8 +67,8 @@ export default function PlayView() {
 
         <View style={{ flex: 1 }}>
             <Text>{player?.name}</Text>
-
-          
+            <Text>Lives, shuriken, level up here</Text>
+                     
 
             <GameplayView agreeToStartVersion={state.gamePhase === 'agreeToStart'} discardPileStacked={true} />
             

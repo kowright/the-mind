@@ -53,7 +53,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                     {agreeToStartVersion ?
                           
                             <View style={styles.buttonContainer}>
-                                <Text>{clientPlayer.name}</Text>
+                           
                             </View>
        
                         :
@@ -151,7 +151,9 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 showTooltip={false}
                             />
                         }
-                    </View>
+                        </View>
+
+                        <Text>Level progression down here? MAYBE ANCHOR TO BOTTOM</Text>
 
 
                 </View>

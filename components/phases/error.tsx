@@ -1,17 +1,29 @@
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { GameOverlayView } from '../models/gameOverlay';
+import { StyleSheet } from 'react-native';
 
 interface ErrorProps {
 }
 
 export function ErrorView() {
-    //TODO: put white background and all that stuff on it 
     return (
         <>
             <GameOverlayView>
-                <Text>You do not have enough players.</Text>
-                <Text>Going to restart game now.</Text>
+                <View style={styles.overlap}>
+                    <Text>You do not have enough players.</Text>
+                    <Text>Going to restart game now.</Text>
+                </View>
             </GameOverlayView>
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    overlap: {
+        backgroundColor: 'white',
+        padding: 16,
+        borderRadius: 16,
+        display: 'flex',
+        alignItems: 'stretch',
+    },
+});

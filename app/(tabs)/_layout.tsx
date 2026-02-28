@@ -7,7 +7,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  // TODO: tab names are cutt off only on desktop
+
   return (
     <Tabs
       screenOptions={{

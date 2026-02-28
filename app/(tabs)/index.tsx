@@ -36,8 +36,6 @@ export default function HomeScreen() {
         .filter(Boolean)
         .join(', ');
 
-
-        //TODO: on web, tooltip is continually omn after hovering on it, doesn't come off
     return (
         <TabView>
             <View style={styles.screen}>
@@ -108,8 +106,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-
-        // THIS is the magic for desktop
         maxWidth: 800,
         alignSelf: 'center',
         width: '100%',
@@ -144,11 +140,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
-
-function startFakeGame() {
-    websocketService.send({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
-    websocketService.send({ type: 'GAME_START'});
-}
 
 function startGame() {
     websocketService.send({ type: 'GAME_START' });

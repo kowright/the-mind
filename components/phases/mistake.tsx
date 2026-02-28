@@ -5,6 +5,7 @@ import { GameOverlayView } from '../models/gameOverlay';
 import { CardView } from '../models/card';
 import { theme } from '../../theme/theme';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
+import { IconText } from '../models/iconText';
 
 interface MistakeProps {
     countdown: number;
@@ -13,8 +14,7 @@ export function MistakeView({ countdown }: MistakeProps) {
     const { state } = useGame();
     const theme = useResponsiveTheme();
     const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenPlayerId);
-    console.log('state last removed', state.lastRemovedCards.length)
-  // TODO: how many lives lost?
+
     return (
         <GameOverlayView>
             <View style={styles.overlap}>
@@ -61,7 +61,9 @@ export function MistakeView({ countdown }: MistakeProps) {
             
                 </View>
 
-
+                <View style={styles.lostLivesContainer}>
+                    <IconText iconFirst={false} iconName='hare.fill' text={`Lost ${state.lastRemovedCards.length}`} />
+                </View>
                 <Text>Get ready...{countdown}</Text>
             </View>
         </GameOverlayView>
@@ -82,4 +84,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 16,
     },
+    lostLivesContainer: {
+        marginVertical: 12,
+    }
 });

@@ -29,7 +29,6 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
 
     const isPlayingorMistake: boolean = state.gamePhase === 'playing' || state.gamePhase === 'mistake';
 
-  // TODO: discard empty is not centered
 
     // TODO: contentContainerStyle for scrollview needs to go in styles
 

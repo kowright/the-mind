@@ -13,6 +13,7 @@ import { ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import { Level, levels, RewardType, LevelToRewardIconMapping } from "@/shared/types/level";
 import { IconSymbol } from '../ui/icon-symbol';
 import { IconText } from '../models/iconText';
+import { LevelProgression } from '../models/levelProgression';
 
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
@@ -42,24 +43,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     const enemies = players.filter(p => p.id !== playerId);
 
-    const levelProgression = levels
-        .filter(level => level.reward !== 'None')
-        .map(level => {
-            const icon = LevelToRewardIconMapping[level.reward];
-            const levelText = `L${level.number}: `;
-
-            return (
-                <IconText
-                    key={`level-${level.number}-progression`}
-                    iconFirst={false}
-                    iconName={icon}
-                    text={levelText}
-                />
-            );
-        });
-
     //TODO: every round the left and right players get more and more into the center?
-    // TODO: show the level progression rewards somewhere
     // TODO: make it so cards can't be played in agreeToStart or other phases
     return (
         <View style={styles.container} >
@@ -145,13 +129,15 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 disabled={clientPlayer.hand.cards.length === 0}
                                 showTooltip={false}
                             /> }
-                        <HandView
+                           
+                                <HandView
                             clientPlayer={clientPlayer}
                             enemyPlayer={false}
-                            onPressCard={() =>
+                                onPressCard={() =>
+                                agreeToStartVersion ? console.log('nah') :
                                 websocketService.send({ type: "PLAY" } as ClientAction)
-                            }
-                        />
+                            } />
+
 
 
                         {agreeToStartVersion ?
@@ -173,19 +159,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                         }
                         </View>
 
-                        <View>
-                            <View style={{
-                                    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: 'yellow'
-                            }}>
-                            <Text>Rewards at Levels:</Text>
-                   
-                            </View>
-                            <View style={{
-                                flexDirection: 'row', alignItems: 'center', justifyContent:'space-between', backgroundColor: 'yellow'
-                            }}>
-                                {levelProgression}
-                            </View>
-                        </View>
+                    <LevelProgression />
 
 
                 </View>

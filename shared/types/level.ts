@@ -5,6 +5,16 @@ export interface Level {
 
 export type RewardType = 'Life' | 'Shuriken' | 'None';
 
+export type RewardToIcon = Record<RewardType, string>;
+
+    
+export const LevelToRewardIconMapping = {
+    Life: 'hare.fill',
+    Shuriken: 'staroflife.fill',
+    None: 'xmark',
+
+} as RewardToIcon;
+
 export const levels: readonly Level[] = [
     {
         number: 1,

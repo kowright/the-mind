@@ -10,6 +10,10 @@ import { ButtonView } from '../models/button';
 import { DiscardPileView } from '../models/discardPile';
 import { theme } from '../../theme/theme';
 import { ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+import { Level, levels, RewardType, LevelToRewardIconMapping } from "@/shared/types/level";
+import { IconSymbol } from '../ui/icon-symbol';
+import { IconText } from '../models/iconText';
+
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
     discardPileStacked: boolean; // keep the discard pile stacked and not straight
@@ -37,6 +41,22 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
     })
 
     const enemies = players.filter(p => p.id !== playerId);
+
+    const levelProgression = levels
+        .filter(level => level.reward !== 'None')
+        .map(level => {
+            const icon = LevelToRewardIconMapping[level.reward];
+            const levelText = `L${level.number}: `;
+
+            return (
+                <IconText
+                    key={`level-${level.number}-progression`}
+                    iconFirst={false}
+                    iconName={icon}
+                    text={levelText}
+                />
+            );
+        });
 
     //TODO: every round the left and right players get more and more into the center?
     // TODO: show the level progression rewards somewhere
@@ -153,7 +173,19 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                         }
                         </View>
 
-                        <Text>Level progression down here? MAYBE ANCHOR TO BOTTOM</Text>
+                        <View>
+                            <View style={{
+                                    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: 'yellow'
+                            }}>
+                            <Text>Rewards at Levels:</Text>
+                   
+                            </View>
+                            <View style={{
+                                flexDirection: 'row', alignItems: 'center', justifyContent:'space-between', backgroundColor: 'yellow'
+                            }}>
+                                {levelProgression}
+                            </View>
+                        </View>
 
 
                 </View>

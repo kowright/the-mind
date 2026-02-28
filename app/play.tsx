@@ -9,6 +9,7 @@ import { ShurikenView } from '../components/phases/shuriken';
 import { countdownInterval, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime } from '../shared/utils/utils';
 import { ErrorView } from '../components/phases/error';
 import { IconSymbol } from '../components/ui/icon-symbol';
+import { IconText } from '../components/models/iconText';
 
 interface PlayViewProps {
 
@@ -70,22 +71,17 @@ export default function PlayView() {
             <Text>{player?.name || 'Unnamed Player'}</Text>
 
             <View style={{
-                flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor:'brown'
+                flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor:'yellow'
             }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                    <IconSymbol size={28} name="hare.fill" color="black" />
-                    <Text style={{ marginLeft: 4 }}> {state.lives}</Text>
-                </View>
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                    <IconSymbol size={28} name="staroflife.fill" color="black" />
-                    <Text style={{ marginLeft: 4 }}> {state.shuriken}</Text>
-                </View>
+                <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                    <IconSymbol size={28} name="chart.bar.fill" color="black" />
-                    <Text style={{ marginLeft: 4 }}>{`${state.level.number}/${state.winLevel}`}</Text>
-                </View>
+
+                <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
+
+
+                <IconText iconFirst={true} iconName='chart.bar.fill' text={`${state.level.number}/${state.winLevel}`} />
+
             </View>
                      
 

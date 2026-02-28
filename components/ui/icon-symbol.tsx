@@ -27,6 +27,7 @@ const MAPPING = {
     'book.fill': 'book-open-blank-variant-outline',
     'staroflife.fill': 'star-four-points',
     'chart.bar.fill': 'chart-bar',
+    'xmark': 'close'
 } as IconMapping;
 
 /**

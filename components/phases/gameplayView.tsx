@@ -44,75 +44,51 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
     const enemies = players.filter(p => p.id !== playerId);
 
     //TODO: every round the left and right players get more and more into the center?
-    // TODO: make it so cards can't be played in agreeToStart or other phases
+
     return (
         <View style={styles.container} >
             <View style={styles.gameBoard }>
             {clientPlayer !== undefined ? 
-               
+
                     <View key={clientPlayer.id} style={styles.playerContainer}>
-                
-                 
-      
                     {agreeToStartVersion ?
-                          
                             <View style={styles.buttonContainer}>
-                           
-                            </View>
-       
+                  
+                            </View>   
                         :
                             <>
- 
-                
-      
-
-                                <>
+                              
 
                                     {/* Top Enemy (if exists) */}
                                     {enemies[0] && (
                                         <View style={styles.topEnemy}>
                                             <Text>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
-                                            <HandView
-                                                clientPlayer={enemies[0]}
-                                                enemyPlayer
-                                                onPressCard={() => { }}
-                                            />
+                                        {enemies.length === 1 && <HandView
+                                            clientPlayer={enemies[0]}
+                                            enemyPlayer
+                                            onPressCard={() => { }}
+                                        />}
                                         </View>
                                     )}
 
-
-
-                                    {enemies[1] && (
-                                        <View style={styles.leftEnemy}>
-                                            <Text>{enemies[1].name}</Text>
-                                            <HandView
-                                                clientPlayer={enemies[1]}
-                                                enemyPlayer
-                                                onPressCard={() => { }}
-                                            />
-                                        </View>
+                                {enemies[1] && (
+                                    <View style={styles.leftEnemy}>
+                                        <Text>{`${enemies[1].name} [${enemies[1].cardCount}]`}</Text>
+                                    </View>
+                                        
                                     )}
 
                                     {enemies[2] && (
                                         <View style={styles.rightEnemy}>
-                                            <Text>{enemies[2].name}</Text>
-                                            <HandView
-                                                clientPlayer={enemies[2]}
-                                                enemyPlayer
-                                                onPressCard={() => { }}
-                                            />
+                                        <Text>{`${enemies[1].name} [${enemies[1].cardCount}]`}</Text>
                                         </View>
                                     )}
 
                                     {/* Center Area */}
                                     <View style={styles.centerArea}>
                                         <DiscardPileView keepStacked={discardPileStacked} />
-
-
-
-
                                     </View>
-                                </>
+                              
 
                             </>
                         }
@@ -210,16 +186,16 @@ const styles = StyleSheet.create({
     },
 
     playerArea: { 
-        backgroundColor: 'green',
+ 
         alignItems: 'center',
         gap: theme.spacing.sm,
     },
     leftEnemy: {
         position: 'absolute',
-        left: -90,
-        top: '20%',
+        //left: -150,
+        top: '25%',
         transform: [{ rotate: '90deg' }],
-        height: 200,
+
         alignItems: 'center',
     },
     rightEnemy: {

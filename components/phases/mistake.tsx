@@ -14,7 +14,7 @@ export function MistakeView({ countdown }: MistakeProps) {
     const theme = useResponsiveTheme();
     const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenPlayerId);
     console.log('state last removed', state.lastRemovedCards.length)
-  
+  // TODO: how many lives lost?
     return (
         <GameOverlayView>
             <View style={styles.overlap}>

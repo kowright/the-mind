@@ -253,7 +253,7 @@ export function gameReducer(
             }
             const { players, removedCards } =
                 removeLowestCardFromAllHands(state.players);
-
+                // TODO: what if shuriken is called to empty all the hands? 
             return {
                 ...state,
                 players,

@@ -11,6 +11,7 @@ interface ButtonProps {
     disabled?: boolean;
     tooltipText?: string;
     circleShape?: boolean;
+//    changeColor?: string;
 }
 
 export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false, circleShape = false }: ButtonProps) {
@@ -55,7 +56,11 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         }, 1500);
     };
     console.log("Button text:", text);
-
+    //const changeColorStyle = changeColor ? {
+    //    backgroundColor: changeColor,
+    //} : null;
+    //console.log('change color', changeColor)
+    //console.log('changeColor style', changeColorStyle)
     return (
         <View style={styles.buttonContainer}>
             <Pressable onHoverIn={() => setVisible(true)}
@@ -67,6 +72,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                     disabled && styles.disabled,
                     hovered && !disabled && styles.buttonHovered,
                     pressed && !disabled && styles.buttonPressed,
+                    //changeColor && changeColorStyle
                 ]}
             >
                 <Text

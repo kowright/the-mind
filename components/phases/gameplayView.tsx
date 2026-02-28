@@ -33,7 +33,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
     const readyButtonText = amReadyToStart ? 'Undo' : 'READY??';
 
     const askedForShuriken = state.shurikenCalls.includes(playerId);
-    const shurikenButtonText = askedForShuriken ? 'Remove shuriken vote' : 'Vote to use shuriken';
+    let shurikenButtonText = askedForShuriken ? 'Remove shuriken vote' : 'Vote to use shuriken';
 
     const playerCardCounts = players.map(p => {
         if (p.id !== playerId) {
@@ -41,12 +41,33 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
         }
     })
 
+    const thumbsUpNumbers = agreeToStartVersion ? `${state.readyToStartPlayers.length}/${state.players.length}` :
+        `${state.shurikenCalls.length}/${state.players.length}`
+
+
     const enemies = players.filter(p => p.id !== playerId);
 
     //TODO: every round the left and right players get more and more into the center?
 
     return (
         <View style={styles.container} >
+            <View style={{
+               flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor: 'yellow'
+            }}>
+
+                <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
+
+
+                <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
+
+
+                <IconText iconFirst={true} iconName='chart.bar.fill' text={`${state.level.number}/${state.winLevel}`} />
+
+                
+                <IconText iconFirst={true} iconName='hand.thumbsup' text={thumbsUpNumbers} />
+            
+            </View>
+
             <View style={styles.gameBoard }>
             {clientPlayer !== undefined ? 
 
@@ -115,7 +136,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                             } />
 
 
-
                         {agreeToStartVersion ?
                             <ButtonView
                                 onPress={() => websocketService.send({ type: "READY_TO_START" } as ClientAction)}
@@ -126,11 +146,12 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                             />
                             :
                             <ButtonView
-                                onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
-                                text={shurikenButtonText}
-                                circleShape={false}
-                                disabled={shurikenDisabled}
-                                showTooltip={false}
+                                    onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
+                                    text={shurikenButtonText}
+                                    circleShape={false}
+                                    disabled={shurikenDisabled}
+                                    showTooltip={false}
+                               
                             />
                         }
                         </View>

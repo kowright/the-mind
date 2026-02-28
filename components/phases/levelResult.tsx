@@ -44,25 +44,11 @@ export function LevelResultView() {
         <>
             <GameOverlayView>
                 <View style={styles.overlap}>
-                    {/*<View style={{ flexDirection: 'row', alignItems: 'center' }} >*/}
-                    {/*    <Text> YOU EARNED: </Text><IconSymbol size={28} name={pastLevelIcon} color="black" />*/}
-                    {/*</View>*/}
                     <IconText iconFirst={false} iconName={pastLevelIcon} text='YOU EARNED:' />
-
-                    {/*<View style={{ flexDirection: 'row', alignItems: 'center' }} >*/}
-                    {/*    <Text> NEXT LEVEL YOU WILL EARN: </Text >*/}
-                    {/*    <IconSymbol size={28} name={nextLevelIcon} color="black" />*/}
-                    {/*</View>*/}
                     <IconText iconFirst={false} iconName={nextLevelIcon} text='NEXT LEVEL YOU WILL EARN:' />
-
-
-                    {/*<View style={{ flexDirection: 'row', alignItems: 'center' }} >*/}
-                    {/*    <Text>YOU ARE NOW ON LEVEL {state.level.number} out of {state.winLevel} </Text>*/}
-                    {/*    <IconSymbol size={28} name='chart.bar.fill' color="black" />*/}
-                    {/*</View>*/}
                     <IconText iconFirst={false} iconName='chart.bar.fill' text={`YOU ARE NOW ON LEVEL ${state.level.number} out of ${state.winLevel}`} />
 
-                    <DiscardPileView keepStacked={false} />
+                     <DiscardPileView keepStacked={false} />
                 </View>
                 </GameOverlayView>
         </>
@@ -75,6 +61,6 @@ const styles = StyleSheet.create({
         padding: 16,
         borderRadius: 16,
         display: 'flex',
-        alignItems: 'stretch',
+        //alignItems: 'stretch',
     },
 });

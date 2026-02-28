@@ -10,6 +10,7 @@ import { countdownInterval, mistakeWaitTime, shurikenWaitTime, startLevelWaitTim
 import { ErrorView } from '../components/phases/error';
 import { IconSymbol } from '../components/ui/icon-symbol';
 import { IconText } from '../components/models/iconText';
+import { GameOverlayView } from '../components/models/gameOverlay';
 
 interface PlayViewProps {
 
@@ -67,22 +68,9 @@ export default function PlayView() {
 
     return (
 
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, position: 'relative' }}>
             <Text>{player?.name || 'Unnamed Player'}</Text>
 
-            <View style={{
-                flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor:'yellow'
-            }}>
-
-                <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
-
-
-                <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
-
-
-                <IconText iconFirst={true} iconName='chart.bar.fill' text={`${state.level.number}/${state.winLevel}`} />
-
-            </View>
                      
 
             <GameplayView agreeToStartVersion={state.gamePhase === 'agreeToStart'} discardPileStacked={true} />
@@ -113,9 +101,9 @@ export default function PlayView() {
             )}
 
             {state.gamePhase === 'transition' && !inAskToStartPhase && (
-
+                <GameOverlayView>
                 <LevelResultView />
-
+                </GameOverlayView>
             )}
 
         </View>

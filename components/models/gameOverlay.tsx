@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor: 'rgba(0,0,0,0.7)',
         justifyContent: 'center',
-        alignItems: 'center',
+        paddingHorizontal: 16,
         zIndex: 999,
     },
     overlapText: {

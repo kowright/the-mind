@@ -6,7 +6,7 @@ export const theme = {
         textPrimary: 'white',
         error: '#red',
         disabled: '#aaa',
-        hover: '#194298',
+        hover: 'pink', //TODO
         pressed: '#0A1A3D',
     },
 

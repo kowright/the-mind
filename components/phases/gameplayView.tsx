@@ -47,7 +47,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     const enemies = players.filter(p => p.id !== playerId);
 
-    //TODO: every round the left and right players get more and more into the center?
 
     return (
         <View style={styles.container} >

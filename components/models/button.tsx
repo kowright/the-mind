@@ -11,13 +11,12 @@ interface ButtonProps {
     disabled?: boolean;
     tooltipText?: string;
     circleShape?: boolean;
-//    changeColor?: string;
 }
 
 export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false, circleShape = false }: ButtonProps) {
     const [visible, setVisible] = useState(false);
     const theme = useResponsiveTheme();
-
+  
     const circleSize = theme.size.circleSize;
     const dynamicCircleStyle = {
         width: circleSize,
@@ -50,20 +49,17 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         styles.tooltip
 
     const showTemporaryTooltip = () => {
+        console.log('use temp tooltip')
         setVisible(true);
         setTimeout(() => {
             setVisible(false);
         }, 1500);
     };
-    console.log("Button text:", text);
-    //const changeColorStyle = changeColor ? {
-    //    backgroundColor: changeColor,
-    //} : null;
-    //console.log('change color', changeColor)
-    //console.log('changeColor style', changeColorStyle)
+
     return (
         <View style={styles.buttonContainer}>
             <Pressable onHoverIn={() => setVisible(true)}
+                onHoverOut={() => {setVisible(false)}}
         
                 onPress={handlePress}
                 style={({ pressed, hovered }) => [
@@ -72,7 +68,6 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                     disabled && styles.disabled,
                     hovered && !disabled && styles.buttonHovered,
                     pressed && !disabled && styles.buttonPressed,
-                    //changeColor && changeColorStyle
                 ]}
             >
                 <Text
@@ -121,7 +116,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     buttonHovered: {
-        backgroundColor: theme.colors.hover,
+        backgroundColor: theme.colors.hover, 
     },
     buttonPressed: {
         backgroundColor: 'yellow', // TODO 

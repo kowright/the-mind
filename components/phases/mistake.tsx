@@ -6,6 +6,7 @@ import { CardView } from '../models/card';
 import { theme } from '../../theme/theme';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { IconText } from '../models/iconText';
+import { GetReadyView } from '../models/getReady';
 
 interface MistakeProps {
     countdown: number;
@@ -15,6 +16,8 @@ export function MistakeView({ countdown }: MistakeProps) {
     const theme = useResponsiveTheme();
     const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenPlayerId);
 
+
+    // TODO: get ready text in 3 places should be made more obvious
     return (
         <GameOverlayView>
             <View style={styles.overlap}>
@@ -64,7 +67,7 @@ export function MistakeView({ countdown }: MistakeProps) {
                 <View style={styles.lostLivesContainer}>
                     <IconText iconFirst={false} iconName='hare.fill' text={`Lost ${state.lastRemovedCards.length}`} />
                 </View>
-                <Text>Get ready...{countdown}</Text>
+                <GetReadyView text='STARTING BACK IN' countdown={countdown} />
             </View>
         </GameOverlayView>
     );

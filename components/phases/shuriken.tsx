@@ -3,6 +3,7 @@ import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
 import { StyleSheet } from 'react-native';
 import { CardView } from '../models/card';
+import { GetReadyView } from '../models/getReady';
 
 interface ShurikenViewProps {
     countdown: number;
@@ -12,6 +13,7 @@ export function ShurikenView({ countdown }: ShurikenViewProps) {
     const { state } = useGame();
 
     //TODO: make overlay look better
+    //TODO: give overlays a unified title
 
     return (
         <GameOverlayView>
@@ -19,7 +21,7 @@ export function ShurikenView({ countdown }: ShurikenViewProps) {
                 <Text> SHURIKEN CALLED!</Text>
                 <Text>Looks like you all can agree on something!</Text>
                 <Text>Removed cards: </Text>
-                <Text>GET READY TO PLAY IN... {countdown}</Text>
+          
                 <View style={styles.removedCardsContainer}>
                     {state.lastRemovedCards.map((card, index) => (
                         <CardView
@@ -33,7 +35,10 @@ export function ShurikenView({ countdown }: ShurikenViewProps) {
                         />
                     ))}
                 </View>
+                <GetReadyView text='STARTING AGAIN IN' countdown={countdown} />
+
             </View>
+
         </GameOverlayView>
     );
 }
@@ -44,7 +49,7 @@ const styles = StyleSheet.create({
         padding: 16,
         borderRadius: 16,
         display: 'flex',
-        alignItems: 'center',
+        gap: 16,
     },
     removedCardsContainer: {
         flexDirection: 'row',     

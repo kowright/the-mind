@@ -14,7 +14,8 @@ export function LevelResultView() {
     const { state } = useGame();
     //TODO: show shurikened cards too
 
-    // TODO: show user's hands too
+    //TODO: make you earned, next earn, lives into a trio row block? 
+
     const pastLevelIndex = state.level.number - 2;
     const nextLevelIndex = state.level.number - 1;
 

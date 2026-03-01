@@ -2,6 +2,7 @@ import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
+import { GetReadyView } from '../models/getReady';
 
 interface TransitionProps {
     countdown: number;
@@ -11,8 +12,7 @@ export function TransitionView({ countdown }: TransitionProps) {
     return (
         <GameOverlayView>
             <View style={styles.overlap}>
-                <Text> GET READY IN </Text>
-                <Text>{countdown}</Text>
+                <GetReadyView text='GET READY IN' countdown={countdown} />
             </View>
         </GameOverlayView>
     );

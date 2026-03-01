@@ -13,6 +13,8 @@ import { ButtonView } from '../../components/models/button';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { GetReadyView } from '../../components/models/getReady';
+
 
 
 export default function HomeScreen() {
@@ -55,7 +57,6 @@ export default function HomeScreen() {
                         tooltipText="You need 2-4 players to start"
                         circleShape
                     />
-   
                     
                     {!enteredName ? (
                         <>

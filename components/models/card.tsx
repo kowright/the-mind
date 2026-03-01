@@ -31,7 +31,6 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
 
         const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
       
-    // TODO: who made mistake on mistaken cards on transition
     const { state } = useGame();
 
     const mistakenPlayer = state.players.find(p => p.id === card.mistakenPlayerId);

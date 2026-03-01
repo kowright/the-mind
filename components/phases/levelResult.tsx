@@ -6,6 +6,7 @@ import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { IconSymbol } from '../ui/icon-symbol';
 import { IconText } from '../models/iconText';
+import { GameOverlayHeading } from '../models/gameOverlayHeading';
 
 interface LevelResultProps {
     // fake props
@@ -45,6 +46,8 @@ export function LevelResultView() {
         <>
             <GameOverlayView>
                 <View style={styles.overlap}>
+                    <GameOverlayHeading text='LEVEL WIN!' />
+
                     <IconText iconFirst={false} iconName={pastLevelIcon} text='YOU EARNED:' />
                     <IconText iconFirst={false} iconName={nextLevelIcon} text='NEXT LEVEL YOU WILL EARN:' />
                     <IconText iconFirst={false} iconName='chart.bar.fill' text={`YOU ARE NOW ON LEVEL ${state.level.number} out of ${state.winLevel}`} />

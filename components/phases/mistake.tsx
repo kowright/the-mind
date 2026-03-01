@@ -7,6 +7,7 @@ import { theme } from '../../theme/theme';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { IconText } from '../models/iconText';
 import { GetReadyView } from '../models/getReady';
+import { GameOverlayHeading } from '../models/gameOverlayHeading';
 
 interface MistakeProps {
     countdown: number;
@@ -16,16 +17,11 @@ export function MistakeView({ countdown }: MistakeProps) {
     const theme = useResponsiveTheme();
     const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenPlayerId);
 
-
-    // TODO: get ready text in 3 places should be made more obvious
     return (
         <GameOverlayView>
             <View style={styles.overlap}>
-                <Text> MISTAKE!</Text>
-                <Text>
-                    By {mistakenPlayer?.name} played wrong by playing {state.lastPlayedCard?.number}
-                </Text>
-                <Text>MISTAKENLY PLAYED:</Text>
+                <GameOverlayHeading text='MISTAKE!'/>
+                <Text>PLAYED TOO EARLY:</Text>
                 <View
                     key={`last-played-card-mistake`}
                     style={{

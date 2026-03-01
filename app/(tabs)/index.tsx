@@ -24,7 +24,7 @@ export default function HomeScreen() {
     const [enteredName, setEnteredName] = useState(false);
     const [visible, setVisible] = useState(false);
 
-
+    //TODO do now allow game to start without name?
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {
             router.replace('/play');

@@ -1,6 +1,7 @@
 import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
+import { theme } from '../../theme/theme';
 interface OverlayProps {
     children: React.ReactNode;
 }
@@ -28,5 +29,5 @@ const styles = StyleSheet.create({
     },
     overlapText: {
         backgroundColor: 'white',
-    },
+    }
 });

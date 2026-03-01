@@ -1,6 +1,7 @@
 import { Text, View } from 'react-native';
 import { GameOverlayView } from '../models/gameOverlay';
 import { StyleSheet } from 'react-native';
+import { GameOverlayHeading } from '../models/gameOverlayHeading';
 
 interface ErrorProps {
 }
@@ -10,6 +11,8 @@ export function ErrorView() {
         <>
             <GameOverlayView>
                 <View style={styles.overlap}>
+                    <GameOverlayHeading text='ERROR!' />
+
                     <Text>You do not have enough players.</Text>
                     <Text>Going to restart game now.</Text>
                 </View>

@@ -1,10 +1,13 @@
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { isGameWon} from '@/shared/utils/utils';
 import { StyleSheet } from 'react-native';
 import { Button } from '@react-navigation/elements';
 import { websocketService } from '../services/websocketService';
 import { DiscardPileView } from '../components/models/discardPile';
+import { CardView } from '../components/models/card';
+import { theme } from '../theme/theme';
+import { useResponsiveTheme } from '../hooks/useResponsiveTheme';
 
 interface GameResultProps {
 
@@ -13,6 +16,7 @@ interface GameResultProps {
 export default function GameResult() {
     const { state } = useGame();
     console.log('gameResult outcome', state.gameOutcome)
+    const theme = useResponsiveTheme();
     const wonGame = state.gameOutcome === 'won';
 
     console.log('gameResult won?: ', wonGame)
@@ -31,6 +35,29 @@ export default function GameResult() {
                     <DiscardPileView keepStacked={false} />
                 </>
             </View>
+            {state.shurikenedCards.length > 0 && <Text>Removed Cards</Text>}
+    
+            <ScrollView
+                horizontal
+            >
+                {state.shurikenedCards.map((card, index) => (
+                    <View
+                        key={card.id}
+                        style={{
+                            marginLeft: index === 0 ? 0 : theme.size.cardWidth,
+                        }}
+                    >
+                        <CardView
+                            card={card}
+                            index={index}
+                            total={state.lastRemovedCards.length + 1}
+                            discarded={true}
+                            rotate={false}
+                            onPress={() => console.log('I do nothing')}
+                        />
+                    </View>
+                ))}
+            </ScrollView>
             <Text>{snarkyText}</Text>
             <Button onPress={() => websocketService.send({ type: 'GAME_RESTART' })}>
                 NEW GAME?

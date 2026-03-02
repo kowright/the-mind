@@ -305,8 +305,6 @@ export function gameReducer(
         case 'SHURIKEN_OVER': { 
             console.log('SHURIKEN OVER')
 
-            const noMoreLives = areAllLivesLost(state.lives);
-
             let updatedGamePhase: GamePhase = 'playing'
             let updatedLevel = state.level;
             let rewardedShuriken = state.shuriken;

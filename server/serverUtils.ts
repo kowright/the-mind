@@ -20,6 +20,8 @@ export function handlePostActionEffects(
     oldState: GameState,
     newState: GameState
 ) {
+    //TODO cannot play shuriken right after each other without playing a card in between first
+
 
     if (enterPhase('shuriken', oldState, newState)) {
         const shuriken = applyAction({ type: 'SHURIKEN_CALLED' });

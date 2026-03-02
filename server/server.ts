@@ -1,8 +1,8 @@
 
 import { WebSocketServer, WebSocket } from "ws";
 import dotenv from "dotenv";
-import { applyAction } from "../shared/types/gameEngine.js";
-import { ClientAction, enrichAction } from "../shared/types/gameAction.js";
+import { applyAction, getState } from "../shared/types/gameEngine.js";
+import { ClientAction, ServerAction, enrichAction } from "../shared/types/gameAction.js";
 import { GameState } from "../shared/types/gameState"; 
 import { removeOtherPlayersFromStateForClient } from '@/shared/utils/utils.js'
 import { handlePostActionEffects } from "./serverUtils.js";
@@ -44,13 +44,39 @@ export function broadcastLobby(state: GameState) {
     });
 }
 
-function broadcastAction(clientAction: ClientAction, playerId: string) {
-    const action = enrichAction(clientAction, playerId);
-    if (!action) return;
+//export function broadcastAction(clientAction: ClientAction, playerId: string) {
+//    const action = enrichAction(clientAction, playerId);
+//    if (!action) return;
 
+//    const oldState = getState();
+//    const newState = applyAction(action);
+
+//    broadcastLobby(newState);
+//    handlePostActionEffects(action, oldState, newState);
+
+//    //const newState = applyAction(action);
+
+//    //broadcastLobby(newState);
+//    //handlePostActionEffects(action, newState);
+//}
+
+export function broadcastServerAction(action: ServerAction) {
+    const oldState = getState();
     const newState = applyAction(action);
+
     broadcastLobby(newState);
-    handlePostActionEffects(action, newState);
+    handlePostActionEffects(action, oldState, newState);
+}
+
+export function broadcastAction(
+    clientAction: ClientAction,
+    playerId: string
+) {
+    // translate client action to server actopm
+    const enriched = enrichAction(clientAction, playerId);
+    if (!enriched) return;
+
+    broadcastServerAction(enriched);
 }
 
 wss.on("connection", (ws: any, req: any) => {

@@ -42,6 +42,15 @@ export function gameReducer(
             let players = state.players;
             players = players.filter((p) => p.id !== action.playerId);
 
+            const isValid = hasValidPlayerCount(players);
+
+            if (!isValid) {
+                return {
+                    ...state,
+                    players,
+                    gamePhase: 'error'
+                }
+            }
             return {
                 ...state,
                 players: [...players]
@@ -211,7 +220,7 @@ export function gameReducer(
             
             if (noMoreCards) {
                 const gameWon = isGameWon(state);
-                updatedGamePhase = gameWon ? 'gameOver' : 'transition';
+                updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
 
                 const nextLevelNumber = updatedLevel.number + 1;
                 updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
@@ -235,16 +244,16 @@ export function gameReducer(
             };
 
 
-        case 'TRANSITION':
-            console.log('TRANSITION');
+        //case 'TRANSITION':
+        //    console.log('TRANSITION!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
-            const transitionGamePhase: GamePhase = 'transition';
+        //    const transitionGamePhase: GamePhase = 'transition';
 
-            return {
-                ...state,
-                gamePhase: transitionGamePhase,
-                readyToStartPlayers: [],
-            };
+        //    return {
+        //        ...state,
+        //        gamePhase: transitionGamePhase,
+        //        readyToStartPlayers: [],
+        //    };
 
         case 'SHURIKEN_CALLED': {
 
@@ -284,14 +293,44 @@ export function gameReducer(
 
         case 'SHURIKEN_OVER': { 
             console.log('SHURIKEN OVER')
-        
+
+            const noMoreLives = areAllLivesLost(state.lives);
+
+            let updatedGamePhase: GamePhase = 'playing'
+            let updatedLevel = state.level;
+            let rewardedShuriken = state.shuriken;
+            let rewardedLives = state.lives;
+
+
+            const noMoreCards = areAllHandsEmpty(state.players);
+            console.log('no more cards', state.players)
+            if (noMoreCards) {
+                console.log('no more cards')
+                const gameWon = isGameWon(state);
+                updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
+
+                const nextLevelNumber = state.level.number + 1;
+                updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
+
+                const { rewardLives, rewardShuriken } = determineRewards(state.lives, state.shuriken, state.level);
+                rewardedLives = rewardLives;
+                rewardedShuriken = rewardShuriken - 1;
+            }
 
             return {
                 ...state,
 
                 shurikenCalls: [],
-                gamePhase: 'playing',
-                lastRemovedCards: [],
+                gamePhase: updatedGamePhase,
+          
+                lives: rewardedLives,
+            
+                shuriken: rewardedShuriken,
+                level: updatedLevel,
+        
+                readyToStartPlayers: [],
+  
+
             };
         }
 
@@ -315,7 +354,7 @@ export function gameReducer(
             return {
                 ...state,
                 readyToStartPlayers,
-                gamePhase: allReady ? 'transition' : state.gamePhase,
+                gamePhase: allReady ? 'startLevel' : state.gamePhase,
             };
 
 

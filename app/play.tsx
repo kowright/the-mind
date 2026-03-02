@@ -25,7 +25,7 @@ export default function PlayView() {
     useEffect(() => {
         if (!state) return;
 
-        if (state.gamePhase === 'transition') { 
+        if (state.gamePhase === 'startLevel') { 
             if (state.readyToStartPlayers.length > 0) {
                 // agreeToStart to playing transition to show countdown
                 
@@ -82,7 +82,7 @@ export default function PlayView() {
                 <MistakeView countdown={countdown} />
             )}
 
-            {state.gamePhase === 'transition' && inAskToStartPhase && (
+            {state.gamePhase === 'startLevel' && inAskToStartPhase && (
                 <TransitionView countdown={countdown} />
             )}
 
@@ -94,15 +94,15 @@ export default function PlayView() {
                 <ErrorView />
             )}
 
-            {state.gamePhase === 'transition' && inAskToStartPhase && (
+            {/*{state.gamePhase === 'transition' && inAskToStartPhase && (*/}
                 
-                <Text>HI</Text>
+            {/*    <Text>HI</Text>*/}
            
-            )}
+            {/*)}*/}
 
-            {state.gamePhase === 'transition' && !inAskToStartPhase && (
+            {state.gamePhase === 'levelComplete' && !inAskToStartPhase && (
                 <GameOverlayView>
-                <LevelResultView />
+                    <LevelResultView />
                 </GameOverlayView>
             )}
 

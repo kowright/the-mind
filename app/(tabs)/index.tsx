@@ -31,8 +31,8 @@ export default function HomeScreen() {
 
     console.log('allPlayersHaveNames', allPlayersHaveNames)
 
+    //TODO: give warning that you are not connected to websocket
   
-    //TODO do now allow game to start without name?
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {
             router.replace('/play');

@@ -18,6 +18,7 @@ export interface GameState {
     shurikenCalls: string[];
     lastRemovedCards: Card[];
     lastPlayedCard?: Card;
+    shurikenedCards: Card[];
 }
 
 export const initialGameState: GameState = {
@@ -32,6 +33,7 @@ export const initialGameState: GameState = {
     readyToStartPlayers: [],
     shurikenCalls: [],
     lastRemovedCards: [],
+    shurikenedCards: [],
 }
 
 

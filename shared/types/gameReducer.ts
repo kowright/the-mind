@@ -126,6 +126,7 @@ export function gameReducer(
                     shurikenCalls: [],
                     readyToStartPlayers: [],
                     lastPlayedCard: undefined,
+                    shurikenedCards: [],
                 };
             }
 
@@ -268,6 +269,7 @@ export function gameReducer(
                 players,
                 shuriken: state.shuriken - 1,
                 lastRemovedCards: removedCards,
+                shurikenedCards: [...state.shurikenedCards, ...removedCards]
             };
         };
 

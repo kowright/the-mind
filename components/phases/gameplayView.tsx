@@ -221,10 +221,10 @@ const styles = StyleSheet.create({
     rightEnemy: {
         alignItems: 'center',
         position: 'absolute',
-        right: -100,
-        top: '20%',
+        right: 0,
+        top: '25%',
         transform: [{ rotate: '-90deg' }],
-        height: 200,
+        //height: 200,
     },
     container: {
         flex: 1,

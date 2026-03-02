@@ -19,6 +19,7 @@ export interface GameState {
     lastRemovedCards: Card[];
     lastPlayedCard?: Card;
     shurikenedCards: Card[];
+    gameOutcome?: 'won' | 'lost';
 }
 
 export const initialGameState: GameState = {

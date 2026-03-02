@@ -12,8 +12,10 @@ interface GameResultProps {
 
 export default function GameResult() {
     const { state } = useGame();
+    console.log('gameResult outcome', state.gameOutcome)
+    const wonGame = state.gameOutcome === 'won';
 
-    const wonGame = isGameWon(state);
+    console.log('gameResult won?: ', wonGame)
     const title = wonGame ? 'YOU WON!' : 'WOW, YOU LOST';
     const levelAchieved = wonGame ? state.winLevel : `${state.level.number} out of ${state.winLevel}`
     const snarkyText = wonGame ? 'YOU ALL REALLY ARE ONE MIND!' : 'YOU DEFINITELY COULD HAVE TRIED HARDER BRUH';

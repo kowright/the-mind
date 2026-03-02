@@ -198,10 +198,12 @@ export function gameReducer(
 
             let rewardedLives: number = updatedLives;
             let rewardedShuriken: number = state.shuriken;
+            let updatedGameOutcome = state.gameOutcome;
 
             const noMoreLives = areAllLivesLost(updatedLives);
 
             updatedGamePhase = noMoreLives ? 'gameOver' : updatedGamePhase;
+            updatedGameOutcome = 'lost';
 
             if (noMoreLives) {
                 return {
@@ -214,21 +216,27 @@ export function gameReducer(
                     level: updatedLevel,
                     lastRemovedCards: removedCards,
                     lastPlayedCard: updatedLastPlayedCard,
+                    gameOutcome: updatedGameOutcome,
                 };
             }
 
             const noMoreCards = areAllHandsEmpty(updatedPlayers);
             
             if (noMoreCards) {
-                const gameWon = isGameWon(state);
+              
+                const gameWon = completedLevel.number === state.winLevel;
                 updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
+                updatedGameOutcome = gameWon ? 'won' : 'lost';
 
-                const nextLevelNumber = updatedLevel.number + 1;
-                updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
+                if (!gameWon) {
+                    const nextLevelNumber = updatedLevel.number + 1;
+                    updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
 
-                const { rewardLives, rewardShuriken } = determineRewards(updatedLives, state.shuriken, completedLevel);
-                rewardedLives = rewardLives;
-                rewardedShuriken = rewardShuriken;
+                    const { rewardLives, rewardShuriken } = determineRewards(updatedLives, state.shuriken, completedLevel);
+                    rewardedLives = rewardLives;
+                    rewardedShuriken = rewardShuriken;
+                }
+            
             }
 
             return {
@@ -242,6 +250,7 @@ export function gameReducer(
                 lastRemovedCards: removedCards,
                 readyToStartPlayers: [],
                 lastPlayedCard: updatedLastPlayedCard,
+                gameOutcome: updatedGameOutcome,
             };
 
 
@@ -263,7 +272,7 @@ export function gameReducer(
             }
             const { players, removedCards } =
                 removeLowestCardFromAllHands(state.players);
-                // TODO: what if shuriken is called to empty all the hands? 
+
             return {
                 ...state,
                 players,

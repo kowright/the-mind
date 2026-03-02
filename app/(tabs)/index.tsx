@@ -19,11 +19,19 @@ import { GetReadyView } from '../../components/models/getReady';
 
 export default function HomeScreen() {
     const theme = useResponsiveTheme();
-    const { state } = useGame();  
+    const { state, playerId } = useGame();
+
     const [text, setText] = useState('');
     const [enteredName, setEnteredName] = useState(false);
     const [visible, setVisible] = useState(false);
 
+    const allPlayersHaveNames : boolean = state.players.every(
+        player => player.name && player.name.trim().length > 0
+    );
+
+    console.log('allPlayersHaveNames', allPlayersHaveNames)
+
+  
     //TODO do now allow game to start without name?
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {
@@ -32,7 +40,15 @@ export default function HomeScreen() {
     }, [state.gamePhase]);
 
     const isValidPlayerCount = hasValidPlayerCount(state.players);
+    console.log('hassValidPlayerCount', isValidPlayerCount)
+    let startButtonText = '';
+    if (!isValidPlayerCount) {
+        startButtonText = "You need 2-4 players to start";
+    } else if (!allPlayersHaveNames) {
+        startButtonText = "All players must enter a name to start";
+    }
 
+    console.log('startButtonText', startButtonText)
     const playerNames = state.players
         .map(p => p.name)
         .filter(Boolean)
@@ -52,9 +68,9 @@ export default function HomeScreen() {
                     <ButtonView
                         onPress={startGame}
                         text="EVERYONE READY?"
-                        disabled={!isValidPlayerCount}
-                        showTooltip={!isValidPlayerCount}
-                        tooltipText="You need 2-4 players to start"
+                        disabled={!isValidPlayerCount || !allPlayersHaveNames}
+                        showTooltip={!isValidPlayerCount || !allPlayersHaveNames}
+                        tooltipText={startButtonText}
                         circleShape
                     />
                     

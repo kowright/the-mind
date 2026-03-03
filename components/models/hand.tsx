@@ -15,7 +15,6 @@ interface HandProps {
 export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) {
 
     const scrollRef = useRef<ScrollView>(null);
-    console.log('client player', clientPlayer)
 
     // TODO fix enemy hand onPress
     return (
@@ -34,7 +33,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                 <View style={styles.handContainer}>
                     <View style={styles.hand}>
                   
-                        {clientPlayer.cardCount !== 0 ? Array.from({ length: clientPlayer.cardCount }).map((_, index, arr) => (
+                        {clientPlayer.cardCount !== 0 && Array.from({ length: clientPlayer.cardCount }).map((_, index, arr) => (
                             <CardView
                                 key={`enemy-${clientPlayer.id}-${index}`}
                                 card={{
@@ -48,8 +47,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                                 onPress={() => console.log('cannot press me') }
                             />
                         ))
-                            :
-                            <Text>NO MORE CARDS</Text>
+                           
                         }
                     </View>
                 </View>

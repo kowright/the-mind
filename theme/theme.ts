@@ -1,15 +1,21 @@
-export const theme = {
+const tokens = {
+    // raw values
     colors: {
-        background: 'white',
-        primary: '#194298',
-        secondary: '#F49320',
-        textPrimary: 'white',
-        error: '#red',
-        disabled: '#aaa',
-        hover: 'pink', //TODO
-        pressed: '#0A1A3D',
+        blue: {
+            300: '#8DABEC',
+            500: '#194298',
+        },
+        orange: {
+            500: '#F49320',
+        },
+        red: {
+            500: '#FF3B30',
+        },
+        gray: {
+            400: '#AAA',
+        },
+        white: '#FFF',
     },
-
     spacing: {
         xs: 4,
         sm: 8,
@@ -26,28 +32,123 @@ export const theme = {
         title: 32,
     },
 
+    border: {
+        radius: {
+            sm: 6,
+            md: 12,
+            lg: 16,
+            round: 999,
+        }
+    },
+
+    font: {
+        weight: {
+            normal: "500" as const, // use as const for the union type, not a generic string
+        }, 
+        size: {
+            small: 12,
+            body: 16,
+            heading: 28,
+            title: 32,
+        }
+    },
+
+    opacity: {
+        50: 0.5,
+        70: 0.7,
+    },
+
+    size: {
+        400: 400,
+    },
+
     radius: {
         sm: 6,
         md: 12,
         lg: 16,
         round: 999,
     },
+};
+// TODO: fill this out- should separate raw values from semantics in theme? 
 
-    border: {
-        radius: {
-            sm: 6,
-        }  
+export const theme = {
+    // semantic meaning of raw values
+    colors: {
+        background: 'white',
+        primary: '#194298',
+        secondary: '#F49320',
+        textPrimary: 'white',
+        error: 'red',
+        disabled: '#aaa',
+        hover: '#8DABEC', //light 
+        pressed: '#0A1A3D', // dark blue
     },
+
+    color: {
+        button: {
+            primary: {
+                background: tokens.colors.white,
+                text: tokens.colors.white,
+                hover: tokens.colors.blue[300],
+                pressed: tokens.colors.blue[500],
+                disabled: tokens.colors.gray[400],
+                radius: tokens.radius.sm,
+            }, 
+            secondary: {
+
+            }
+        },
+
+        card: {
+            primary: {
+
+            },
+            discard: {
+                
+            }
+        },
+
+        menuIcon: {
+
+        },
+
+        gameplayIcon: {
+
+        }
+    },
+
+    spacing: {
+        xs: 4,
+        sm: 8,
+        md: 12,
+        lg: 16,
+        xl: 24,
+        xxl: 32,
+    },
+
+    typography: {
+        //TODO: should be the line weight, font weight, letter spacing, font size
+        small: 12,
+        body: 16,
+        heading: 28,
+        title: 32,
+    },
+
 
     size: {
-        circleSize: 400,
+        circleSize: tokens.size[400],
+        //iconSize
     },
 
-    fontWeight: {
-        normal: "500" as const, // use as const for the union type, not a generic string
+    font: {
+        weight: {
+            normal: tokens.font.weight.normal,
+        }
     },
 
     opacity: {
-        disabled: 0.5,
+        disabled: tokens.opacity[50],
+        overlay: tokens.opacity[70]
     }
 };
+

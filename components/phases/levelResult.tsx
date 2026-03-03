@@ -18,7 +18,9 @@ export function LevelResultView() {
     const { state } = useGame();
     const theme = useResponsiveTheme();
 
-    //TODO: make you earned, next earn, lives into a trio row block? 
+    //TODO: make you earned, next earn, lives into a trio row block?
+
+    // TODO: how to better make it obvious that the discard pile is being shown without just writing Discard Pile, and do it in other places
 
     const pastLevelIndex = state.level.number - 2;
     const nextLevelIndex = state.level.number - 1;

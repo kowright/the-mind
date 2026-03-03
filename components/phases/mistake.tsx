@@ -16,7 +16,7 @@ export function MistakeView({ countdown }: MistakeProps) {
     const { state } = useGame();
     const theme = useResponsiveTheme();
     const mistakenPlayer = state.players.find(p => p.id === state.lastPlayedCard?.mistakenPlayerId);
-
+    // TODO: does it go to fast? Maybe reformatting it so it can be understood faster
     return (
         <GameOverlayView>
             <View style={styles.overlap}>

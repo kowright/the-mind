@@ -25,7 +25,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     const { players } = state;
 
-    console.log('ready to start people', state.readyToStartPlayers)
     const shurikenDisabled = state.shuriken === 0;
     const clientPlayer = players.find(p => p.id === playerId);
 ;
@@ -47,6 +46,9 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     const enemies = players.filter(p => p.id !== playerId);
 
+    // TODO: make play card and vote shuriken buttons be hierarchily different
+
+    // TODO: make enemy name be more obvious
 
     return (
         <View style={styles.container} >
@@ -207,7 +209,7 @@ const styles = StyleSheet.create({
     playerArea: { 
  
         alignItems: 'center',
-        gap: theme.spacing.sm,
+        gap: 8,
     },
     leftEnemy: {
         position: 'absolute',

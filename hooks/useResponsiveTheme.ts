@@ -30,7 +30,7 @@ export function useResponsiveTheme() {
       },
 
       spacing: {
-          cornerNumberSpacing: theme.spacing.sm * scale50,
+          cornerNumberSpacing: 8 * scale50,
       }
   };
 }

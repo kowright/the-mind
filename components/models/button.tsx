@@ -98,10 +98,10 @@ const styles = StyleSheet.create({
     },
     disabled: {
         backgroundColor: theme.colors.disabled,
-        opacity: theme.opacity.disabled,
+        opacity: 0.5,
     },
     disabledText: {
-        fontWeight: theme.fontWeight.normal,
+        fontWeight: 'normal',
     },
     disabledHovered: {
         backgroundColor: 'purple' // TODO
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.primary,
         paddingVertical: 10,
         paddingHorizontal: 16,
-        borderRadius: theme.border.radius.sm,
+        borderRadius: 6,
         alignItems: 'center',
         color: theme.colors.textPrimary,
         justifyContent: 'center'
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: theme.colors.textPrimary,
-        fontWeight: theme.fontWeight.normal,
+        fontWeight: 'normal',
         textAlign: 'center',
     },
     tooltip: {
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         bottom: 45,
         backgroundColor: 'black',
         padding: 8,
-        borderRadius: theme.border.radius.sm,
+        borderRadius: 6,
     },
     tooltipText: {
         color: theme.colors.textPrimary,

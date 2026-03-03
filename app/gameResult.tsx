@@ -23,6 +23,10 @@ export default function GameResult() {
     const title = wonGame ? 'YOU WON!' : 'WOW, YOU LOST';
     const levelAchieved = wonGame ? state.winLevel : `${state.level.number} out of ${state.winLevel}`
     const snarkyText = wonGame ? 'YOU ALL REALLY ARE ONE MIND!' : 'YOU DEFINITELY COULD HAVE TRIED HARDER BRUH';
+
+    // TODO: make this look more sad or fun
+
+    // TODO: use the ButtonView on this!
     return (
         <View >
             <Text> GAME RESULT </Text>

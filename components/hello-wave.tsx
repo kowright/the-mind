@@ -1,6 +1,7 @@
 import Animated from 'react-native-reanimated';
 
 export function HelloWave() {
+    // TODO: delete unused/template files
   return (
     <Animated.Text
       style={{

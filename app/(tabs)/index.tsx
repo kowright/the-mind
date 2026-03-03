@@ -32,6 +32,8 @@ export default function HomeScreen() {
     console.log('allPlayersHaveNames', allPlayersHaveNames)
 
     //TODO: give warning that you are not connected to websocket
+
+    //TODO: Make name stuff look better
   
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {

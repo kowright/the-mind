@@ -121,10 +121,7 @@ export function areAllLivesLost(lives: number) {
 }
 
 export function isGameWon(gameState: GameState) {
-    // TODO: 4 players, win and it said you lost the game but you were at level 9
     const atWinLevel = gameState.level.number === gameState.winLevel;
-    console.log('Level', gameState.level.number)
-    console.log('win at', gameState.winLevel)
     return atWinLevel
 }
 
@@ -182,7 +179,7 @@ export function removeCardsLowerThanCardNumber(
             ...player.hand,
             cards: keptCards
         }
-        console.log('removed cards from removecardslowerthannumber', removedCards.map(c => console.log(c.number , c.mistakenPlayerId)))
+
         return {
             ...player,
             hand,

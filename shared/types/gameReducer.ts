@@ -158,7 +158,6 @@ export function gameReducer(
 
             const { editedPlayers, removedCards } =
                 removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
-            console.log('removed cards', removedCards.map(c => console.log('removed card: ', c)))
             if (removedCards.length > 0) {
            
                 playedCard = {
@@ -176,14 +175,11 @@ export function gameReducer(
                 state.discardPile,
                 playedCard
             );
-            console.log('updated discard pile', updatedDiscardPile)
-
 
             updatedDiscardPile = [
                 ...updatedDiscardPile,
                 ...removedCards, 
             ];
-            console.log('updated discard pile', updatedDiscardPile)
 
             updatedPlayers = updatedPlayers.map(p =>
                 editedPlayers.find(ep => ep.id === p.id) ?? p
@@ -267,7 +263,7 @@ export function gameReducer(
 
         case 'SHURIKEN_CALLED': {
 
-            if (state.lastRemovedCards.length > 0) {
+            if (state.gamePhase !== 'shuriken') {
                 return state;
             }
             const { players, removedCards } =
@@ -312,9 +308,9 @@ export function gameReducer(
 
 
             const noMoreCards = areAllHandsEmpty(state.players);
-            console.log('no more cards', state.players)
+ 
             if (noMoreCards) {
-                console.log('no more cards')
+     
                 const gameWon = isGameWon(state);
                 updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
 
@@ -339,7 +335,7 @@ export function gameReducer(
         
                 readyToStartPlayers: [],
   
-
+                lastRemovedCards: [],
             };
         }
 

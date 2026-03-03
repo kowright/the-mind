@@ -21,6 +21,7 @@ export function handlePostActionEffects(
     newState: GameState
 ) {
     //TODO cannot play shuriken right after each other without playing a card in between first
+    log.info(`${oldState.gamePhase}->${newState.gamePhase}`)
 
 
     if (enterPhase('shuriken', oldState, newState)) {

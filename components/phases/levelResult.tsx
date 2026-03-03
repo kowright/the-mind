@@ -53,7 +53,7 @@ export function LevelResultView() {
 
                     <IconText iconFirst={false} iconName={pastLevelIcon} text='YOU EARNED:' />
                     <IconText iconFirst={false} iconName={nextLevelIcon} text='NEXT LEVEL YOU WILL EARN:' />
-                    <IconText iconFirst={false} iconName='chart.bar.fill' text={`YOU ARE NOW ON LEVEL ${state.level.number} out of ${state.winLevel}`} />
+                    <IconText iconFirst={false} iconName='chart.bar.fill' text={`YOU ARE NOW ON LEVEL ${state.level.number} out of ${state.winLevel} `} />
                     <Text>Discard Pile</Text>
                     <DiscardPileView keepStacked={false} />
                     {state.shurikenedCards.length > 0 && <Text>Removed Cards</Text>}

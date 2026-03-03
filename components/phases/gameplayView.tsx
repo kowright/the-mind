@@ -78,11 +78,9 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                         :
                             <>
                               
-
-                                    {/* Top Enemy (if exists) */}
                                     {enemies[0] && (
                                         <View style={styles.topEnemy}>
-                                            <Text>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
+                                        <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
                                         {enemies.length === 1 && <HandView
                                             clientPlayer={enemies[0]}
                                             enemyPlayer
@@ -104,7 +102,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                         </View>
                                     )}
 
-                                    {/* Center Area */}
                                     <View style={styles.centerArea}>
                                         <DiscardPileView keepStacked={discardPileStacked} />
                                     </View>
@@ -186,7 +183,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         transform: [{ rotate: '180deg' }],
     },
-
+    topEnemyText: {
+        transform: [{ rotate: '180deg' }],
+    },
     middleEnemyRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -224,7 +223,6 @@ const styles = StyleSheet.create({
         right: 0,
         top: '25%',
         transform: [{ rotate: '-90deg' }],
-        //height: 200,
     },
     container: {
         flex: 1,
@@ -236,34 +234,4 @@ const styles = StyleSheet.create({
         backgroundColor: 'orange',
         marginTop: 16,
     }
-    //deckContainer: {
-    //    display: 'flex',
-    //    alignItems: 'center',
-    //},
-    //shurikenButtonPressed: {
-    //    opacity: 0.8,
-    //},
-    //shurikenButton: {
-    //    backgroundColor: '#6c63ff',
-    //    paddingVertical: 10,
-    //    paddingHorizontal: 16,
-    //    borderRadius: 6,
-    //    alignItems: 'center',
-    //},
-    //shurikenButtonDisabled: {
-    //    backgroundColor: '#aaa',
-    //    opacity: 0.5,
-    //},
-    //shurikenButtonText: {
-    //    color: 'white',
-    //    fontWeight: 'bold',
-    //},
-    //hand: {
-    //    display: 'flex',
-    //    flexDirection: 'row',
-    //},
-    //handContainer: {
-    //    display: 'flex',
-    //    alignItems: 'center', // could align things flex-end so that top card is always at the end to tap quickly
-    //},
 });

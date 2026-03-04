@@ -70,7 +70,7 @@ export default function PlayView() {
     return (
 
         <View style={{ flex: 1, position: 'relative', backgroundColor: theme.color.gameBackground.backgroundColor }}>
-            <Text style={{color: 'white', backgroundColor: 'blue', textAlign: 'center'}}>{player?.name || 'Unnamed Player'}</Text>
+            <Text style={{color: 'white', backgroundColor: theme.color.button.primary.background, textAlign: 'center'}}>{player?.name || 'Unnamed Player'}</Text>
 
                      
 

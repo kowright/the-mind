@@ -37,6 +37,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     const thumbsUpNumbers = agreeToStartVersion ? `${state.readyToStartPlayers.length}/${state.players.length}` :
         `${state.shurikenCalls.length}/${state.players.length}`
+    const thumbsUpAsked =  agreeToStartVersion ? state.readyToStartPlayers.length > 0 :
+        state.shurikenCalls.length > 0
 
 
     const enemies = players.filter(p => p.id !== playerId);
@@ -45,9 +47,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     // TODO: make enemy name be more obvious
 
-    // TODO: fix 2 player top enemy hand view, it isn't showing all the cards
-
-    // TODO: make thumbs up colored once there is at least 1 vote
     return (
         <View style={styles.container} >
             <View style={{
@@ -56,7 +55,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                 <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
                 <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
                 <IconText iconFirst={true} iconName='chart.bar.fill' text={`${state.level.number}/${state.winLevel}`} />
-                <IconText iconFirst={true} iconName='hand.thumbsup' text={thumbsUpNumbers} />
+                <IconText iconFirst={true} iconName='hand.thumbsup' text={thumbsUpNumbers} altColor={thumbsUpAsked ? 'red' : ''} />
             
             </View>
 
@@ -81,15 +80,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                         }
                                         {enemies.length === 1 &&
                                             <View>
-                                            {/*<View style={styles.twoPlayerView} >*/}
-                                            {/*    <Text style={styles.topEnemyTwoPlayerText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>*/}
-
-                                            {/*    <HandView*/}
-                                            {/*        clientPlayer={enemies[0]}*/}
-                                            {/*        enemyPlayer*/}
-                                            {/*        onPressCard={() => { }}*/}
-                                            {/*     />*/}
-                                                {/*</View>*/}
                                                 <View
                                                     style={{
                                                         height: 50,

@@ -10,13 +10,17 @@ interface IconTextProps {
     altColor?: string;
 }
 
-export function IconText({ iconFirst, text, iconName, altColor = theme.color.gameplayIcon.text}: IconTextProps) {
-    // TODO: think if we want icon colors to align with type - shuriken gray, level orange, bunny blue, thumbs up? 
+export function IconText({ iconFirst, text, iconName, altColor}: IconTextProps) {
+    // TODO: think if we want icon colors to align with type - shuriken gray, level orange, bunny blue, thumbs up?
+    if (altColor === undefined || altColor === '') {
+        altColor = theme.color.gameplayIcon.text;
+    }
+    const iconSize = iconFirst ? 28 : 24;
     return (
         <View style={styles.container} >
             {!iconFirst && <Text style={[styles.textRight, { color: altColor }]}>{text}</Text>}
-            <IconSymbol size={28} name={iconName} color={altColor} />
-            {iconFirst && <Text style={styles.textLeft}>{text}</Text>}
+            <IconSymbol size={iconSize} name={iconName} color={altColor} />
+            {iconFirst && <Text style={[styles.textLeft, { color: altColor }]}>{text}</Text>}
         </View>
     )
 }

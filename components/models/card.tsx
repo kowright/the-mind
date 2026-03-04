@@ -18,7 +18,11 @@ interface CardViewProps {
 }
 
 export function CardView({ card, total, index, onPress, discarded = false, rotate = false, hideNumbers = false }: CardViewProps) {
-
+    if (hideNumbers && !discarded) {
+        console.log('card', card)
+        console.log('total', total)
+        console.log('index', index)
+    }
     const theme = useResponsiveTheme();
 
 

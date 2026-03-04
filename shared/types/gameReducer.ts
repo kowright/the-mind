@@ -319,7 +319,7 @@ export function gameReducer(
 
                 const { rewardLives, rewardShuriken } = determineRewards(state.lives, state.shuriken, state.level);
                 rewardedLives = rewardLives;
-                rewardedShuriken = rewardShuriken - 1;
+                rewardedShuriken = rewardShuriken;
             }
 
             return {

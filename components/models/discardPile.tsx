@@ -12,7 +12,7 @@ interface DiscardPileProps {
 
 export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
     const { state } = useGame();
-    console.log('discard state', state.gamePhase)
+
 
     const scrollRef = useRef<ScrollView>(null);
     const theme = useResponsiveTheme();

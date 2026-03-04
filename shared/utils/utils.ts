@@ -162,12 +162,10 @@ export function removeCardsLowerThanCardNumber(
         for (const card of player.hand.cards) {
             if (card.number < playedCardNumber) {
                 discarded.push(card);
-                console.log('who did not play in turn: ', player.name)
-                console.log('with id', player.id)
              
                 card.mistakenPlayerId = player.id;
                 card.mistakenlyPlayed = true;
-                console.log('with', card)
+
             } else {
                 keptCards.push(card);
             }

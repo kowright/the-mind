@@ -29,7 +29,6 @@ export default function HomeScreen() {
         player => player.name && player.name.trim().length > 0
     );
 
-    console.log('allPlayersHaveNames', allPlayersHaveNames)
 
     //TODO: give warning that you are not connected to websocket
 
@@ -42,7 +41,6 @@ export default function HomeScreen() {
     }, [state.gamePhase]);
 
     const isValidPlayerCount = hasValidPlayerCount(state.players);
-    console.log('hassValidPlayerCount', isValidPlayerCount)
     let startButtonText = '';
     if (!isValidPlayerCount) {
         startButtonText = "You need 2-4 players to start";
@@ -50,7 +48,6 @@ export default function HomeScreen() {
         startButtonText = "All players must enter a name to start";
     }
 
-    console.log('startButtonText', startButtonText)
     const playerNames = state.players
         .map(p => p.name)
         .filter(Boolean)
@@ -121,7 +118,7 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         padding: 24,
-        backgroundColor: 'black'
+        backgroundColor: theme.color.gameBackground.backgroundColor,
     },
 
     content: {

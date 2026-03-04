@@ -50,7 +50,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         styles.tooltip
 
     const showTemporaryTooltip = () => {
-        console.log('use temp tooltip')
+
         setVisible(true);
         setTimeout(() => {
             setVisible(false);

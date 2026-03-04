@@ -2,13 +2,15 @@ const tokens = {
     // raw values
     colors: {
         blue: {
+            100: '#bbcdf4',
+            200: '#0049DB',
             300: '#8DABEC',
             500: '#194298',
             700: '#0A1A3D'
         },
         orange: {
             300: '#f9c78b',
-            500: '#F49320',
+            500: '#f4982a',
             700: '#b56709',
         },
         red: {
@@ -89,15 +91,23 @@ export const theme = {
 
     color: {
         button: {
-            primary: {
-                background: tokens.colors.blue[500],
+            //secondary: {
+            //    background: tokens.colors.blue[500],
+            //    text: tokens.colors.white,
+            //    hover: tokens.colors.blue[300],
+            //    pressed: tokens.colors.blue[700],
+            //    disabled: tokens.colors.gray[400],
+            //    radius: tokens.radius.sm,
+            //}, 
+            secondary: {
+                background: tokens.colors.blue[200],
                 text: tokens.colors.white,
-                hover: tokens.colors.blue[300],
-                pressed: tokens.colors.blue[700],
+                hover: tokens.colors.blue[100],
+                pressed: tokens.colors.blue[500],
                 disabled: tokens.colors.gray[400],
                 radius: tokens.radius.sm,
-            }, 
-            secondary: {
+            },
+            primary: {
                 background: tokens.colors.orange[500],
                 text: tokens.colors.white,
                 hover: tokens.colors.orange[300],
@@ -133,6 +143,12 @@ export const theme = {
         gameplayIcon: {
             backgroundColor: tokens.colors.white,
             text: tokens.colors.white,
+        },
+        gameBackground: {
+           // backgroundColor: '#96725c', // mid orange
+            //backgroundColor: '#5c7296', // mid blue
+            // backgroundColor: '#9a9faf', // gray blue
+            backgroundColor: '#1f305e',
         }
     },
 

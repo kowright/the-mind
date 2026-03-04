@@ -18,15 +18,12 @@ interface CardViewProps {
 }
 
 export function CardView({ card, total, index, onPress, discarded = false, rotate = false, hideNumbers = false }: CardViewProps) {
-    console.log('total', total)
-    console.log('index', index)
+
     const theme = useResponsiveTheme();
-    console.log('card height', theme.spacing.cornerNumberSpacing)
 
 
     const cardWidth = theme.size.cardWidth;
     const cardHeight = theme.size.cardHeight;
-    console.log('card', card)
     const isDiscardEmptyPlaceholder = total === -1;
 
         const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
@@ -84,8 +81,7 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
 
     const circleWidth = cardWidth * 0.6;
     const circleHeight = cardHeight * 0.5;
-    console.log('card mistake? ', card.mistakenlyPlayed)
-    console.log('mistaken player', mistakenPlayer?.name)
+
 
     // TODO: fix box shadow on handViews
 

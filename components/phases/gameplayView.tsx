@@ -34,12 +34,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
     const askedForShuriken = state.shurikenCalls.includes(playerId);
     let shurikenButtonText = askedForShuriken ? 'Remove shuriken vote' : 'Vote to use shuriken';
 
-    const playerCardCounts = players.map(p => {
-        if (p.id !== playerId) {
-            return (<Text key={p.id}>{p.name} card count: {p.cardCount}</Text>)     
-        }
-    })
-
     const thumbsUpNumbers = agreeToStartVersion ? `${state.readyToStartPlayers.length}/${state.players.length}` :
         `${state.shurikenCalls.length}/${state.players.length}`
 
@@ -50,6 +44,9 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     // TODO: make enemy name be more obvious
 
+    // TODO: fix 2 player top enemy hand view, it isn't showing all the cards
+
+    // TODO: make thumbs up colored once there is at least 1 vote
     return (
         <View style={styles.container} >
             <View style={{
@@ -182,6 +179,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         transform: [{ rotate: '180deg' }],
         gap: 8,
+  
     },
 
     topEnemy: {
@@ -216,7 +214,8 @@ const styles = StyleSheet.create({
 
     centerArea: {
         alignItems: 'center',
-        marginTop: 8,
+        marginTop: 24,
+
     },
 
     playerArea: { 

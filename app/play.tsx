@@ -11,6 +11,7 @@ import { ErrorView } from '../components/phases/error';
 import { IconSymbol } from '../components/ui/icon-symbol';
 import { IconText } from '../components/models/iconText';
 import { GameOverlayView } from '../components/models/gameOverlay';
+import { theme } from '../theme/theme';
 
 interface PlayViewProps {
 
@@ -68,7 +69,7 @@ export default function PlayView() {
 
     return (
 
-        <View style={{ flex: 1, position: 'relative', backgroundColor: 'black' }}>
+        <View style={{ flex: 1, position: 'relative', backgroundColor: theme.color.gameBackground.backgroundColor }}>
             <Text style={{color: 'white', backgroundColor: 'blue', textAlign: 'center'}}>{player?.name || 'Unnamed Player'}</Text>
 
                      

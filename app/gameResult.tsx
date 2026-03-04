@@ -16,11 +16,9 @@ interface GameResultProps {
 
 export default function GameResult() {
     const { state } = useGame();
-    console.log('gameResult outcome', state.gameOutcome)
     const theme = useResponsiveTheme();
     const wonGame = state.gameOutcome === 'won';
 
-    console.log('gameResult won?: ', wonGame)
     const title = wonGame ? 'YOU WON!' : 'WOW, YOU LOST';
     const levelAchieved = wonGame ? state.winLevel : `${state.level.number} out of ${state.winLevel}`
     const snarkyText = wonGame ? 'YOU ALL REALLY ARE ONE MIND!' : 'YOU DEFINITELY COULD HAVE TRIED HARDER BRUH';
@@ -112,7 +110,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: theme.color.gameBackground.backgroundColor,
         padding: 16,
         justifyContent: 'space-between', 
     },

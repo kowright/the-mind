@@ -113,12 +113,10 @@ export function addCardToDiscardPile(
 }
 
 export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) {
-    console.log('wasLastPlayWasValid');
+
     if (!lastCard) {
-        console.log('no last card to compare!');
         return true;
     }
-    console.log('last play ' + lastCard.number + ' < ' + cardPlayed.number);
     return !lastCard || lastCard.number < cardPlayed.number
 }
 
@@ -156,11 +154,9 @@ export function determineRewards(lives: number, shuriken:number, level: Level) {
 
     if (level.reward === 'Life') {
         rewardLives++;
-        console.log('Earned a life!')
     }
     else if (level.reward === 'Shuriken') {
         rewardShuriken++;
-        console.log('Earned a shuriken!');
     }
     return { rewardLives, rewardShuriken };
 }

@@ -4,7 +4,7 @@ import { Redirect } from 'expo-router';
 
 export default function GameRouter() {
     const { state } = useGame();
-    console.log('game router is being used')
+
     if (!state) return null;
 
     switch (state.gamePhase) {

@@ -33,20 +33,6 @@ export function LevelResultView() {
         levels[nextLevelIndex]?.reward ?? 'None';
     const nextLevelIcon = LevelToRewardIconMapping[nextLevelReward];
 
-
-    const levelProgression = levels.map(level => {
-        if (level.reward !== 'None') {
-            const icon = LevelToRewardIconMapping[level.reward];
-            console.log('reward', icon)
-            return (
-                <View key={`level-${level.number}-progression`} style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'yellow' }} >
-                    <Text style={{ marginLeft: 4 }}>Level {level.number}:</Text>
-                    <IconSymbol size={28} name={icon} color="black" />
-                </View>
-            )
-        }
-    })
-
     return (
         <>
             <GameOverlayView>

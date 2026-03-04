@@ -75,7 +75,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                
                                     {enemies[0] && (
                                         <View style={styles.topEnemy}>
-                                        {enemies.length > 1 && <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>}
+                                        {enemies.length > 1 && <Text style={styles.topEnemyTwoPlayerText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>}
                                         {enemies.length === 1 &&
                                             <View style={styles.twoPlayerView}>
                                              <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
@@ -192,6 +192,10 @@ const styles = StyleSheet.create({
     },
     topEnemyText: {
         transform: [{ rotate: '180deg' }],
+        color: 'white',
+    },
+    topEnemyTwoPlayerText: {
+        transform: [{ rotate: '0deg' }],
         color: 'white',
     },
     horizontalEnemyText: {

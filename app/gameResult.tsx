@@ -8,6 +8,7 @@ import { DiscardPileView } from '../components/models/discardPile';
 import { CardView } from '../components/models/card';
 import { theme } from '../theme/theme';
 import { useResponsiveTheme } from '../hooks/useResponsiveTheme';
+import { ButtonView } from '../components/models/button';
 
 interface GameResultProps {
 
@@ -26,46 +27,56 @@ export default function GameResult() {
 
     // TODO: make this look more sad or fun
 
-    // TODO: use the ButtonView on this!
     return (
-        <View >
-            <Text> GAME RESULT </Text>
-            <Text style={wonGame ? styles.wonContainer : styles.lostContainer}>{title}</Text>
-            <Text>LIVES: {state.lives}</Text>
-            <Text>You made it to Level {levelAchieved}</Text>
-            <Text>DISCARD PILE</Text>
+        <View style={styles.container}>
+
+            {/* Top Content */}
             <View>
-                <>
-                    <DiscardPileView keepStacked={false} />
-                </>
+                <Text style={styles.text}>GAME RESULT</Text>
+                <Text style={wonGame ? styles.wonContainer : styles.lostContainer}>
+                    {title}
+                </Text>
+                <Text style={styles.text}>LIVES: {state.lives}</Text>
+                <Text style={styles.text}>You made it to Level {levelAchieved}</Text>
+                <Text style={styles.text}>DISCARD PILE</Text>
+                <DiscardPileView keepStacked={false} />
             </View>
-            {state.shurikenedCards.length > 0 && <Text>Removed Cards</Text>}
-    
-            <ScrollView
-                horizontal
-            >
-                {state.shurikenedCards.map((card, index) => (
-                    <View
-                        key={card.id}
-                        style={{
-                            marginLeft: index === 0 ? 0 : theme.size.cardWidth,
-                        }}
-                    >
-                        <CardView
-                            card={card}
-                            index={index}
-                            total={state.lastRemovedCards.length + 1}
-                            discarded={true}
-                            rotate={false}
-                            onPress={() => console.log('I do nothing')}
-                        />
-                    </View>
-                ))}
-            </ScrollView>
-            <Text>{snarkyText}</Text>
-            <Button onPress={() => websocketService.send({ type: 'GAME_RESTART' })}>
-                NEW GAME?
-            </Button>
+
+            {/* Scroll Section */}
+            {state.shurikenedCards.length > 0 && (
+                <View style={styles.removedSection}>
+                    <Text style={styles.text}>Removed Cards</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        {state.shurikenedCards.map((card, index) => (
+                            <View
+                                key={card.id}
+                                style={{
+                                    marginLeft: index === 0 ? 0 : theme.size.cardWidth,
+                                }}
+                            >
+                                <CardView
+                                    card={card}
+                                    index={index}
+                                    total={state.lastRemovedCards.length + 1}
+                                    discarded
+                                    rotate={false}
+                                    onPress={() => { }}
+                                />
+                            </View>
+                        ))}
+                    </ScrollView>
+                </View>
+            )}
+
+            {/* Bottom Section */}
+            <View style={styles.bottomSection}>
+                <Text style={styles.text}>{snarkyText}</Text>
+                <ButtonView
+                    text="NEW GAME?"
+                    onPress={() => websocketService.send({ type: 'GAME_RESTART' })}
+                    variant="primary"
+                />
+            </View>
 
         </View>
     );
@@ -95,5 +106,25 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         display: 'flex',
         alignItems: 'center',
+    },
+    text: {
+        color: 'white',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: 'black',
+        padding: 16,
+        justifyContent: 'space-between', 
+    },
+
+    removedSection: {
+        marginVertical: 16,
+    },
+
+    bottomSection: {
+        alignItems: 'center',
+        gap: 12,
+        marginTop: 'auto',
+        paddingBottom: 32,
     },
 });

@@ -14,6 +14,7 @@ import { Level, levels, RewardType, LevelToRewardIconMapping } from "@/shared/ty
 import { IconSymbol } from '../ui/icon-symbol';
 import { IconText } from '../models/iconText';
 import { LevelProgression } from '../models/levelProgression';
+import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
@@ -22,7 +23,7 @@ interface GameplayViewProps {
 
 export function GameplayView({ agreeToStartVersion = false, discardPileStacked = true, ...props }: GameplayViewProps) {
     const { state, playerId } = useGame();
-
+    const theme = useResponsiveTheme();
     const { players } = state;
 
     const shurikenDisabled = state.shuriken === 0;
@@ -72,22 +73,58 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                
                                 {enemies[0] && (
                               
-                                        <View style={styles.topEnemy}>
-                                        {enemies.length > 1 && <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>}
-                                        {enemies.length === 1 &&
-                                            <>
-                                            <View style={styles.twoPlayerView} >
-                                                <Text style={styles.topEnemyTwoPlayerText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
-
-                                                <HandView
-                                                    clientPlayer={enemies[0]}
-                                                    enemyPlayer
-                                                    onPressCard={() => { }}
-                                                 />
+                                        <>
+                                        {enemies.length > 1 &&
+                                            <View style={{marginTop: 8}}>
+                                                <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
                                             </View>
-                                        </>
                                         }
+                                        {enemies.length === 1 &&
+                                            <View>
+                                            {/*<View style={styles.twoPlayerView} >*/}
+                                            {/*    <Text style={styles.topEnemyTwoPlayerText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>*/}
+
+                                            {/*    <HandView*/}
+                                            {/*        clientPlayer={enemies[0]}*/}
+                                            {/*        enemyPlayer*/}
+                                            {/*        onPressCard={() => { }}*/}
+                                            {/*     />*/}
+                                                {/*</View>*/}
+                                                <View
+                                                    style={{
+                                                        height: 50,
+                                                        overflow: 'hidden',
+                                                        alignItems: 'center',
+                                                        transform: [
+                                                            { rotate: '180deg' },
+                                                        ],
+                                                        
+                                                    }}
+                                                >
+                                                    {/* Keep text normal */}
+                                                    <Text style={styles.topEnemyTwoPlayerText}>
+                                                        {`${enemies[0].name} [${enemies[0].cardCount}]`}
+                                                    </Text>
+
+                                                    {/* Rotate ONLY the hand */}
+                                                    <View
+                                                        style={{
+                                                            transform: [
+                                                                //{ rotate: '180deg' },
+                                                                //{ translateY: -(theme.size.cardHeight - 50) },
+                                                            ],
+                                                        }}
+                                                    >
+                                                        <HandView
+                                                            clientPlayer={enemies[0]}
+                                                            enemyPlayer
+                                                            onPressCard={() => { }}
+                                                        />
+                                                    </View>
+                                                </View>
                                         </View>
+                                        }
+                                        </>
                                     )}
 
                                     {enemies[1] && (
@@ -172,31 +209,34 @@ const styles = StyleSheet.create({
         margin: 8,
     },
     playerContainer: {
-        marginBottom: 13,
+        //marginBottom: 13,
         //gap: 32,
     },
     twoPlayerView: {
         //flex: 1,
-       // justifyContent: 'flex-end',
-        //alignItems: 'center',
+        //justifyContent: 'flex-end',
+        alignItems: 'center',
         //height: 50, 
-        overflow: 'hidden',
+        //overflow: 'hidden',
         //transform: [{ rotate: '180deg' }],
         //gap: 8,
   
     },
 
     topEnemy: {
-        alignItems: 'center',
+       //justifyContent: 'flex-end',
         height: 50,
         overflow: 'hidden',
-        transform: [{ rotate: '180deg' }],
+        alignItems: 'center',
+        //transform: [{ rotate: '180deg' }],
     },
     topEnemyText: {
         transform: [{ rotate: '180deg' }],
         color: 'white',
+        textAlign: 'center',
     },
     topEnemyTwoPlayerText: {
+   
         transform: [{ rotate: '180deg' }],
         color: 'white',
         textAlign: 'center',

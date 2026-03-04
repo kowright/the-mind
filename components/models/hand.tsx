@@ -18,16 +18,17 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
 
     // TODO fix enemy hand onPress
     return (
-        <ScrollView horizontal showsHorizontalScrollIndicator={true}
-            ref={scrollRef}
+        <>
+            { /* <ScrollView horizontal showsHorizontalScrollIndicator={true}
+        //    ref={scrollRef}
 
-            onContentSizeChange={() => 
+        //    onContentSizeChange={() => 
                
-                    scrollRef.current?.scrollToEnd({ animated: false })
+        //            scrollRef.current?.scrollToEnd({ animated: false })
                 
-            }
-        >
-
+        //    }
+        //>
+         */}
             {enemyPlayer ? 
 
                 <View style={styles.handContainer}>
@@ -52,6 +53,15 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                     </View>
                 </View>
                 :
+                 <ScrollView horizontal showsHorizontalScrollIndicator={true}
+                    ref={scrollRef}
+
+                    onContentSizeChange={() =>
+
+                            scrollRef.current?.scrollToEnd({ animated: false })
+
+                    }
+                >
                 <View style={styles.handContainer}>
 
                     {clientPlayer.cardCount > 0 ? <View style={styles.hand}>
@@ -82,11 +92,12 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                             onPress={() => console.log('cannot press me')}
                         />
                     }
-                </View>
+                    </View>
+                    </ScrollView>
             }
 
-
-        </ScrollView>
+            </>
+    
     );
 }
 

@@ -4,7 +4,7 @@ import { GameOverlayView } from '../models/gameOverlay';
 import { StyleSheet } from 'react-native';
 import { CardView } from '../models/card';
 import { GetReadyView } from '../models/getReady';
-import { theme } from '../../theme/theme';
+import { overlayStyle, theme } from '../../theme/theme';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
 
 interface ShurikenViewProps {
@@ -18,10 +18,10 @@ export function ShurikenView({ countdown }: ShurikenViewProps) {
 
     return (
         <GameOverlayView>
-            <View style={styles.overlap}>
+            <View style={[styles.overlay, styles.overlayContainer]}>
                 <GameOverlayHeading text='SHURIKEN CALLED!' />
-                <Text>Looks like you all can agree on something!</Text>
-                <Text>Removed cards: </Text>
+                <Text style={styles.text}>Looks like you all can agree on something!</Text>
+                <Text style={styles.text}>Removed cards: </Text>
           
                 <View style={styles.removedCardsContainer}>
                     {state.lastRemovedCards.map((card, index) => (
@@ -45,10 +45,10 @@ export function ShurikenView({ countdown }: ShurikenViewProps) {
 }
 
 const styles = StyleSheet.create({
-    overlap: {
-        backgroundColor: 'white',
-        padding: 16,
-        borderRadius: 16,
+    overlayContainer: {
+        //backgroundColor: theme.color.overlay.backgroundColor,
+        //padding: 16,
+        //borderRadius: 16,
         display: 'flex',
         gap: 16,
     },
@@ -58,5 +58,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',     
         gap: 8,                    
         marginTop: 16,
+        marginBottom: 8,
     },
+    text: {
+        color: theme.color.overlay.color,
+    },
+    overlay: overlayStyle(theme),
 });

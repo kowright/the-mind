@@ -80,6 +80,7 @@ export default function HomeScreen() {
                                 style={styles.input}
                                 value={text}
                                 placeholder="Enter your name"
+                                placeholderTextColor={theme.color.nameInput.text}
                                 onChangeText={setText}
                             />
 
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     },
 
     gameTitle: {
-        fontSize: theme.typography.title,
+        fontSize: theme.typography.title.fontSize,
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',

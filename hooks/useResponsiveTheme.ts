@@ -11,15 +11,20 @@ export function useResponsiveTheme() {
     const cWidth = Math.min(width * 0.3, 100);
     const cardWidth = !isDesktop ? cWidth : cWidth * 1.5 ;
     const cardHeight = cardWidth * 1.5;
-
+    console.log('is desktop', isDesktop)
 
   return {
-    ...theme,
+      ...theme,
+
     typography: {
-      small: theme.typography.small * scale50,
-        body: theme.typography.body * scale50,
-        title: theme.typography.title * scale100,
-        heading: theme.typography.heading * scale100,
+      small: theme.typography.small.fontSize * scale50,
+        body: theme.typography.body.fontSize * scale50,
+        title: theme.typography.title.fontSize * scale100,
+          heading: theme.typography.heading.fontSize * scale100,
+        //small: theme.typography.small * scale50,
+        //  body: theme.typography.body * scale50,
+        //  title: theme.typography.title * scale100,
+        //  heading: theme.typography.heading * scale100,
       },
 
       size: {

@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
 import { GetReadyView } from '../models/getReady';
+import { overlayStyle, theme } from '../../theme/theme';
 
 interface TransitionProps {
     countdown: number;
@@ -11,7 +12,7 @@ interface TransitionProps {
 export function TransitionView({ countdown }: TransitionProps) {
     return (
         <GameOverlayView>
-            <View style={styles.overlap}>
+            <View style={[styles.overlay, styles.overlayContainer]}>
                 <GetReadyView text='GET READY IN' countdown={countdown} />
             </View>
         </GameOverlayView>
@@ -19,11 +20,13 @@ export function TransitionView({ countdown }: TransitionProps) {
 }
 
 const styles = StyleSheet.create({
-    overlap: {
-        backgroundColor: 'white',
-        padding: 32,
-        borderRadius: 16,
+    overlayContainer: {
+        //backgroundColor: theme.color.overlay.backgroundColor,
+        //padding: 32,
+        //borderRadius: 16,
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
     },
+    overlay: overlayStyle(theme),
+   
 });

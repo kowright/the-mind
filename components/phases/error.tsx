@@ -2,6 +2,7 @@ import { Text, View } from 'react-native';
 import { GameOverlayView } from '../models/gameOverlay';
 import { StyleSheet } from 'react-native';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
+import { overlayStyle, theme } from '../../theme/theme';
 
 interface ErrorProps {
 }
@@ -10,11 +11,11 @@ export function ErrorView() {
     return (
         <>
             <GameOverlayView>
-                <View style={styles.overlap}>
+                <View style={[styles.overlay, styles.overlayContainer]}>
                     <GameOverlayHeading text='ERROR!' />
 
-                    <Text>You do not have enough players.</Text>
-                    <Text>Going to restart game now.</Text>
+                    <Text style={styles.text}>You do not have enough players.</Text>
+                    <Text style={styles.text}>Going to restart game now.</Text>
                 </View>
             </GameOverlayView>
         </>
@@ -22,11 +23,15 @@ export function ErrorView() {
 }
 
 const styles = StyleSheet.create({
-    overlap: {
-        backgroundColor: 'white',
-        padding: 16,
-        borderRadius: 16,
+    overlayContainer: {
+        //backgroundColor: theme.color.overlay.backgroundColor,
+        //padding: 16,
+        //borderRadius: 16,
         display: 'flex',
         alignItems: 'stretch',
     },
+    overlay: overlayStyle(theme),
+    text: {
+        color: theme.color.overlay.color,
+    }
 });

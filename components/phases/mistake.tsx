@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
 import { CardView } from '../models/card';
-import { theme } from '../../theme/theme';
+import { overlayStyle, theme } from '../../theme/theme';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { IconText } from '../models/iconText';
 import { GetReadyView } from '../models/getReady';
@@ -19,9 +19,9 @@ export function MistakeView({ countdown }: MistakeProps) {
     // TODO: does it go to fast? Maybe reformatting it so it can be understood faster
     return (
         <GameOverlayView>
-            <View style={styles.overlap}>
+            <View style={[styles.overlay, styles.overlayContainer]}>
                 <GameOverlayHeading text='MISTAKE!'/>
-                <Text>PLAYED TOO EARLY:</Text>
+                <Text style={styles.text}>PLAYED TOO EARLY:</Text>
                 <View
                     key={`last-played-card-mistake`}
                     style={{
@@ -37,7 +37,7 @@ export function MistakeView({ countdown }: MistakeProps) {
                         onPress={() => console.log('I do nothing')}
                     />
                 </View>
-                <Text>DID NOT PLAY WHEN THEY SHOULD HAVE:</Text>
+                <Text style={styles.text}>DID NOT PLAY WHEN THEY SHOULD HAVE:</Text>
                 <View style={styles.removedCardsContainer}>
               
                     {state.lastRemovedCards.map((card, index) => (
@@ -70,10 +70,10 @@ export function MistakeView({ countdown }: MistakeProps) {
 }
 
 const styles = StyleSheet.create({
-    overlap: {
-        backgroundColor: 'white',
-        padding: 16,
-        borderRadius: 16,
+    overlayContainer: {
+        //backgroundColor: theme.color.overlay.backgroundColor,
+        //padding: 16,
+        //borderRadius: theme.border.radius.overlay,
         display: 'flex',
         alignItems: 'center',
     },
@@ -85,5 +85,9 @@ const styles = StyleSheet.create({
     },
     lostLivesContainer: {
         marginVertical: 12,
+    },
+    overlay: overlayStyle(theme),
+    text: {
+        color: theme.color.overlay.color,
     }
 });

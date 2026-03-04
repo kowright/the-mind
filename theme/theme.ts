@@ -5,6 +5,7 @@ const tokens = {
             100: '#bbcdf4',
             200: '#0049DB',
             300: '#8DABEC',
+            400: '#1f305e',
             500: '#194298',
             700: '#0A1A3D'
         },
@@ -49,6 +50,7 @@ const tokens = {
     font: {
         weight: {
             normal: "500" as const, // use as const for the union type, not a generic string
+            bold: "700" as const,
         }, 
         size: {
             small: 12,
@@ -66,16 +68,11 @@ const tokens = {
     size: {
         400: 400,
     },
-
-    radius: {
-        sm: 6,
-        md: 12,
-        lg: 16,
-        round: 999,
-    },
 };
-// TODO: fill this out- should separate raw values from semantics in theme? 
+// TODO: fill this out- should separate raw values from semantics in theme?
 
+
+//TODO: pick background or backgroundColor wording to use 
 export const theme = {
     // semantic meaning of raw values
     colors: {
@@ -105,7 +102,7 @@ export const theme = {
                 hover: tokens.colors.blue[100],
                 pressed: tokens.colors.blue[500],
                 disabled: tokens.colors.gray[400],
-                radius: tokens.radius.sm,
+                radius: tokens.border.radius.sm,
             },
             primary: {
                 background: tokens.colors.orange[500],
@@ -113,7 +110,7 @@ export const theme = {
                 hover: tokens.colors.orange[300],
                 pressed: tokens.colors.orange[700],
                 disabled: tokens.colors.gray[400],
-                radius: tokens.radius.sm,
+                radius: tokens.border.radius.sm,
             }
         },
 
@@ -132,7 +129,7 @@ export const theme = {
 
             },
             discard: {
-                
+
             }
         },
 
@@ -145,10 +142,14 @@ export const theme = {
             text: tokens.colors.white,
         },
         gameBackground: {
-           // backgroundColor: '#96725c', // mid orange
+            // backgroundColor: '#96725c', // mid orange
             //backgroundColor: '#5c7296', // mid blue
             // backgroundColor: '#9a9faf', // gray blue
-            backgroundColor: '#1f305e',
+            backgroundColor: tokens.colors.blue[400],
+        },
+        overlay: {
+            backgroundColor: tokens.colors.blue[400],
+            color: tokens.colors.white,
         }
     },
 
@@ -163,10 +164,28 @@ export const theme = {
 
     typography: {
         //TODO: should be the line weight, font weight, letter spacing, font size
-        small: 12,
-        body: 16,
-        heading: 28,
-        title: 32,
+        //small: 12,
+        //body: 16,
+        //heading: 28,
+        //title: 32,
+
+        heading: {
+            fontSize: tokens.typography.heading,
+            fontWeight: tokens.font.weight.bold,
+            color: tokens.colors.white,
+        },
+
+        small: {
+            fontSize: tokens.typography.small
+        },
+
+        body: {
+            fontSize: tokens.typography.body,
+        },
+
+        title: {
+            fontSize: tokens.typography.title,
+        }
     },
 
 
@@ -184,6 +203,22 @@ export const theme = {
     opacity: {
         disabled: tokens.opacity[50],
         overlay: tokens.opacity[70]
+    },
+
+    border: {
+        radius: {
+            overlay: tokens.border.radius.lg,
+        }
     }
 };
 
+export type Theme = typeof theme; 
+
+// styles
+
+export const overlayStyle = (theme: Theme) => ({
+    backgroundColor: theme.color.overlay.backgroundColor,
+    borderRadius: theme.border.radius.overlay,
+    padding: theme.spacing.lg,
+
+});

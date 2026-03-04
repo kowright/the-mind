@@ -8,7 +8,7 @@ import { IconSymbol } from '../ui/icon-symbol';
 import { IconText } from '../models/iconText';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
 import { CardView } from '../models/card';
-import { theme } from '../../theme/theme';
+import { overlayStyle, theme } from '../../theme/theme';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 
 interface LevelResultProps {
@@ -36,13 +36,13 @@ export function LevelResultView() {
     return (
         <>
             <GameOverlayView>
-                <View style={styles.overlap}>
+                <View style={[styles.overlay, styles.overlayContainer]}>
                     <GameOverlayHeading text='LEVEL WIN!' />
 
-                    <IconText iconFirst={false} iconName={pastLevelIcon} altColor='black' text='YOU EARNED:' />
-                    <IconText iconFirst={false} iconName={nextLevelIcon} altColor='black' text='NEXT LEVEL YOU WILL EARN:' />
-                    <IconText iconFirst={false} iconName='chart.bar.fill' altColor='black' text={`YOU ARE NOW ON LEVEL ${state.level.number} out of ${state.winLevel} `} />
-                    <Text>Discard Pile</Text>
+                    <IconText iconFirst={false} iconName={pastLevelIcon} text='YOU EARNED:' />
+                    <IconText iconFirst={false} iconName={nextLevelIcon} text='NEXT LEVEL YOU WILL EARN:' />
+                    <IconText iconFirst={false} iconName='chart.bar.fill' text={`YOU ARE NOW ON LEVEL ${state.level.number} out of ${state.winLevel} `} />
+                    <Text style={{color: theme.color.overlay.color}}>Discard Pile</Text>
                     <DiscardPileView keepStacked={false} />
                     {state.shurikenedCards.length > 0 && <Text>Removed Cards</Text>}
                     {/*<View style={styles.removedCardsContainer}>*/}
@@ -76,13 +76,14 @@ export function LevelResultView() {
 }
 
 const styles = StyleSheet.create({
-    overlap: {
-        backgroundColor: 'white',
-        padding: 16,
-        borderRadius: 16,
+    overlayContainer: {
+        //backgroundColor: theme.color.gameBackground.backgroundColor,
+        //padding: 16,
+        //borderRadius: 16,
         display: 'flex',
         //alignItems: 'stretch',
     },
+    overlay: overlayStyle(theme),
     removedCardsContainer: {
         flexDirection: 'row',
         alignItems: 'center',

@@ -14,7 +14,7 @@ interface IconTextProps {
 const iconColorMapping: IconMapping = {
     'hare.fill': 'green',
     'staroflife.fill': 'gray',
-    'chart.bar.fill': 'purple',
+    'chart.bar.fill': 'pink',
 };
 
 type IconMapping = Partial<Record<SymbolViewProps['name'], string>>;

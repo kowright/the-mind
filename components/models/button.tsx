@@ -24,12 +24,16 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         height: circleSize,
         borderRadius: circleSize / 2,
     };
+    console.log('dynamic circle', dynamicCircleStyle)
     const dynamicTooltipStyle = circleShape
         ? { bottom: circleSize + 12 }
         : null;
+        console.log('circle shape', circleShape)
+    console.log('button font size', theme.typography.heading)
     const dynamicTextStyle = circleShape
         ? { fontSize: theme.typography.heading }
         : null;
+    console.log('button font size', dynamicTextStyle)
 
     const handlePress = () => {
         if (disabled) {

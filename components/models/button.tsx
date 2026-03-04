@@ -11,9 +11,10 @@ interface ButtonProps {
     disabled?: boolean;
     tooltipText?: string;
     circleShape?: boolean;
+    variant: 'primary' | 'secondary',
 }
 
-export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false, circleShape = false }: ButtonProps) {
+export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false, circleShape = false, variant = 'primary' }: ButtonProps) {
     const [visible, setVisible] = useState(false);
     const theme = useResponsiveTheme();
   
@@ -55,7 +56,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
             setVisible(false);
         }, 1500);
     };
-
+ 
     return (
         <View style={styles.buttonContainer}>
             <Pressable onHoverIn={() => setVisible(true)}
@@ -65,9 +66,10 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                 style={({ pressed, hovered }) => [
                     styles.button,
                     circleShape && dynamicCircleStyle,
+                    { backgroundColor: theme.color.button[variant].background },
                     disabled && styles.disabled,
-                    hovered && !disabled && styles.buttonHovered,
-                    pressed && !disabled && styles.buttonPressed,
+                    hovered && !disabled && { backgroundColor: theme.color.button[variant].hover },
+                    pressed && !disabled && { backgroundColor: theme.color.button[variant].pressed },
                 ]}
             >
                 <Text
@@ -82,7 +84,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
 
             {visible && showTooltip && (
                 <View style={tooltip}>
-                    <Text style={styles.tooltipText}>
+                    <Text style={styles.tooltipText} >
                         {tooltipText}
                     </Text>
                 </View>
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'purple' // TODO
     },
     button: {
-        backgroundColor: theme.colors.primary,
+        //backgroundColor: theme.colors.primary,
         paddingVertical: 10,
         paddingHorizontal: 16,
         borderRadius: 6,
@@ -115,12 +117,12 @@ const styles = StyleSheet.create({
         color: theme.colors.textPrimary,
         justifyContent: 'center'
     },
-    buttonHovered: {
-        backgroundColor: theme.colors.hover, 
-    },
-    buttonPressed: {
-        backgroundColor: 'yellow', // TODO 
-    },
+    //buttonHovered: {
+    //    backgroundColor: theme.colors.hover, 
+    //},
+    //buttonPressed: {
+    //    backgroundColor: 'yellow', // TODO 
+    //},
     buttonText: {
         color: theme.colors.textPrimary,
         fontWeight: 'normal',
@@ -129,11 +131,11 @@ const styles = StyleSheet.create({
     tooltip: {
         position: 'absolute',
         bottom: 45,
-        backgroundColor: 'black',
+        backgroundColor: theme.color.tooltip.background,
         padding: 8,
         borderRadius: 6,
     },
     tooltipText: {
-        color: theme.colors.textPrimary,
+        color: theme.color.tooltip.text,
     },
 });

@@ -53,18 +53,11 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
     return (
         <View style={styles.container} >
             <View style={{
-               flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor: 'yellow'
+               flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'
             }}>
-
                 <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
-
-
                 <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
-
-
                 <IconText iconFirst={true} iconName='chart.bar.fill' text={`${state.level.number}/${state.winLevel}`} />
-
-                
                 <IconText iconFirst={true} iconName='hand.thumbsup' text={thumbsUpNumbers} />
             
             </View>
@@ -79,28 +72,33 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                             </View>   
                         :
                             <>
-                              
+                               
                                     {enemies[0] && (
                                         <View style={styles.topEnemy}>
-                                        <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
-                                        {enemies.length === 1 && <HandView
+                                        {enemies.length > 1 && <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>}
+                                        {enemies.length === 1 &&
+                                            <View style={styles.twoPlayerView}>
+                                             <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
+                                            <HandView
                                             clientPlayer={enemies[0]}
                                             enemyPlayer
                                             onPressCard={() => { }}
-                                        />}
+                                                />
+                                            </View>
+                                        }
                                         </View>
                                     )}
 
-                                {enemies[1] && (
-                                    <View style={styles.leftEnemy}>
-                                        <Text>{`${enemies[1].name} [${enemies[1].cardCount}]`}</Text>
-                                    </View>
+                                    {enemies[1] && (
+                                        <View style={styles.leftEnemy}>
+                                        <Text style={styles.horizontalEnemyText}>{`${enemies[1].name} [${enemies[1].cardCount}]`}</Text>
+                                        </View>
                                         
-                                    )}
+                                        )}
 
                                     {enemies[2] && (
                                         <View style={styles.rightEnemy}>
-                                        <Text>{`${enemies[1].name} [${enemies[1].cardCount}]`}</Text>
+                                        <Text style={styles.horizontalEnemyText}>{`${enemies[1].name} [${enemies[1].cardCount}]`}</Text>
                                         </View>
                                     )}
 
@@ -123,6 +121,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 circleShape={false}
                                 disabled={clientPlayer.hand.cards.length === 0}
                                 showTooltip={false}
+                                variant='primary'
                             /> }
                            
                                 <HandView
@@ -140,7 +139,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 text={readyButtonText}
                                 circleShape={false}
                                 disabled={false}
-                                showTooltip={false}
+                                    showTooltip={false}
+                                variant='primary'
                             />
                             :
                             <ButtonView
@@ -149,6 +149,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                     circleShape={false}
                                     disabled={shurikenDisabled}
                                     showTooltip={false}
+                                    variant='secondary'
                                
                             />
                         }
@@ -171,22 +172,30 @@ const styles = StyleSheet.create({
     },
     playerContainer: {
         marginBottom: 13,
-        gap: 32,
+        //gap: 32,
     },
     twoPlayerView: {
         flex: 1,
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        height: 50, 
+        overflow: 'hidden',
+        transform: [{ rotate: '180deg' }],
+        gap: 8,
     },
 
     topEnemy: {
         alignItems: 'center',
         height: 50,
         overflow: 'hidden',
-        justifyContent: 'flex-end',
-        transform: [{ rotate: '180deg' }],
+   
     },
     topEnemyText: {
         transform: [{ rotate: '180deg' }],
+        color: 'white',
+    },
+    horizontalEnemyText: {
+        color: 'white',
     },
     middleEnemyRow: {
         flexDirection: 'row',
@@ -203,13 +212,16 @@ const styles = StyleSheet.create({
 
     centerArea: {
         alignItems: 'center',
-
+        marginTop: 8,
     },
 
     playerArea: { 
- 
+        backgroundColor: 'white',
         alignItems: 'center',
         gap: 8,
+        paddingVertical: 8,
+        marginTop: 36,
+        marginBottom: 12,
     },
     leftEnemy: {
         position: 'absolute',
@@ -228,12 +240,12 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'blue',
+        //backgroundColor: 'blue',
     },
     gameBoard: {
         flex: 1, 
         position: 'relative',
-        backgroundColor: 'orange',
+        //backgroundColor: 'orange',
         marginTop: 16,
     }
 });

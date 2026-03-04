@@ -4,9 +4,12 @@ const tokens = {
         blue: {
             300: '#8DABEC',
             500: '#194298',
+            700: '#0A1A3D'
         },
         orange: {
+            300: '#f9c78b',
             500: '#F49320',
+            700: '#b56709',
         },
         red: {
             500: '#FF3B30',
@@ -87,16 +90,31 @@ export const theme = {
     color: {
         button: {
             primary: {
-                background: tokens.colors.white,
+                background: tokens.colors.blue[500],
                 text: tokens.colors.white,
                 hover: tokens.colors.blue[300],
-                pressed: tokens.colors.blue[500],
+                pressed: tokens.colors.blue[700],
                 disabled: tokens.colors.gray[400],
                 radius: tokens.radius.sm,
             }, 
             secondary: {
-
+                background: tokens.colors.orange[500],
+                text: tokens.colors.white,
+                hover: tokens.colors.orange[300],
+                pressed: tokens.colors.orange[700],
+                disabled: tokens.colors.gray[400],
+                radius: tokens.radius.sm,
             }
+        },
+
+        tooltip: {
+            background: tokens.colors.orange[500],
+            text: tokens.colors.white,
+        },
+
+        nameInput: {
+            borderColor: tokens.colors.orange[500],
+            text: tokens.colors.white,
         },
 
         card: {
@@ -113,7 +131,8 @@ export const theme = {
         },
 
         gameplayIcon: {
-
+            backgroundColor: tokens.colors.white,
+            text: tokens.colors.white,
         }
     },
 

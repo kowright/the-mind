@@ -74,6 +74,7 @@ export default function HomeScreen() {
                         showTooltip={!isValidPlayerCount || !allPlayersHaveNames}
                         tooltipText={startButtonText}
                         circleShape
+                        variant='primary'
                     />
                     
                     {!enteredName ? (
@@ -94,6 +95,7 @@ export default function HomeScreen() {
                                         name: text,
                                     } as ClientAction);
                                 }}
+                                variant='secondary'
                             />
                         </>
                     ) : (
@@ -119,6 +121,7 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         padding: 24,
+        backgroundColor: 'black'
     },
 
     content: {
@@ -133,6 +136,7 @@ const styles = StyleSheet.create({
 
     gameTitle: {
         fontSize: theme.typography.title,
+        color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
     },
@@ -150,13 +154,15 @@ const styles = StyleSheet.create({
         maxWidth: 400,
         height: 40,
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: theme.color.nameInput.borderColor,
         borderRadius: 8,
         paddingHorizontal: 10,
+        color: theme.color.nameInput.text,
     },
 
     meta: {
         textAlign: 'center',
+        color: 'white',
     },
 });
 

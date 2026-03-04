@@ -87,6 +87,8 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
     console.log('card mistake? ', card.mistakenlyPlayed)
     console.log('mistaken player', mistakenPlayer?.name)
 
+    // TODO: fix box shadow on handViews
+
     return (
         <Pressable
             onPress={() =>!discarded && total - 1 === index ? onPress() : ''} >

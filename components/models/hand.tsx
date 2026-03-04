@@ -31,7 +31,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
             {enemyPlayer ? 
 
                 <View style={styles.handContainer}>
-                    <View style={styles.hand}>
+                
                   
                         {clientPlayer.cardCount !== 0 && Array.from({ length: clientPlayer.cardCount }).map((_, index, arr) => (
                             <CardView
@@ -49,7 +49,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                         ))
                            
                         }
-                    </View>
+          
                 </View>
                 :
                 <View style={styles.handContainer}>

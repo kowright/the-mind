@@ -25,10 +25,11 @@ export function LevelProgression() {
                 />
             );
         });
+
     return (
         <View>
             <View style={styles.textContainer}>
-                <Text>Rewards at Levels:</Text>
+                <Text style={styles.text}>Rewards at Levels:</Text>
             </View>
             <View style={styles.levelProgressContainer}>
                 {levelProgression}
@@ -43,12 +44,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: 'yellow'
+        //backgroundColor: 'yellow'
     },
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'yellow',
+        //backgroundColor: 'yellow',
+    },
+    text: {
+        color: 'white',
     }
 });

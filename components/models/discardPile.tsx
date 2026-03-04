@@ -32,6 +32,8 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
 
     // TODO: contentContainerStyle for scrollview needs to go in styles
 
+    // TODO: remove box shadow on empty state
+
     return (
         <>
   

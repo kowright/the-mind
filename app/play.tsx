@@ -68,8 +68,8 @@ export default function PlayView() {
 
     return (
 
-        <View style={{ flex: 1, position: 'relative' }}>
-            <Text>{player?.name || 'Unnamed Player'}</Text>
+        <View style={{ flex: 1, position: 'relative', backgroundColor: 'black' }}>
+            <Text style={{color: 'white', backgroundColor: 'blue', textAlign: 'center'}}>{player?.name || 'Unnamed Player'}</Text>
 
                      
 

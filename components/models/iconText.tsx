@@ -33,7 +33,7 @@ export function IconText({ iconFirst, text, iconName, altColor}: IconTextProps) 
             ? altColor
             : iconColorMapping[iconName] ?? theme.color.gameplayIcon.text 
     
-    const iconSize = iconFirst ? 28 : 24;
+    const iconSize = iconFirst ? 28 : 20;
     return (
         <View style={styles.container} >
             {!iconFirst && <Text style={[styles.textRight, { color: altColor || theme.color.gameplayIcon.text }]}>{text}</Text>}

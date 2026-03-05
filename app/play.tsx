@@ -1,4 +1,5 @@
 import { Text, View } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { MistakeView } from '@/components/phases/mistake';
 import { GameplayView } from '@/components/phases/gamePlayView';
@@ -8,14 +9,8 @@ import { LevelResultView } from '../components/phases/levelResult';
 import { ShurikenView } from '../components/phases/shuriken';
 import { countdownInterval, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime } from '../shared/utils/utils';
 import { ErrorView } from '../components/phases/error';
-import { IconSymbol } from '../components/ui/icon-symbol';
-import { IconText } from '../components/models/iconText';
 import { GameOverlayView } from '../components/models/gameOverlay';
 import { theme } from '../theme/theme';
-
-interface PlayViewProps {
-
-}
 
 export default function PlayView() {
     const { state, playerId } = useGame();
@@ -69,16 +64,11 @@ export default function PlayView() {
 
     return (
 
-        <View style={{ flex: 1, position: 'relative', backgroundColor: theme.color.gameBackground.backgroundColor }}>
-            <Text style={{color: 'white', backgroundColor: theme.color.button.primary.background, textAlign: 'center'}}>{player?.name || 'Unnamed Player'}</Text>
-
-                     
+        <View style={styles.container}>
+            <Text style={styles.nameText}>{player?.name || 'Unnamed Player'}</Text>
 
             <GameplayView agreeToStartVersion={state.gamePhase === 'agreeToStart'} discardPileStacked={true} />
             
-   
-          
-
             {state.gamePhase === 'mistake' && (
                 <MistakeView countdown={countdown} />
             )}
@@ -95,19 +85,25 @@ export default function PlayView() {
                 <ErrorView />
             )}
 
-            {/*{state.gamePhase === 'transition' && inAskToStartPhase && (*/}
-                
-            {/*    <Text>HI</Text>*/}
-           
-            {/*)}*/}
-
             {state.gamePhase === 'levelComplete' && !inAskToStartPhase && (
                 <GameOverlayView>
                     <LevelResultView />
                 </GameOverlayView>
             )}
-
         </View>
     );
-
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        position: 'relative',
+        backgroundColor: theme.color.gameBackground.backgroundColor,
+    },
+    nameText: {
+        color: theme.typography.body.color,
+        fontSize: theme.typography.body.fontSize,
+        backgroundColor: theme.color.brand.primary,
+        textAlign: 'center'
+    },
+});

@@ -180,11 +180,15 @@ export const theme = {
         },
 
         small: {
-            fontSize: tokens.typography.small
+            fontSize: tokens.typography.small,
+            color: tokens.colors.white,
+
         },
 
         body: {
             fontSize: tokens.typography.body,
+            color: tokens.colors.white,
+
         },
 
         title: {

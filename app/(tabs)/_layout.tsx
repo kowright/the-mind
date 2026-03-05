@@ -4,6 +4,7 @@ import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { theme } from '../../theme/theme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -11,9 +12,9 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: 'blue', //TODO change to theme color
+        tabBarActiveTintColor: theme.color.menuIcon.backgroundColor,
         headerShown: false,
-        tabBarButton: HapticTab,
+              tabBarButton: HapticTab,
       }}>
       <Tabs.Screen
         name="index"

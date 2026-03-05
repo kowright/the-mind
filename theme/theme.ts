@@ -6,7 +6,7 @@ const tokens = {
             200: '#0049DB',
             300: '#8DABEC',
             400: '#1f305e',
-            500: '#194298',
+            500: '#194298', //primary
             700: '#0A1A3D'
         },
         orange: {
@@ -87,6 +87,10 @@ export const theme = {
     },
 
     color: {
+        brand: {
+            primary: tokens.colors.orange[500],
+        },
+
         button: {
             //secondary: {
             //    background: tokens.colors.blue[500],
@@ -134,7 +138,7 @@ export const theme = {
         },
 
         menuIcon: {
-
+            backgroundColor: tokens.colors.blue[500],
         },
 
         gameplayIcon: {
@@ -185,6 +189,8 @@ export const theme = {
 
         title: {
             fontSize: tokens.typography.title,
+            color: tokens.colors.orange[500],
+    
         }
     },
 

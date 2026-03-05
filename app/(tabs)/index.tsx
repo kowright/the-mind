@@ -29,7 +29,12 @@ export default function HomeScreen() {
         player => player.name && player.name.trim().length > 0
     );
 
+    const clientPlayer = state.players.find(p => p.id === playerId);
 
+
+    const nameInputFieldText = clientPlayer?.name === '' ||
+        text !== '' ?
+        'Enter your name' : 'Can rename yourself or keep previous name';
     //TODO: give warning that you are not connected to websocket
 
     //TODO: Make name stuff look better
@@ -73,13 +78,16 @@ export default function HomeScreen() {
                         circleShape
                         variant='primary'
                     />
+
+                    {(!enteredName && clientPlayer?.name !== '') && <Text style={styles.metaTitle}>Hi {clientPlayer?.name}!</Text>}
+
                     
                     {!enteredName ? (
                         <>
                             <TextInput
                                 style={styles.input}
                                 value={text}
-                                placeholder="Enter your name"
+                                placeholder={nameInputFieldText}
                                 placeholderTextColor={theme.color.nameInput.text}
                                 onChangeText={setText}
                             />
@@ -97,8 +105,10 @@ export default function HomeScreen() {
                             />
                         </>
                     ) : (
-                        <Text>Hi {text}!</Text>
+
+                       <Text style={styles.metaTitle}>Hi {text}!</Text>
                     )}
+
 
                     <Text style={styles.meta}>
                         There {state.players.length > 1 ? 'are' : 'is'} {state.players.length}{' '}
@@ -106,7 +116,7 @@ export default function HomeScreen() {
                     </Text>
 
                     <Text style={styles.meta}>
-                        We got {playerNames}
+                        {`We got ${playerNames}${!allPlayersHaveNames ? '...' : '!'} `}
                     </Text>
                 </View>
             </View>
@@ -151,7 +161,7 @@ const styles = StyleSheet.create({
         width: '100%',
         maxWidth: 400,
         height: 40,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: theme.color.nameInput.borderColor,
         borderRadius: 8,
         paddingHorizontal: 10,
@@ -161,7 +171,13 @@ const styles = StyleSheet.create({
     meta: {
         textAlign: 'center',
         color: 'white',
+        fontSize: theme.typography.body.fontSize,
     },
+    metaTitle: {
+        color: theme.typography.title.color,
+        fontSize: theme.typography.title.fontSize,
+   
+    }
 });
 
 function startGame() {

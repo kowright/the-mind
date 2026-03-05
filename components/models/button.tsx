@@ -68,6 +68,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                     styles.button,
                     circleShape && dynamicCircleStyle,
                     { backgroundColor: theme.color.button[variant].background },
+                  
                     disabled && styles.disabled,
                     hovered && !disabled && { backgroundColor: theme.color.button[variant].hover },
                     pressed && !disabled && { backgroundColor: theme.color.button[variant].pressed },
@@ -78,6 +79,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                         styles.buttonText,
                         circleShape && dynamicTextStyle,
                         disabled && styles.disabledText,
+                        { fontWeight: theme.font.weight.button[variant] },
                     ]}
                 >
                     {text}</Text>
@@ -116,7 +118,8 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         alignItems: 'center',
         color: theme.colors.textPrimary,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        
     },
     //buttonHovered: {
     //    backgroundColor: theme.colors.hover, 

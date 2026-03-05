@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         color: theme.color.gameplayIcon.text,
     },
     textLeft: {
-        marginLeft: 2,
+        marginLeft: 4,
         color: theme.color.gameplayIcon.text,
     }
 });

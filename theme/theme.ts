@@ -51,6 +51,8 @@ const tokens = {
         weight: {
             normal: "500" as const, // use as const for the union type, not a generic string
             bold: "700" as const,
+            //normal: 500,
+            //bold: 700,
         }, 
         size: {
             small: 12,
@@ -106,7 +108,7 @@ export const theme = {
                 hover: tokens.colors.blue[100],
                 pressed: tokens.colors.blue[500],
                 disabled: tokens.colors.gray[400],
-                radius: tokens.border.radius.sm,
+                radius: tokens.border.radius.sm, // TODO move
             },
             primary: {
                 background: tokens.colors.orange[500],
@@ -114,7 +116,7 @@ export const theme = {
                 hover: tokens.colors.orange[300],
                 pressed: tokens.colors.orange[700],
                 disabled: tokens.colors.gray[400],
-                radius: tokens.border.radius.sm,
+                radius: tokens.border.radius.sm, // TODO move
             }
         },
 
@@ -207,6 +209,11 @@ export const theme = {
     font: {
         weight: {
             normal: tokens.font.weight.normal,
+            bold: tokens.font.weight.bold,
+            button: {
+                primary: tokens.font.weight.bold,
+                secondary: tokens.font.weight.normal,
+            }
         }
     },
 

@@ -47,6 +47,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     // TODO: make enemy name be more obvious
 
+
     return (
         <View style={styles.container} >
             <View style={{
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
         //transform: [{ rotate: '180deg' }],
     },
     topEnemyText: {
-        transform: [{ rotate: '180deg' }],
+        //transform: [{ rotate: '180deg' }],
         color: 'white',
         textAlign: 'center',
     },

@@ -10,7 +10,7 @@ class WebsocketService {
         return this.socket?.readyState === WebSocket.OPEN;
     }
 
-    connect(url: string, onOpen?: () => void) {
+    connect(url: string, onOpen?: () => void, onError?: (err: any) => void) {
         this.socket = new WebSocket(url);
 
         this.socket.onopen = () => {
@@ -20,10 +20,16 @@ class WebsocketService {
 
         this.socket.onerror = (err) => {
             log.error('error', err)
+            console.log('socket on error')
+            onError?.(err);
         };
 
         this.socket.onclose = () => {
-            log.info('Disconnected to websocket')
+            if (!this.socket || this.socket.readyState === WebSocket.CLOSED) {
+                log.info('WebSocket closed');
+                console.log('socket on close')
+                //onError?.('Connection lost');
+            }
         };
     }
 
@@ -48,6 +54,10 @@ class WebsocketService {
 
     disconnect() {
         this.socket?.close();
+        //this.socket?.close = () => {
+        //    log.info('Disconnected websocket');
+        //    onError?.("Connection lost");
+        //};
         this.socket = null;
     }
 }

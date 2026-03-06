@@ -11,6 +11,7 @@ type GameContextType = {
     state: GameState;
     dispatch: React.Dispatch<ServerAction>; // this might not even be used
     playerId?: string;    
+    socketError: string | null;
 };
 
 const log = createLogger('GAME CONTEXT')
@@ -20,20 +21,24 @@ export const GameContext = createContext<GameContextType | null>(null); //expose
 export function GameProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game stat, it may not be used TODO 
     const [clientPlayerId, setPlayerId] = useState<string | undefined>();
-
+    const [socketError, setSocketError] = useState<string | null>(null);
 
     const wsURL = Constants.expoConfig?.extra?.WS_URL_WEB;
 
     useEffect(() => {
 
         if (!websocketService.isConnected()) {
-            websocketService.connect(wsURL, () => {
-            });
+            websocketService.connect(
+                wsURL,
+                () => { },
+                //() => setSocketError("WebSocket connection failed. Restart App.")
+                () => dispatch({
+                    type: 'ERROR', errorMessage: 'Websocket connection failed. Restart App.'
+                })
+            );
         }
 
         websocketService.onMessage((message: ServerMessage) => {
-            log.info("MESSAGE FROM SERVER from Game Provider:", message)
-
             if (message.type === "ASSIGN_PLAYER_ID") {
                 setPlayerId(message.playerId);
                 return;
@@ -52,7 +57,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }, []);
     
     return (
-        <GameContext.Provider value={{ state, dispatch, playerId: clientPlayerId }}>
+        <GameContext.Provider value={{ state, dispatch, playerId: clientPlayerId, socketError }}>
             {children}
         </GameContext.Provider>
     );

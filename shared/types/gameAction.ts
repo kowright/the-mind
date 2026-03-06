@@ -51,7 +51,7 @@ export interface ActionPayloads {
     TRANSITION: { nextAction: ServerAction }
     GAME_RESTART: {};
     TRANSITION_TO_PLAYING: {};
-    ERROR: {};
+    ERROR: {errorMessage: string};
 }
 export type ClientAction = {
     [K in GameActionType]: { type: K } & ActionPayloads[K]

@@ -82,7 +82,7 @@ export default function PlayView() {
             )}
 
             {state.gamePhase === 'error' && (
-                <ErrorView />
+                <ErrorView errorMessage={state.errorMessage} />
             )}
 
             {state.gamePhase === 'levelComplete' && !inAskToStartPhase && (

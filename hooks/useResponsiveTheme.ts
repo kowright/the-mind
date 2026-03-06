@@ -11,7 +11,6 @@ export function useResponsiveTheme() {
     const cWidth = Math.min(width * 0.3, 100);
     const cardWidth = !isDesktop ? cWidth : cWidth * 1.5 ;
     const cardHeight = cardWidth * 1.5;
-    console.log('is desktop', isDesktop)
 
   return {
       ...theme,

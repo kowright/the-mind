@@ -5,17 +5,18 @@ import { GameOverlayHeading } from '../models/gameOverlayHeading';
 import { overlayStyle, theme } from '../../theme/theme';
 
 interface ErrorProps {
+    errorMessage?: string;
 }
 
-export function ErrorView() {
+export function ErrorView({ errorMessage = 'You do not have enough players'}: ErrorProps) {
     return (
         <>
             <GameOverlayView>
                 <View style={[styles.overlay, styles.overlayContainer]}>
                     <GameOverlayHeading text='ERROR!' />
 
-                    <Text style={styles.text}>You do not have enough players.</Text>
-                    <Text style={styles.text}>Going to restart game now.</Text>
+                    <Text style={styles.text}>{errorMessage}</Text>
+                    {/*<Text style={styles.text}>Going to restart game now.</Text>*/}
                 </View>
             </GameOverlayView>
         </>

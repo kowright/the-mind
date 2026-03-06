@@ -48,7 +48,8 @@ export function gameReducer(
                 return {
                     ...state,
                     players,
-                    gamePhase: 'error'
+                    gamePhase: 'error',
+                    errorMessage: 'A player disconnected. There are not enough players are connected. Restarting game.'
                 }
             }
             return {
@@ -372,9 +373,12 @@ export function gameReducer(
 
         case 'ERROR':
             log.warn('Error in reducer')
+            console.log('reducer error', action.errorMessage)
             return {
                 ...state,
                 gamePhase: 'error',
+                //errorMessage: action.message,
+                errorMessage: action.errorMessage ?? 'Unknown error in reducer'
 
             }
 

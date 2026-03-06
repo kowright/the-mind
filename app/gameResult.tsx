@@ -43,7 +43,7 @@ export default function GameResult() {
                 </View>
                 <DiscardPileView keepStacked={false} />
                 <View style={{flexDirection: 'column', alignItems: 'center', gap: 4} }>
-                {state.players.map(p => {
+                {!wonGame && state.players.map(p => {
                     return (
                         <Text style={styles.text} key={`${p.id}-card-count`}>
                             {`${p.name}'s end card count: ${p.cardCount}`}
@@ -81,7 +81,7 @@ export default function GameResult() {
 
             {/* Bottom Section */}
             <View style={styles.bottomSection}>
-                <Text style={styles.text}>{snarkyText}</Text>
+                <Text style={themeStyles.small}>{snarkyText}</Text>
                 <ButtonView
                     text="NEW GAME?"
                     onPress={() => websocketService.send({ type: 'GAME_RESTART' })}
@@ -138,6 +138,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 12,
         marginTop: 'auto',
-        paddingBottom: 32,
+        paddingBottom: 44,
     },
 });

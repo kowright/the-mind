@@ -20,7 +20,7 @@ import { GetReadyView } from '../../components/models/getReady';
 export default function HomeScreen() {
     const theme = useResponsiveTheme();
     const { state, playerId } = useGame();
-
+    // TODO: ensure can't input empty string for name
     const [text, setText] = useState('');
     const [enteredName, setEnteredName] = useState(false);
     const [visible, setVisible] = useState(false);

@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import { StyleSheet, Pressable } from 'react-native';
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
 import { useGame } from "../../hooks/useGame";
-
+import { LinearGradient } from 'expo-linear-gradient';
 interface CardViewProps {
     card: Card;
     //onPlay: (card: Card) => void;
@@ -87,7 +87,7 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
     const circleWidth = cardWidth * 0.6;
     const circleHeight = cardHeight * 0.5;
 
-
+    const radius = Math.min(circleWidth, circleHeight) / 2;
     // TODO: fix box shadow on handViews
 
     return (
@@ -106,20 +106,67 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
             </Text>
 
             {/* Center */}
-            <View style={styles.centerContainer}>
-                <View
-                    style={[
-                        styles.middleCircle,
-                        {
-                            width: circleWidth,
-                            height: circleHeight,
-                            borderRadius: circleWidth / 2,
-                        },
-                    ]}>
-                    <Text style={[
-                        styles.centerText,
-                        { fontSize: centerFontSize },
-                    ]}>
+            {/*<View style={styles.centerContainer}>*/}
+            {/*    <View*/}
+            {/*        style={[*/}
+            {/*            styles.middleCircle,*/}
+            {/*            {*/}
+            {/*                width: circleWidth,*/}
+            {/*                height: circleHeight,*/}
+            {/*                borderRadius: circleWidth / 2,*/}
+            {/*            },*/}
+            {/*        ]}>*/}
+
+            {/*        <Text style={[*/}
+            {/*            styles.centerText,*/}
+            {/*            { fontSize: centerFontSize },*/}
+            {/*        ]}>*/}
+            {/*                {!hideNumbers && card.number}*/}
+            {/*            </Text>*/}
+            {/*            {card.mistakenlyPlayed && <Text style={[*/}
+            {/*                styles.mistakenPlayerText*/}
+            {/*            ]}>*/}
+            {/*                {mistakenPlayer?.name}*/}
+            {/*            </Text>}*/}
+            {/*    </View>*/}
+                {/*</View>*/}
+
+                {!isDiscardEmptyPlaceholder && <View style={styles.centerContainer}>
+                    <View
+                        style={[
+                            styles.middleCircle,
+                            {
+                                width: circleWidth,
+                                height: circleHeight,
+                                borderRadius: circleWidth / 2,
+                                overflow: 'hidden',
+                            },
+                        ]}>
+
+
+                        <LinearGradient
+                            colors={theme.color.card.gradient.blueGradient}
+                            locations={[0, 0.4, 0.5, 0.6, 1]}
+                            start={{ x: 0.5, y: 0 }}
+                            end={{ x: 0.5, y: 1 }}
+                            style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
+                        />
+
+
+                        <LinearGradient
+                            colors={theme.color.card.gradient.orangeGradient}
+                            locations={[0, 0.1, 0.5, 0.9, 1]}
+                            start={{ x: 0, y: 0.5 }}
+                            end={{ x: 1, y: 0.5 }}
+                            style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
+                        />
+
+
+
+                        <Text style={[
+                            styles.centerText,
+                            { fontSize: centerFontSize },
+                        ]}>
                             {!hideNumbers && card.number}
                         </Text>
                         {card.mistakenlyPlayed && <Text style={[
@@ -127,8 +174,9 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
                         ]}>
                             {mistakenPlayer?.name}
                         </Text>}
+                    </View>
                 </View>
-            </View>
+                }
 
             {/* Bottom Left */}
             <Text style={[styles.cornerText, bottomLeft, { fontSize: cornerFontSize }]}>
@@ -185,29 +233,9 @@ const styles = StyleSheet.create({
     discardEmpty: {
         backgroundColor: 'transparent',
         borderWidth: 2,
-        borderColor: 'black',
+        borderColor: 'white',
         borderStyle: 'dotted',
     },
-
-    //topLeft: {
-    //    top: 12,
-    //    left: 12,
-    //},
-
-    //topRight: {
-    //    top: 12,
-    //    right: 12,
-    //},
-
-    //bottomLeft: {
-    //    bottom: 12,
-    //    left: 12,
-    //},
-
-    //bottomRight: {
-    //    bottom: 12,
-    //    right: 12,
-    //},
 
     centerContainer: {
         flex: 1,
@@ -237,9 +265,10 @@ const styles = StyleSheet.create({
         //width: 120,
         //height: 150,
         //borderRadius: 90,
-        backgroundColor: 'white', 
+        //backgroundColor: 'white', 
         justifyContent: 'center',
         alignItems: 'center',
+
     },
 
 });

@@ -138,6 +138,10 @@ export const theme = {
             },
             discard: {
 
+            },
+            gradient: {
+                blueGradient: [tokens.colors.blue[300], 'white', 'white', 'white', tokens.colors.blue[300]],
+                orangeGradient: [tokens.colors.orange[300], 'transparent', 'transparent', 'transparent', tokens.colors.orange[300]],
             }
         },
 
@@ -153,6 +157,12 @@ export const theme = {
             //backgroundColor: '#5c7296', // mid blue
             // backgroundColor: '#9a9faf', // gray blue
             backgroundColor: tokens.colors.blue[400],
+            gradient: [
+                tokens.colors.blue[700],
+                tokens.colors.blue[700],
+                tokens.colors.orange[700],
+                tokens.colors.orange[700],
+            ]
         },
         overlay: {
             backgroundColor: tokens.colors.blue[400],

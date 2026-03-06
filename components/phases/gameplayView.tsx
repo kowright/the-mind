@@ -15,7 +15,7 @@ import { IconSymbol } from '../ui/icon-symbol';
 import { IconText } from '../models/iconText';
 import { LevelProgression } from '../models/levelProgression';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
-
+import { LinearGradient } from 'expo-linear-gradient';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
     discardPileStacked: boolean; // keep the discard pile stacked and not straight
@@ -49,6 +49,12 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
 
     return (
+        <LinearGradient 
+            colors={theme.color.gameBackground.gradient}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}
+            style={{ flex: 1 }}
+        >
         <View style={styles.container} >
             <View style={{
                flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginVertical: 4,
@@ -207,6 +213,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
             }
             </View>
         </View>
+        </LinearGradient>
     );
 };
 
@@ -279,7 +286,7 @@ const styles = StyleSheet.create({
     playerArea: { 
         //backgroundColor: 'white',
         //backgroundColor: theme.color.button.secondary.pressed,
-        backgroundColor: '#001155',
+        //backgroundColor: '#001155',
 
 
         alignItems: 'center',

@@ -3,12 +3,15 @@ import { useContext } from "react";
 import { ErrorView } from "../phases/error";
 import { GameContext } from "./gameContext";
 import GameRouter from "./gameRouter";
+import { createLogger } from "../../shared/types/logger";
+
+const log = createLogger('APP CONTENT')
 
 export function AppContent() {
     const game = useContext(GameContext);
 
     if (game?.state.gamePhase === 'error') {
-        console.log('error came to AppContent', game?.state.errorMessage);
+
         return <ErrorView errorMessage={game?.state.errorMessage} />;
     }
 

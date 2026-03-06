@@ -54,10 +54,6 @@ class WebsocketService {
 
     disconnect() {
         this.socket?.close();
-        //this.socket?.close = () => {
-        //    log.info('Disconnected websocket');
-        //    onError?.("Connection lost");
-        //};
         this.socket = null;
     }
 }

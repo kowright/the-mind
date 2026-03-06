@@ -26,7 +26,7 @@ export function gameReducer(
         }
 
         case 'PLAYER_NAME_CHANGE': {
-            console.log('PLAYER NAME CHANGE')
+
             const players = state.players.map(p =>
                 p.id === action.playerId
                     ? { ...p, name: action.name }
@@ -65,7 +65,6 @@ export function gameReducer(
             };
 
         case 'GAME_START':
-            console.log('GAME STARTTO');
 
             const playerCount = state.players.length;
             if (!hasValidPlayerCount(state.players)) {
@@ -94,7 +93,6 @@ export function gameReducer(
 
 
         case 'MAKE_FAKE_PLAYERS':
-            console.log('MAKE FAKE PLAYERS');
 
             const players = makeFakePlayers(state, action.playerCount);
 
@@ -106,7 +104,6 @@ export function gameReducer(
 
         case 'LEVEL_START':
             {
-                console.log('LEVEL START');
 
                 const shuffledDeck = shuffleDeck(state.deck);
 
@@ -132,7 +129,6 @@ export function gameReducer(
             }
 
         case 'PLAY':
-            console.log('PLAY')
             const playerIndex = state.players.findIndex(
                 p => p.id === action.playerId
             );
@@ -280,7 +276,6 @@ export function gameReducer(
         };
 
         case 'CALL_FOR_SHURIKEN':
-            console.log('CALL FOR SHURIKEN by ', action.playerId);
             if (state.gamePhase !== 'playing') return state;
             if (state.shuriken <= 0) return state;
 
@@ -300,7 +295,6 @@ export function gameReducer(
             };
 
         case 'SHURIKEN_OVER': { 
-            console.log('SHURIKEN OVER')
 
             let updatedGamePhase: GamePhase = 'playing'
             let updatedLevel = state.level;
@@ -341,7 +335,6 @@ export function gameReducer(
         }
 
         case 'READY_TO_START': 
-            console.log('READY TO START')
 
             let readyToStartPlayers = [...state.readyToStartPlayers];
 

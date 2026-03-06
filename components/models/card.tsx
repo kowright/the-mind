@@ -18,19 +18,14 @@ interface CardViewProps {
 }
 
 export function CardView({ card, total, index, onPress, discarded = false, rotate = false, hideNumbers = false }: CardViewProps) {
-    if (hideNumbers && !discarded) {
-        console.log('card', card)
-        console.log('total', total)
-        console.log('index', index)
-    }
-    const theme = useResponsiveTheme();
 
+    const theme = useResponsiveTheme();
 
     const cardWidth = theme.size.cardWidth;
     const cardHeight = theme.size.cardHeight;
     const isDiscardEmptyPlaceholder = total === -1;
 
-        const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
+    const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
       
     const { state } = useGame();
 
@@ -80,7 +75,6 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
          transform: [{ rotate: '180deg' }]
     }]
 
-
     const cornerFontSize = cardWidth * 0.15;
     const centerFontSize = cardWidth * 0.3;
 
@@ -88,7 +82,6 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
     const circleHeight = cardHeight * 0.5;
 
     const radius = Math.min(circleWidth, circleHeight) / 2;
-    // TODO: fix box shadow on handViews
 
     return (
   
@@ -105,78 +98,48 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
                     {!hideNumbers && card.number}
             </Text>
 
-            {/* Center */}
-            {/*<View style={styles.centerContainer}>*/}
-            {/*    <View*/}
-            {/*        style={[*/}
-            {/*            styles.middleCircle,*/}
-            {/*            {*/}
-            {/*                width: circleWidth,*/}
-            {/*                height: circleHeight,*/}
-            {/*                borderRadius: circleWidth / 2,*/}
-            {/*            },*/}
-            {/*        ]}>*/}
+            {!isDiscardEmptyPlaceholder && <View style={styles.centerContainer}>
+                <View
+                    style={[
+                        styles.middleCircle,
+                        {
+                            width: circleWidth,
+                            height: circleHeight,
+                            borderRadius: circleWidth / 2,
+                            overflow: 'hidden',
+                        },
+                    ]}>
 
-            {/*        <Text style={[*/}
-            {/*            styles.centerText,*/}
-            {/*            { fontSize: centerFontSize },*/}
-            {/*        ]}>*/}
-            {/*                {!hideNumbers && card.number}*/}
-            {/*            </Text>*/}
-            {/*            {card.mistakenlyPlayed && <Text style={[*/}
-            {/*                styles.mistakenPlayerText*/}
-            {/*            ]}>*/}
-            {/*                {mistakenPlayer?.name}*/}
-            {/*            </Text>}*/}
-            {/*    </View>*/}
-                {/*</View>*/}
+                    <LinearGradient
+                        colors={theme.color.card.gradient.blueGradient}
+                        locations={[0, 0.4, 0.5, 0.6, 1]}
+                        start={{ x: 0.5, y: 0 }}
+                        end={{ x: 0.5, y: 1 }}
+                        style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
+                    />
 
-                {!isDiscardEmptyPlaceholder && <View style={styles.centerContainer}>
-                    <View
-                        style={[
-                            styles.middleCircle,
-                            {
-                                width: circleWidth,
-                                height: circleHeight,
-                                borderRadius: circleWidth / 2,
-                                overflow: 'hidden',
-                            },
-                        ]}>
+                    <LinearGradient
+                        colors={theme.color.card.gradient.orangeGradient}
+                        locations={[0, 0.1, 0.5, 0.9, 1]}
+                        start={{ x: 0, y: 0.5 }}
+                        end={{ x: 1, y: 0.5 }}
+                        style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
+                    />
 
-
-                        <LinearGradient
-                            colors={theme.color.card.gradient.blueGradient}
-                            locations={[0, 0.4, 0.5, 0.6, 1]}
-                            start={{ x: 0.5, y: 0 }}
-                            end={{ x: 0.5, y: 1 }}
-                            style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
-                        />
-
-
-                        <LinearGradient
-                            colors={theme.color.card.gradient.orangeGradient}
-                            locations={[0, 0.1, 0.5, 0.9, 1]}
-                            start={{ x: 0, y: 0.5 }}
-                            end={{ x: 1, y: 0.5 }}
-                            style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
-                        />
-
-
-
-                        <Text style={[
-                            styles.centerText,
-                            { fontSize: centerFontSize },
-                        ]}>
-                            {!hideNumbers && card.number}
-                        </Text>
-                        {card.mistakenlyPlayed && <Text style={[
-                            styles.mistakenPlayerText
-                        ]}>
-                            {mistakenPlayer?.name}
-                        </Text>}
-                    </View>
+                    <Text style={[
+                        styles.centerText,
+                        { fontSize: centerFontSize },
+                    ]}>
+                        {!hideNumbers && card.number}
+                    </Text>
+                    {card.mistakenlyPlayed && <Text style={[
+                        styles.mistakenPlayerText
+                    ]}>
+                        {mistakenPlayer?.name}
+                    </Text>}
                 </View>
-                }
+            </View>
+            }
 
             {/* Bottom Left */}
             <Text style={[styles.cornerText, bottomLeft, { fontSize: cornerFontSize }]}>
@@ -268,7 +231,5 @@ const styles = StyleSheet.create({
         //backgroundColor: 'white', 
         justifyContent: 'center',
         alignItems: 'center',
-
     },
-
 });

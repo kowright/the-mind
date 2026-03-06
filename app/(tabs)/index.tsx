@@ -15,8 +15,6 @@ import { IconSymbol } from '../../components/ui/icon-symbol';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { GetReadyView } from '../../components/models/getReady';
 
-
-
 export default function HomeScreen() {
     const theme = useResponsiveTheme();
     const { state, playerId } = useGame();

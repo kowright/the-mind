@@ -20,14 +20,12 @@ class WebsocketService {
 
         this.socket.onerror = (err) => {
             log.error('error', err)
-            console.log('socket on error')
             onError?.(err);
         };
 
         this.socket.onclose = () => {
             if (!this.socket || this.socket.readyState === WebSocket.CLOSED) {
                 log.info('WebSocket closed');
-                console.log('socket on close')
                 //onError?.('Connection lost');
             }
         };

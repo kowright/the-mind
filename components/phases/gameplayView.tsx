@@ -51,7 +51,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
     return (
         <View style={styles.container} >
             <View style={{
-               flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'
+               flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginVertical: 4,
             }}>
                 <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
                 <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
@@ -75,7 +75,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                               
                                         <>
                                         {enemies.length > 1 &&
-                                            <View style={{marginTop: 8}}>
+                                            <View style={{marginTop: 32}}>
                                                 <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
                                             </View>
                                         }
@@ -285,6 +285,6 @@ const styles = StyleSheet.create({
         flex: 1, 
         position: 'relative',
         //backgroundColor: 'orange',
-        marginTop: 8,
+        //marginTop: 8,
     }
 });

@@ -108,9 +108,6 @@ const styles = StyleSheet.create({
     disabledText: {
         fontWeight: 'normal',
     },
-    disabledHovered: {
-        backgroundColor: 'purple' // TODO
-    },
     button: {
         //backgroundColor: theme.colors.primary,
         paddingVertical: 10,
@@ -121,12 +118,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         
     },
-    //buttonHovered: {
-    //    backgroundColor: theme.colors.hover, 
-    //},
-    //buttonPressed: {
-    //    backgroundColor: 'yellow', // TODO 
-    //},
     buttonText: {
         color: theme.colors.textPrimary,
         fontWeight: 'normal',

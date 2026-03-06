@@ -38,11 +38,12 @@ export function LevelResultView() {
             <GameOverlayView>
                 <View style={[styles.overlay, styles.overlayContainer]}>
                     <GameOverlayHeading text='LEVEL WIN!' />
+                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems:'center', marginTop: 8, marginBottom: 16 } }>
+                        <IconText iconFirst={false} iconName={pastLevelIcon} text='REWARD:' />
+                        <IconText iconFirst={false} iconName={nextLevelIcon} text='NEXT LEVEL REWARD:' />
+                        <IconText iconFirst={false} iconName='chart.bar.fill' text={`LEVEL ${state.level.number} out of ${state.winLevel} `} />
+                    </View>
 
-                    <IconText iconFirst={false} iconName={pastLevelIcon} text='YOU EARNED:' />
-                    <IconText iconFirst={false} iconName={nextLevelIcon} text='NEXT LEVEL YOU WILL EARN:' />
-                    <IconText iconFirst={false} iconName='chart.bar.fill' text={`YOU ARE NOW ON LEVEL ${state.level.number} out of ${state.winLevel} `} />
-                    <Text style={{color: theme.color.overlay.color}}>Discard Pile</Text>
                     <DiscardPileView keepStacked={false} />
                     {state.shurikenedCards.length > 0 && <Text>Removed Cards</Text>}
                     {/*<View style={styles.removedCardsContainer}>*/}

@@ -37,7 +37,6 @@ export default function HomeScreen() {
         'Enter your name' : 'Can rename yourself or keep previous name';
     //TODO: give warning that you are not connected to websocket
 
-    //TODO: Make name stuff look better  
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {
             router.replace('/play');

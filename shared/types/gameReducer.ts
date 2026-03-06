@@ -83,7 +83,7 @@ export function gameReducer(
             };
 
         case 'GAME_RESTART':
-            //TODO: why doesn't my phone also restart the game?
+            //TODO: why doesn't my phone also restart the game? -> it does when someone disconnects
             log.info('Game is restarting')
 
             return {

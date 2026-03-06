@@ -31,15 +31,15 @@ export function IconText({ iconFirst, text, iconName, altColor}: IconTextProps) 
     const resolvedColor =
         altColor && altColor !== ''
             ? altColor
-            : iconColorMapping[iconName] ?? theme.color.gameplayIcon.text 
+            : iconColorMapping[iconName] ?? theme.color.gameplayIcon.backgroundColor 
     
     const iconSize = iconFirst ? 28 : 20;
     return (
         <View style={styles.container} >
-            {!iconFirst && <Text style={[styles.textRight, { color: altColor || theme.color.gameplayIcon.text }]}>{text}</Text>}
+            {!iconFirst && <Text style={[styles.textRight, { color: altColor || themeStyles.body.color }]}>{text}</Text>}
 
             <IconSymbol size={iconSize} name={iconName} color={resolvedColor} style={styles.icon} />
-            {iconFirst && <Text style={[styles.textLeft, { color: altColor || theme.color.gameplayIcon.text }]}>{text}</Text>}
+            {iconFirst && <Text style={[styles.textLeft, { color: altColor || themeStyles.body.color }]}>{text}</Text>}
         </View>
     )
 }

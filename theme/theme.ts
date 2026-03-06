@@ -242,7 +242,7 @@ export const theme = {
     },
     textShadow: {
         textShadowColor: 'black',
-        textShadowOffset: { width: 2, height: 2 },
+        textShadowOffset: { width: 1, height: 2 },
         textShadowRadius: 5,
     }
 };

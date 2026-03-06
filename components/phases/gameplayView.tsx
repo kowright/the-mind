@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
     playerContainer: {
         //marginBottom: 13,
         //gap: 32,
+        
     },
     twoPlayerView: {
         //flex: 1,
@@ -246,10 +247,12 @@ const styles = StyleSheet.create({
         transform: [{ rotate: '180deg' }],
         //color: 'orange',
         //fontWeight:'bold',
-        textShadowColor: 'black',
-        textShadowOffset: { width: 2, height: 2 },
-        textShadowRadius: 5,
-        textAlign: 'center',
+        //textShadowColor: 'black',
+        //textShadowOffset: { width: 2, height: 2 },
+        //textShadowRadius: 5,
+        //textAlign: 'center',
+        paddingTop: 8,
+
     },
     horizontalEnemyText: {
         color: 'white',
@@ -269,17 +272,21 @@ const styles = StyleSheet.create({
 
     centerArea: {
         alignItems: 'center',
-        marginTop: 24,
+        marginTop: 30,
 
     },
 
     playerArea: { 
         //backgroundColor: 'white',
+        //backgroundColor: theme.color.button.secondary.pressed,
+        backgroundColor: '#001155',
+
+
         alignItems: 'center',
         //justifyContent: 'center',
         gap: 8,
         paddingVertical: 8,
-        marginTop: 36,
+        //marginTop: 12,
         marginBottom: 12,
     },
     leftEnemy: {

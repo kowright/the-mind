@@ -152,7 +152,20 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 showTooltip={false}
                                 variant='primary'
                                 />}
-                    
+                        
+                            <View
+                                style={{
+                                    height: theme.size.cardHeight *1.2,
+                                    width: '100%',
+                                    overflow: 'visible',
+                                    //paddingHorizontal: 20,
+                                    //backgroundColor: 'white',
+                                    justifyContent: 'center',
+
+                                    //alignItems: 'center', //makes left and right glow clipped
+                                
+                                }}
+                            >
                                 <HandView
                             clientPlayer={clientPlayer}
                             enemyPlayer={false}
@@ -160,6 +173,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 agreeToStartVersion ? console.log('nah') :
                                 websocketService.send({ type: "PLAY" } as ClientAction)
                             } />
+                                </View>
+                      
 
                         
                         {agreeToStartVersion ?
@@ -259,8 +274,9 @@ const styles = StyleSheet.create({
     },
 
     playerArea: { 
-        backgroundColor: 'white',
+        //backgroundColor: 'white',
         alignItems: 'center',
+        //justifyContent: 'center',
         gap: 8,
         paddingVertical: 8,
         marginTop: 36,

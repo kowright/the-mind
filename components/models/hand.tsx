@@ -31,7 +31,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
          */}
             {enemyPlayer ? 
 
-                <View style={styles.handContainer}>
+                <View style={[styles.handContainer]}>
                     <View style={styles.hand}>
                   
                         {clientPlayer.cardCount !== 0 && Array.from({ length: clientPlayer.cardCount }).map((_, index, arr) => (
@@ -55,7 +55,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                 :
                  <ScrollView horizontal showsHorizontalScrollIndicator={true}
                     ref={scrollRef}
-
+                    contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
                     onContentSizeChange={() =>
 
                             scrollRef.current?.scrollToEnd({ animated: false })
@@ -105,11 +105,13 @@ const styles = StyleSheet.create({
     hand: {
         display: 'flex',
         flexDirection: 'row',
+        overflow: 'visible',
     },
     handContainer: {
         display: 'flex',
         alignItems: 'center', // could align things flex-end so that top card is always at the end to tap quickly - USERTEST
         flexDirection: 'row',
+        overflow: 'visible',
     },
     clientPlayerName: {
 

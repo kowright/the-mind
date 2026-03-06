@@ -37,7 +37,7 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
     return (
         <>
   
-            <View style={styles.discardContainer}>
+            <View style={[styles.discardContainer, {height: theme.size.cardHeight * 1.2}]}>
                 {isPlayingorMistake && showDiscardPile || keepStacked && showDiscardPile ?
                     (
                         <>
@@ -55,7 +55,8 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
                             <ScrollView
                                 horizontal
                                 showsHorizontalScrollIndicator
-                         
+                                contentContainerStyle={{ flexGrow: 1,marginTop: 12,paddingHorizontal: 12, overflow: 'visible' }}
+
                             >
                                 {state.discardPile?.map((card, index) => (
                                     <View
@@ -106,7 +107,11 @@ const styles = StyleSheet.create({
     },
     discardContainer: {
         flexDirection: 'row',
-        justifyContent: 'center' 
+        justifyContent: 'center',
+        //height: '100%',
+        width: '100%',
+        overflow: 'visible',
+
     },
     straightCardsContainer: {
         display: 'flex',

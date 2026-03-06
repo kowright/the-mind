@@ -41,7 +41,19 @@ export default function GameResult() {
                     <IconText iconFirst={true} iconName='chart.bar.fill' text={`${levelAchieved}`} />
                
                 </View>
-                <DiscardPileView keepStacked={false} />
+                <View
+                    style={{
+                        //height: theme.size.cardHeight * 1.2,
+                        //width: '100%',
+                        //overflow: 'visible',
+  
+                        //justifyContent: 'center',
+
+
+                    }}
+                >
+                    <DiscardPileView keepStacked={false} />
+                </View>
                 <View style={{flexDirection: 'column', alignItems: 'center', gap: 4} }>
                 {!wonGame && state.players.map(p => {
                     return (

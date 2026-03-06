@@ -38,7 +38,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         : null;
 
     const dynamicTextStyle = circleShape
-        ? { fontSize: themeStyles.heading.fontSize }
+        ? {fontSize: themeStyles.heading.fontSize }
         : null;
 
     const handlePress = () => {
@@ -89,6 +89,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                         styles.buttonText,
                         circleShape && dynamicTextStyle,
                         disabled && styles.disabledText,
+                        theme.textShadow,
                         { fontWeight: theme.font.weight.button[variant] },
                     ]}
                 >

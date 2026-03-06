@@ -147,7 +147,6 @@ export const theme = {
 
         gameplayIcon: {
             backgroundColor: tokens.colors.white,
-            text: tokens.colors.white,
         },
         gameBackground: {
             // backgroundColor: '#96725c', // mid orange
@@ -240,6 +239,11 @@ export const theme = {
         radius: {
             overlay: tokens.border.radius.lg,
         }
+    },
+    textShadow: {
+        textShadowColor: 'black',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 5,
     }
 };
 
@@ -257,19 +261,23 @@ export const overlayStyle = (theme: Theme) => ({
 
 export const themeStyles = StyleSheet.create({
     title: {
+        ...theme.textShadow,
         fontSize: theme.font.size.title,
         color: theme.color.brand.primary,
     },
     heading: {
+        ...theme.textShadow,
         fontSize: theme.font.size.heading,
         color: theme.color.text.heading,
         fontWeight: theme.font.weight.bold,
     },
     body: {
+        ...theme.textShadow,
         fontSize: theme.font.size.body,
         color: theme.color.text.body,
     },
     small: {
+        ...theme.textShadow,
         fontSize: theme.font.size.small,
         color: theme.color.text.small,
     },

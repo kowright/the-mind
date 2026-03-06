@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 import { StyleSheet, Pressable } from 'react-native';
 import { IconSymbol } from '../ui/icon-symbol';
-import { theme } from '../../theme/theme';
+import { theme, themeStyles } from '../../theme/theme';
 import { SymbolViewProps } from 'expo-symbols';
 
 interface IconTextProps {
@@ -37,7 +37,8 @@ export function IconText({ iconFirst, text, iconName, altColor}: IconTextProps) 
     return (
         <View style={styles.container} >
             {!iconFirst && <Text style={[styles.textRight, { color: altColor || theme.color.gameplayIcon.text }]}>{text}</Text>}
-            <IconSymbol size={iconSize} name={iconName} color={resolvedColor} />
+
+            <IconSymbol size={iconSize} name={iconName} color={resolvedColor} style={styles.icon} />
             {iconFirst && <Text style={[styles.textLeft, { color: altColor || theme.color.gameplayIcon.text }]}>{text}</Text>}
         </View>
     )
@@ -49,12 +50,19 @@ const styles = StyleSheet.create({
         alignItems: 'center' 
     },
     textRight: {
-        fontSize: 14,
+        ...themeStyles.body,
+        //fontSize: 14,
         marginLeft: 4,
-        color: theme.color.gameplayIcon.text,
+        //color: theme.color.gameplayIcon.text,
     },
     textLeft: {
+        ...themeStyles.body,
         marginLeft: 4,
-        color: theme.color.gameplayIcon.text,
-    }
+        
+    },
+    icon: {
+        textShadowColor: 'black',
+        textShadowOffset: { width: 2, height: 1 },
+        textShadowRadius: 2,
+    },
 });

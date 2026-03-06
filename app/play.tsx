@@ -10,7 +10,7 @@ import { ShurikenView } from '../components/phases/shuriken';
 import { countdownInterval, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime } from '../shared/utils/utils';
 import { ErrorView } from '../components/phases/error';
 import { GameOverlayView } from '../components/models/gameOverlay';
-import { theme } from '../theme/theme';
+import { theme, themeStyles } from '../theme/theme';
 
 export default function PlayView() {
     const { state, playerId } = useGame();
@@ -101,8 +101,7 @@ const styles = StyleSheet.create({
         backgroundColor: theme.color.gameBackground.backgroundColor,
     },
     nameText: {
-        color: theme.typography.body.color,
-        fontSize: theme.typography.body.fontSize,
+       ...themeStyles.body,
         backgroundColor: theme.color.brand.primary,
         textAlign: 'center'
     },

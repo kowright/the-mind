@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View } from 'react-native';
 import { StyleSheet, Pressable } from 'react-native';
-import { theme } from "../../theme/theme";
+import { theme, themeStyles } from "../../theme/theme";
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
 import { Platform } from 'react-native';
 interface ButtonProps {
@@ -29,7 +29,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         : null;
 
     const dynamicTextStyle = circleShape
-        ? { fontSize: theme.typography.heading }
+        ? { fontSize: themeStyles.heading.fontSize }
         : null;
 
     const handlePress = () => {

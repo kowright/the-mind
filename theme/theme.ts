@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 const tokens = {
     // raw values
     colors: {
@@ -31,12 +33,12 @@ const tokens = {
         xxl: 32,
     },
 
-    typography: {
-        small: 12,
-        body: 16,
-        heading: 28,
-        title: 32,
-    },
+    //typography: {
+    //    small: 12,
+    //    body: 16,
+    //    heading: 28,
+    //    title: 32,
+    //},
 
     border: {
         radius: {
@@ -55,10 +57,10 @@ const tokens = {
             //bold: 700,
         }, 
         size: {
-            small: 12,
-            body: 16,
-            heading: 28,
-            title: 32,
+            sm: 12,
+            md: 16,
+            lg: 28,
+            xl: 32,
         }
     },
 
@@ -156,6 +158,12 @@ export const theme = {
         overlay: {
             backgroundColor: tokens.colors.blue[400],
             color: tokens.colors.white,
+        },
+
+        text: {
+            heading: tokens.colors.white,
+            body: tokens.colors.white,
+            small: tokens.colors.white,
         }
     },
 
@@ -168,37 +176,37 @@ export const theme = {
         xxl: 32,
     },
 
-    typography: {
-        //TODO: should be the line weight, font weight, letter spacing, font size
-        //small: 12,
-        //body: 16,
-        //heading: 28,
-        //title: 32,
+    //typography: {
+    //    //TODO: should be the line weight, font weight, letter spacing, font size
+    //    //small: 12,
+    //    //body: 16,
+    //    //heading: 28,
+    //    //title: 32,
 
-        heading: {
-            fontSize: tokens.typography.heading,
-            fontWeight: tokens.font.weight.bold,
-            color: tokens.colors.white,
-        },
+    //    heading: {
+    //        fontSize: tokens.typography.heading,
+    //        fontWeight: tokens.font.weight.bold,
+    //        color: tokens.colors.white,
+    //    },
 
-        small: {
-            fontSize: tokens.typography.small,
-            color: tokens.colors.white,
+    //    small: {
+    //        fontSize: tokens.typography.small,
+    //        color: tokens.colors.white,
 
-        },
+    //    },
 
-        body: {
-            fontSize: tokens.typography.body,
-            color: tokens.colors.white,
+    //    body: {
+    //        fontSize: tokens.typography.body,
+    //        color: tokens.colors.white,
 
-        },
+    //    },
 
-        title: {
-            fontSize: tokens.typography.title,
-            color: tokens.colors.orange[500],
+    //    title: {
+    //        fontSize: tokens.typography.title,
+    //        color: tokens.colors.orange[500],
     
-        }
-    },
+    //    }
+    //},
 
 
     size: {
@@ -214,6 +222,12 @@ export const theme = {
                 primary: tokens.font.weight.bold,
                 secondary: tokens.font.weight.normal,
             }
+        },
+        size: {
+            title: tokens.font.size.xl,
+            heading: tokens.font.size.lg,
+            body: tokens.font.size.md,
+            small: tokens.font.size.sm,
         }
     },
 
@@ -237,5 +251,27 @@ export const overlayStyle = (theme: Theme) => ({
     backgroundColor: theme.color.overlay.backgroundColor,
     borderRadius: theme.border.radius.overlay,
     padding: theme.spacing.lg,
+
+});
+
+
+export const themeStyles = StyleSheet.create({
+    title: {
+        fontSize: theme.font.size.title,
+        color: theme.color.brand.primary,
+    },
+    heading: {
+        fontSize: theme.font.size.heading,
+        color: theme.color.text.heading,
+        fontWeight: theme.font.weight.bold,
+    },
+    body: {
+        fontSize: theme.font.size.body,
+        color: theme.color.text.body,
+    },
+    small: {
+        fontSize: theme.font.size.small,
+        color: theme.color.text.small,
+    },
 
 });

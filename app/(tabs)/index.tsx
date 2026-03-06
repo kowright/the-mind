@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { ClientAction } from '../../shared/types/gameAction';
 import { hasValidPlayerCount } from '@/shared/utils/utils';
 import { StyleSheet, Pressable } from 'react-native';
-import { theme } from '../../theme/theme';
+import { theme, themeStyles } from '../../theme/theme';
 import { ButtonView } from '../../components/models/button';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { IconSymbol } from '../../components/ui/icon-symbol';
@@ -37,8 +37,7 @@ export default function HomeScreen() {
         'Enter your name' : 'Can rename yourself or keep previous name';
     //TODO: give warning that you are not connected to websocket
 
-    //TODO: Make name stuff look better
-  
+    //TODO: Make name stuff look better  
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {
             router.replace('/play');
@@ -143,7 +142,8 @@ const styles = StyleSheet.create({
     },
 
     gameTitle: {
-        fontSize: theme.typography.title.fontSize,
+        ...themeStyles.title,
+
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
@@ -169,14 +169,13 @@ const styles = StyleSheet.create({
     },
 
     meta: {
+        ...themeStyles.body,
         textAlign: 'center',
-        color: 'white',
-        fontSize: theme.typography.body.fontSize,
+
     },
     metaTitle: {
-        color: theme.typography.title.color,
-        fontSize: theme.typography.title.fontSize,
-   
+        ...themeStyles.title,
+
     }
 });
 

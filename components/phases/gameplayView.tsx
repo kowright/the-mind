@@ -8,7 +8,7 @@ import { CardView } from '../models/card';
 import { HandView } from '../models/hand';
 import { ButtonView } from '../models/button';
 import { DiscardPileView } from '../models/discardPile';
-import { theme } from '../../theme/theme';
+import { theme, themeStyles } from '../../theme/theme';
 import { ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import { Level, levels, RewardType, LevelToRewardIconMapping } from "@/shared/types/level";
 import { IconSymbol } from '../ui/icon-symbol';
@@ -227,9 +227,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     topEnemyTwoPlayerText: {
-   
+        ...themeStyles.body,
         transform: [{ rotate: '180deg' }],
-        color: 'white',
+        //color: 'orange',
+        //fontWeight:'bold',
+        textShadowColor: 'black',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 5,
         textAlign: 'center',
     },
     horizontalEnemyText: {

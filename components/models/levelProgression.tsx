@@ -3,7 +3,7 @@ import { StyleSheet, Pressable } from 'react-native';
 import { IconSymbol } from '../ui/icon-symbol';
 import { LevelToRewardIconMapping, levels } from '../../shared/types/level';
 import { IconText } from './iconText';
-import { theme } from '../../theme/theme';
+import { theme, themeStyles } from '../../theme/theme';
 
 interface LevelProgressionProps {
 
@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
         //backgroundColor: 'yellow',
     },
     text: {
-        color: 'white',
-        fontSize: theme.typography.small.fontSize,
+        ...themeStyles.small,
     }
 });

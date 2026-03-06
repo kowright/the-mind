@@ -1,5 +1,5 @@
 import { useWindowDimensions } from 'react-native';
-import { theme } from '@/theme/theme';
+import { theme, themeStyles } from '@/theme/theme';
 export function useResponsiveTheme() {
   const { width, height } = useWindowDimensions();
 
@@ -17,10 +17,10 @@ export function useResponsiveTheme() {
       ...theme,
 
     typography: {
-      small: theme.typography.small.fontSize * scale50,
-        body: theme.typography.body.fontSize * scale50,
-        title: theme.typography.title.fontSize * scale100,
-          heading: theme.typography.heading.fontSize * scale100,
+      small: themeStyles.small.fontSize * scale50,
+        body: themeStyles.body.fontSize * scale50,
+        title: themeStyles.title.fontSize * scale100,
+        heading: themeStyles.heading.fontSize * scale100,
         //small: theme.typography.small * scale50,
         //  body: theme.typography.body * scale50,
         //  title: theme.typography.title * scale100,

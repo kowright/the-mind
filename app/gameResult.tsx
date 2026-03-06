@@ -6,9 +6,10 @@ import { Button } from '@react-navigation/elements';
 import { websocketService } from '../services/websocketService';
 import { DiscardPileView } from '../components/models/discardPile';
 import { CardView } from '../components/models/card';
-import { theme } from '../theme/theme';
+import { theme, themeStyles } from '../theme/theme';
 import { useResponsiveTheme } from '../hooks/useResponsiveTheme';
 import { ButtonView } from '../components/models/button';
+import { IconText } from '../components/models/iconText';
 
 interface GameResultProps {
 
@@ -27,17 +28,29 @@ export default function GameResult() {
 
     return (
         <View style={styles.container}>
-
-            {/* Top Content */}
-            <View>
-                <Text style={styles.text}>GAME RESULT</Text>
+            <View style={{gap: 32}}>
                 <Text style={wonGame ? styles.wonContainer : styles.lostContainer}>
                     {title}
                 </Text>
-                <Text style={styles.text}>LIVES: {state.lives}</Text>
-                <Text style={styles.text}>You made it to Level {levelAchieved}</Text>
-                <Text style={styles.text}>DISCARD PILE</Text>
+
+                <View style={{
+                    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor: 'black'
+                }}>
+                    <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
+                    <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
+                    <IconText iconFirst={true} iconName='chart.bar.fill' text={`${levelAchieved}`} />
+               
+                </View>
                 <DiscardPileView keepStacked={false} />
+                <View style={{flexDirection: 'column', alignItems: 'center', gap: 4} }>
+                {state.players.map(p => {
+                    return (
+                        <Text style={styles.text} key={`${p.id}-card-count`}>
+                            {`${p.name}'s end card count: ${p.cardCount}`}
+                        </Text>
+                    )
+                })}
+                </View>
             </View>
 
             {/* Scroll Section */}
@@ -82,16 +95,17 @@ export default function GameResult() {
 
 const styles = StyleSheet.create({
     wonContainer: {
+        ...themeStyles.heading,
         backgroundColor: 'green',
-        color: 'white',
+        //color: 'white',
         textAlign: 'center',
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
     },
     lostContainer: {
+        ...themeStyles.heading,
         backgroundColor: 'red',
-        color: 'white',
         textAlign: 'center',
-        fontWeight: 'bold',
+
     },
     discardPileContainerRight: {
         marginTop: 16,
@@ -106,13 +120,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
-        color: 'white',
+        ...themeStyles.body
+        //color: 'white',
     },
     container: {
         flex: 1,
         backgroundColor: theme.color.gameBackground.backgroundColor,
-        padding: 16,
-        justifyContent: 'space-between', 
+        //padding: 16,
+       
     },
 
     removedSection: {

@@ -90,6 +90,7 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
     // TODO: fix box shadow on handViews
 
     return (
+  
         <Pressable
             onPress={() =>!discarded && total - 1 === index ? onPress() : ''} >
         <View style={dynamicCardContainer}>
@@ -138,7 +139,8 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
                     {!hideNumbers && card.number}
             </Text>
             </View>
-        </Pressable>
+            </Pressable>
+       
     );
 }
 
@@ -148,7 +150,23 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         padding: 12,
         position: 'relative',
-        boxShadow: '5px 0px 30px 2px #888888',
+        boxShadow: '5px 0px 10px 2px #aaa',
+  
+        shadowColor: '#aaa',
+        //shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+        //elevation: 10, // android
+        overflow: 'visible'
+    },
+    shadow: {
+        //borderRadius: 16,
+        //shadowColor: 'red',
+        //shadowOffset: { width: 5, height: 5 },
+        //shadowOpacity: 0.5,
+        //shadowRadius: 1,
+        //elevation: 7, // android
+
     },
 
     cornerText: {

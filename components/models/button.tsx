@@ -24,6 +24,15 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         height: circleSize,
         borderRadius: circleSize / 2,
     };
+    const dynamicShadowStyle = {
+        borderRadius: circleShape ?  circleSize / 2 : 6,
+        shadowColor: 'black',
+        shadowOffset: { width: 1, height: 5 },
+        shadowOpacity: 0.15,
+        shadowRadius: 3,
+        elevation: 7, // android
+
+    }
     const dynamicTooltipStyle = circleShape
         ? { bottom: circleSize + 12 }
         : null;
@@ -59,7 +68,8 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
     };
  
     return (
-        <View style={styles.buttonContainer}>
+        //<View style={styles.shadow}>
+        <View style={[styles.buttonContainer]}>
             <Pressable onHoverIn={() => setVisible(true)}
                 onHoverOut={() => {setVisible(false)}}
         
@@ -68,7 +78,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                     styles.button,
                     circleShape && dynamicCircleStyle,
                     { backgroundColor: theme.color.button[variant].background },
-                  
+                    dynamicShadowStyle,
                     disabled && styles.disabled,
                     hovered && !disabled && { backgroundColor: theme.color.button[variant].hover },
                     pressed && !disabled && { backgroundColor: theme.color.button[variant].pressed },
@@ -92,7 +102,8 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                     </Text>
                 </View>
             )}
-        </View>
+            </View>
+        //</View>
     );
 }
 
@@ -132,5 +143,32 @@ const styles = StyleSheet.create({
     },
     tooltipText: {
         color: theme.color.tooltip.text,
+    },
+    shadow: {
+        //backgroundColor: '#fff',
+        //borderRadius: 99,
+        shadowColor: 'black',
+        shadowOffset: { width: 5, height: 3 },
+        shadowOpacity: 0.4,
+        shadowRadius: 3,
+        elevation: 5,
+        //...Platform.select({
+        //    ios: {
+        //        shadowColor: 'white',
+        //        shadowOffset: { height: 5, width: 5 },
+        //        shadowOpacity: 1,
+        //        shadowRadius: 1, // Controls the blur radius
+        //    },
+        //    android: {
+        //        elevation: 1, // A higher value results in a larger, lighter shadow
+        //        shadowColor: '#000',
+        //        shadowOffset: {
+        //            width: 0,
+        //            height: 2,
+        //        },
+        //        shadowOpacity: 0.25,
+        //        shadowRadius: 3.84,
+        //    },
+        //}),
     },
 });

@@ -20,7 +20,7 @@ import { GetReadyView } from '../../components/models/getReady';
 export default function HomeScreen() {
     const theme = useResponsiveTheme();
     const { state, playerId } = useGame();
-    // TODO: ensure can't input empty string for name
+
     const [text, setText] = useState('');
     const [enteredName, setEnteredName] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -51,6 +51,19 @@ export default function HomeScreen() {
         startButtonText = "All players must enter a name to start";
     }
 
+    function setName(name: string) {
+        if (name) {
+            setEnteredName(true);
+            websocketService.send({
+                type: "PLAYER_NAME_CHANGE",
+                name: text,
+            } as ClientAction);
+            
+        }
+        return;
+    }
+
+
     const playerNames = state.players
         .map(p => p.name)
         .filter(Boolean)
@@ -61,12 +74,6 @@ export default function HomeScreen() {
             <View style={styles.screen}>
                 <View style={styles.content}>
                     <Text style={styles.gameTitle}>THE MIND</Text>
-{/*
-                    <Image
-                        style={styles.image}
-                        source={{ uri: 'https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg' }}
-                    />*/}
-
                     <ButtonView
                         onPress={startGame}
                         text="EVERYONE READY?"
@@ -93,11 +100,7 @@ export default function HomeScreen() {
                             <ButtonView
                                 text="Give yourself a name!"
                                 onPress={() => {
-                                    setEnteredName(true);
-                                    websocketService.send({
-                                        type: "PLAYER_NAME_CHANGE",
-                                        name: text,
-                                    } as ClientAction);
+                                    setName(text)
                                 }}
                                 variant='secondary'
                             />
@@ -181,4 +184,3 @@ const styles = StyleSheet.create({
 function startGame() {
     websocketService.send({ type: 'GAME_START' });
 }
-

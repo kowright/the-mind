@@ -89,7 +89,7 @@ wss.on("connection", (ws: any, req: any) => {
 
     ws.send(JSON.stringify({ type: "ASSIGN_PLAYER_ID", playerId }));
 
-    log.info(`There are ${wss.clients.size} conencted to the server.`)
+    log.info(`There are ${wss.clients.size} connected to the server.`)
     ws.on("message", (data: any) => {
         try {
             const message = JSON.parse(data);

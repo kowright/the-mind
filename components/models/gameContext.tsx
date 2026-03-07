@@ -9,7 +9,7 @@ import { createLogger } from '../../shared/types/logger';
 
 type GameContextType = {
     state: GameState;
-    dispatch: React.Dispatch<ServerAction>; // this might not even be used
+    dispatch: React.Dispatch<ServerAction>;
     playerId?: string;    
     socketError: string | null;
 };
@@ -19,7 +19,7 @@ const log = createLogger('GAME CONTEXT')
 export const GameContext = createContext<GameContextType | null>(null); //exposes state and dispatch to any component in the tree
 
 export function GameProvider({ children }: { children: ReactNode }) {
-    const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game stat, it may not be used TODO 
+    const [state, dispatch] = useReducer(gameReducer, initialGameState); //manages the whole game stat
     const [clientPlayerId, setPlayerId] = useState<string | undefined>();
     const [socketError, setSocketError] = useState<string | null>(null);
 

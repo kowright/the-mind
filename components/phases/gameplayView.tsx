@@ -112,7 +112,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                                         <HandView
                                                             clientPlayer={enemies[0]}
                                                             enemyPlayer
-                                                            onPressCard={() => { }}
+                                                       
                                                         />
                                                     </View>
                                                 </View>
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     },
 
     cardCount: {
-        color: theme.color.button.primary.hover, //TODO
+        color: theme.color.text.cardCount,
         fontWeight: 'bold'
     },
     middleEnemyRow: {

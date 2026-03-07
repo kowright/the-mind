@@ -8,7 +8,7 @@ import { ScrollView } from 'react-native';
 
 interface HandProps {
     clientPlayer: Player;
-    onPressCard: () => void;
+    onPressCard?: () => void;
     enemyPlayer: boolean;
 }
 
@@ -16,7 +16,6 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
 
     const scrollRef = useRef<ScrollView>(null);
 
-    // TODO fix enemy hand onPress
     return (
         <>
             { /* <ScrollView horizontal showsHorizontalScrollIndicator={true}
@@ -45,7 +44,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                                 index={index}
                                 total={arr.length}
                                 hideNumbers={true}
-                                onPress={() => console.log('cannot press me') }
+                        
                             />
                         ))
                            
@@ -89,7 +88,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                             index={0}
                             total={-1}
                             hideNumbers={true}
-                            onPress={() => console.log('cannot press me')}
+                     
                         />
                     }
                     </View>

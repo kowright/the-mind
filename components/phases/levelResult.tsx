@@ -59,7 +59,7 @@ export function LevelResultView() {
                                     total={state.lastRemovedCards.length + 1}
                                     discarded={true}
                                     rotate={false}
-                                    onPress={() => console.log('I do nothing')}
+                             
                                 />
                             </View>
                         ))}

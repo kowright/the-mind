@@ -81,7 +81,7 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
                             index={0}
                             total={-1}
                             hideNumbers={true}
-                            onPress={() => console.log('cannot press me')}
+                       
                         />
                 }
                 

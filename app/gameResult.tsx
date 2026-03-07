@@ -83,7 +83,7 @@ export default function GameResult() {
                                     total={state.lastRemovedCards.length + 1}
                                     discarded
                                     rotate={false}
-                                    onPress={() => { }}
+                                    
                                 />
                             </View>
                         ))}

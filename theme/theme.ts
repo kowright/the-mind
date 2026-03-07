@@ -145,6 +145,7 @@ export const theme = {
             heading: tokens.colors.white,
             body: tokens.colors.white,
             small: tokens.colors.white,
+            cardCount: tokens.colors.orange[300],
         },
         gameResult: {
             win: tokens.colors.green[300],

@@ -35,7 +35,7 @@ export function MistakeView({ countdown }: MistakeProps) {
                         total={state.lastRemovedCards.length + 1}
                         discarded={true}
                         rotate={false}
-                        onPress={() => console.log('I do nothing')}
+                   
                     />
                 </View>
                 <Text style={styles.text}>DID NOT PLAY WHEN THEY SHOULD HAVE:</Text>
@@ -54,7 +54,7 @@ export function MistakeView({ countdown }: MistakeProps) {
                                 total={state.lastRemovedCards.length+1}
                                 discarded={true}
                                 rotate={false}
-                                onPress={() => console.log('I do nothing')}
+                         
                             />
                         </View>
                     ))}

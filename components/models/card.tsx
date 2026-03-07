@@ -9,7 +9,7 @@ interface CardViewProps {
     card: Card;
     //onPlay: (card: Card) => void;
     //onSelected: (card: Card) => void;
-    onPress: () => void;
+    onPress?: () => void;
     index: number;
     total: number;
     discarded?: boolean;
@@ -83,10 +83,14 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
 
     const radius = Math.min(circleWidth, circleHeight) / 2;
 
+    const canPress = !discarded && total - 1 === index && onPress;
+
     return (
   
         <Pressable
-            onPress={() =>!discarded && total - 1 === index ? onPress() : ''} >
+            onPress={canPress ? onPress : undefined}
+            disabled={!canPress}
+        >
         <View style={dynamicCardContainer}>
             {/* Top Left */}
             <Text style={[styles.cornerText, topLeft, { fontSize: cornerFontSize }]}>

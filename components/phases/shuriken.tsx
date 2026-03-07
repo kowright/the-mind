@@ -29,7 +29,7 @@ export function ShurikenView({ countdown }: ShurikenViewProps) {
                             key={`removed-${card.id}`}
                             discarded={true}
                             rotate={true} // assuming it doesn't matter where shuriken cards came from 
-                            onPress={() => console.log('I do nothing')}
+                  
                         />
                     ))}
                 </View>

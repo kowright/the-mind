@@ -7,8 +7,6 @@ import { Level, levels } from "./level";
 import { GameState, initialGameState } from '@/shared/types/gameState';
 import { createLogger } from './logger';
 
-// TODO: remove logs
-
 const log = createLogger('REDUCER')
 export function gameReducer(
     state: GameState,
@@ -166,7 +164,6 @@ export function gameReducer(
                     mistakenlyPlayed: true,
                     mistakenPlayerId: updatedPlayer.id,
                 };
-                console.log('played card', playedCard)
                 updatedGamePhase = 'mistake';
                 wasRightMove = false;
                 updatedLastPlayedCard = playedCard;
@@ -370,7 +367,6 @@ export function gameReducer(
 
         case 'ERROR':
             log.warn('Error in reducer')
-            console.log('reducer error', action.errorMessage)
             return {
                 ...state,
                 gamePhase: 'error',

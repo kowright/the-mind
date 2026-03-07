@@ -67,7 +67,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
             setVisible(false);
         }, 1500);
     };
- console.log('disabled?', disabled)
+
     return (
         //<View style={styles.shadow}>
         <View style={[styles.buttonContainer]}>
@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
     },
     disabled: {
         //backgroundColor: theme.color.button.primary.disabled,
-        opacity: 0.5,
+        //opacity: 0.5,
+        opacity: theme.opacity.disabled,
     },
     disabledText: {
         fontWeight: 'normal',
@@ -126,13 +127,14 @@ const styles = StyleSheet.create({
     button: {
         paddingVertical: 10,
         paddingHorizontal: 16,
-        borderRadius: 6,
+        borderRadius: theme.border.radius.button,
         alignItems: 'center',
         justifyContent: 'center',
         
     },
     buttonText: {
-        fontWeight: 'normal',
+        ...themeStyles.body,
+        //fontWeight: 'normal',
         textAlign: 'center',
     },
     tooltip: {
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
         bottom: 45,
         backgroundColor: theme.color.tooltip.backgroundColor,
         padding: 8,
-        borderRadius: 6,
+        borderRadius: theme.border.radius.tooltip,
     },
     tooltipText: {
         color: theme.color.tooltip.text,

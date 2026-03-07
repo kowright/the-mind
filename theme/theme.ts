@@ -23,6 +23,9 @@ const tokens = {
         gray: {
             400: '#AAA',
         },
+        green: {
+            300: '#09b500',
+        },
         white: '#FFF',
         black: '#000',
     },
@@ -34,13 +37,6 @@ const tokens = {
         xl: 24,
         xxl: 32,
     },
-
-    //typography: {
-    //    small: 12,
-    //    body: 16,
-    //    heading: 28,
-    //    title: 32,
-    //},
 
     border: {
         radius: {
@@ -78,17 +74,6 @@ const tokens = {
 
 export const theme = {
     // semantic meaning of raw values
-    colors: {
-        background: 'white',
-        primary: '#194298',
-        secondary: '#F49320',
-        textPrimary: 'white',
-        error: 'red',
-        disabled: '#aaa',
-        hover: '#8DABEC', //light 
-        pressed: '#0A1A3D', // dark blue
-    },
-
     color: {
         brand: {
             primary: tokens.colors.orange[500],
@@ -101,15 +86,13 @@ export const theme = {
                 hover: tokens.colors.orange[300],
                 pressed: tokens.colors.orange[700],
                 disabled: tokens.colors.gray[400],
-                radius: tokens.border.radius.sm, // TODO move
             },
             secondary: {
-                backgroundColor: tokens.colors.blue[200],
+                backgroundColor: tokens.colors.blue[500],
                 text: tokens.colors.white,
                 hover: tokens.colors.blue[100],
-                pressed: tokens.colors.blue[500],
+                pressed: tokens.colors.blue[700],
                 disabled: tokens.colors.gray[400],
-                radius: tokens.border.radius.sm, // TODO move
             },
 
         },
@@ -164,7 +147,7 @@ export const theme = {
             small: tokens.colors.white,
         },
         gameResult: {
-            win: 'green',
+            win: tokens.colors.green[300],
             lose: tokens.colors.red[400],
         }
     },
@@ -208,20 +191,22 @@ export const theme = {
     border: {
         radius: {
             overlay: tokens.border.radius.lg,
+            button: tokens.border.radius.sm,
+            tooltip: tokens.border.radius.sm,
         }
     },
     textShadow: {
-        textShadowColor: 'black',
+        textShadowColor: tokens.colors.black,
         textShadowOffset: { width: 1, height: 2 },
         textShadowRadius: 5,
     },
     shadow: {
-        shadowColor: 'black',
+        shadowColor: tokens.colors.black,
         shadowOffset: { width: 1, height: 5 },
         shadowOpacity: 0.15,
         shadowRadius: 3,
         elevation: 7, // android
-    }
+    },
 };
 
 export type Theme = typeof theme; 

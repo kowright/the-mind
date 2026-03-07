@@ -52,8 +52,12 @@ export function gameReducer(
                     errorMessage: 'A player disconnected. There are not enough players are connected. Restarting game.'
                 }
             }
+
+            const winLevel = determineWinLevel(players.length);
+
             return {
                 ...state,
+                winLevel,
                 players: [...players]
             };
         }
@@ -92,14 +96,14 @@ export function gameReducer(
             }
 
 
-        case 'MAKE_FAKE_PLAYERS':
+        //case 'MAKE_FAKE_PLAYERS':
 
-            const players = makeFakePlayers(state, action.playerCount);
+        //    const players = makeFakePlayers(state, action.playerCount);
 
-            return {
-                ...state,
-                players
-            };
+        //    return {
+        //        ...state,
+        //        players
+        //    };
 
 
         case 'LEVEL_START':

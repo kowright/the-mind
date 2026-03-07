@@ -20,7 +20,6 @@ export function handlePostActionEffects(
     oldState: GameState,
     newState: GameState
 ) {
-    //TODO: 3 -> 2 game, the levels do not change to reflect new players
     log.info(`${oldState.gamePhase}->${newState.gamePhase}`)
 
     if (enterPhase('shuriken', oldState, newState)) {

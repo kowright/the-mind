@@ -150,7 +150,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                             
 
                     <View style={styles.playerArea}>
-                        {!agreeToStartVersion &&
+                                {!agreeToStartVersion ?
+                            <>
                             <ButtonView
                                 onPress={() =>
                                     websocketService.send({ type: "PLAY" } as ClientAction)
@@ -160,9 +161,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 disabled={clientPlayer.hand.cards.length === 0}
                                 showTooltip={false}
                                 variant='primary'
-                                />}
-                        
-                            <View
+                                    />
+                                                  <View
                                 style={{
                                     height: theme.size.cardHeight *1.2,
                                     width: '100%',
@@ -183,6 +183,51 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 websocketService.send({ type: "PLAY" } as ClientAction)
                             } />
                                 </View>
+                      
+                                    </>
+                                    :
+                                    <View
+                                        style={{
+                                            height: theme.size.cardHeight * 1.2,
+                                            width: '100%',
+                                            overflow: 'visible',
+                                            //paddingHorizontal: 20,
+                                            //backgroundColor: 'white',
+                                            justifyContent: 'center',
+
+                                            //alignItems: 'center', //makes left and right glow clipped
+
+                                        }}
+                                    >
+                                        <HandView
+                                            clientPlayer={clientPlayer}
+                                            enemyPlayer={false}
+                                          />
+                                    </View>
+
+                                }
+                        
+                            {/*<View*/}
+                            {/*    style={{*/}
+                            {/*        height: theme.size.cardHeight *1.2,*/}
+                            {/*        width: '100%',*/}
+                            {/*        overflow: 'visible',*/}
+                            {/*        //paddingHorizontal: 20,*/}
+                            {/*        //backgroundColor: 'white',*/}
+                            {/*        justifyContent: 'center',*/}
+
+                            {/*        //alignItems: 'center', //makes left and right glow clipped*/}
+                                
+                            {/*    }}*/}
+                            {/*>*/}
+                            {/*    <HandView*/}
+                            {/*clientPlayer={clientPlayer}*/}
+                            {/*enemyPlayer={false}*/}
+                            {/*    onPressCard={() =>*/}
+                            {/*    agreeToStartVersion ? console.log('nah') :*/}
+                            {/*    websocketService.send({ type: "PLAY" } as ClientAction)*/}
+                            {/*} />*/}
+                            {/*    </View>*/}
                       
 
                         

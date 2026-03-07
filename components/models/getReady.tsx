@@ -39,5 +39,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: theme.border.radius.overlay,
     }
 });

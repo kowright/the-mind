@@ -24,17 +24,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="rules"
         options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
+          title: 'Rules',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="book.fill" color={color} />,
         }}
           />
         <Tabs.Screen
-            name="rules"
+            name="settings"
             options={{
-                title: 'Rules',
-                tabBarIcon: ({ color }) => <IconSymbol size={28} name="book.fill" color={color} />,
+                title: 'settings',
+                tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
             }}
         />
     </Tabs>

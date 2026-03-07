@@ -51,7 +51,7 @@ export default function TabThreeScreen() {
                     title='Gameplay'
                     defaultOpen={false}
                 >
-                    <RuleText>This is a cooperative game where in each level, players must put down all cards in everyone&#39;s hand in one deck in ascending order.</RuleText>
+                    <RuleText>This is a cooperative game where in each level, players must put down all cards in everyone&#39;s hand in one deck in ascending order. Best placed with people in person or where you can see their faces.</RuleText>
                     <RuleText breaks={1}>Players can go in any order to put down cards in ascending order- for example, the pile can be 12-41-82.</RuleText>
                     <RuleText breaks={1}>If a card is not played in order, then a life will be lost for each card that should have been played. For example, if 12 is already played and someone plays 56 but someone had a 41 in their hand, then 1 life is lost. In the same example, if someone plays 56 when 12 is down and someone or multiple people have 22 & 41 in the hands, then 2 lives are lost.</RuleText>
                     <RuleText breaks={1}>The game starts in a ready to play state where players can review their hands and agree to start. After agreeing, the actual game play starts. After all cards are played from all hands without losing all lives, the next round starts immediately and this level cycle loops until all lives are lost or all levels beat.</RuleText>

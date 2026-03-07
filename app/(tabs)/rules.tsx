@@ -169,14 +169,17 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         padding: 24,
+        
         backgroundColor: theme.color.gameBackground.backgroundColor,
     },
     gameTitle: {
         ...themeStyles.gameTitle,
         textAlign: 'center',
+        paddingTop: 24,
     },
     title: {
         ...themeStyles.title,
         textAlign: 'center',
+        paddingBottom: 16,
     },
 });

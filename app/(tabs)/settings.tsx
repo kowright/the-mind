@@ -71,9 +71,11 @@ const styles = StyleSheet.create({
     gameTitle: {
         ...themeStyles.gameTitle,
         textAlign: 'center',
+        paddingTop: 24,
     },
     title: {
         ...themeStyles.title,
         textAlign: 'center',
+        paddingBottom: 16,
     },
 });

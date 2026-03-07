@@ -14,20 +14,13 @@ interface IconTextProps {
 const iconColorMapping: IconMapping = {
     'hare.fill': 'green',
     'staroflife.fill': 'gray',
-    'chart.bar.fill': 'pink',
+    'chart.bar.fill': '#af088f',
 };
 
 type IconMapping = Partial<Record<SymbolViewProps['name'], string>>;
 
 export function IconText({ iconFirst, text, iconName, altColor}: IconTextProps) {
-    // TODO: think if we want icon colors to align with type - shuriken gray, level orange, bunny blue, thumbs up?
 
-    // use for all white
-    //if (altColor === undefined || altColor === '') {
-    //    altColor = theme.color.gameplayIcon.text;
-    //}
-
-    // use for colored icons & add to return () 
     const resolvedColor =
         altColor && altColor !== ''
             ? altColor

@@ -81,8 +81,10 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                               
                                         <>
                                         {enemies.length > 1 &&
-                                            <View style={{marginTop: 32}}>
-                                                <Text style={styles.topEnemyText}>{`${enemies[0].name} [${enemies[0].cardCount}]`}</Text>
+                                            <View style={{marginTop: 20}}>
+                                                <Text style={styles.topEnemyText}>{`${enemies[0].name} `}
+                                                        <Text style={styles.cardCount}>[{enemies[0].cardCount}]</Text>
+                                                    </Text>
                                             </View>
                                         }
                                         {enemies.length === 1 &&
@@ -126,14 +128,20 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
                                     {enemies[1] && (
                                         <View style={styles.leftEnemy}>
-                                        <Text style={styles.horizontalEnemyText}>{`${enemies[1].name} [${enemies[1].cardCount}]`}</Text>
+                                            <Text style={styles.horizontalEnemyText}>
+                                                {enemies[1].name}{' '}
+                                                <Text style={styles.cardCount}>[{enemies[1].cardCount}]</Text>
+                                            </Text>
                                         </View>
                                         
                                         )}
 
                                     {enemies[2] && (
                                         <View style={styles.rightEnemy}>
-                                        <Text style={styles.horizontalEnemyText}>{`${enemies[1].name} [${enemies[1].cardCount}]`}</Text>
+                                            <Text style={styles.horizontalEnemyText}>
+                                                {enemies[2].name}{' '}
+                                                <Text style={styles.cardCount}>[{enemies[1].cardCount}]</Text>
+                                            </Text>
                                         </View>
                                     )}
 
@@ -248,6 +256,7 @@ const styles = StyleSheet.create({
         //transform: [{ rotate: '180deg' }],
         color: 'white',
         textAlign: 'center',
+        
     },
     topEnemyTwoPlayerText: {
         ...themeStyles.body,
@@ -263,6 +272,11 @@ const styles = StyleSheet.create({
     },
     horizontalEnemyText: {
         color: 'white',
+    },
+
+    cardCount: {
+        color: theme.color.button.primary.hover, //TODO
+        fontWeight: 'bold'
     },
     middleEnemyRow: {
         flexDirection: 'row',

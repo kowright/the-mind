@@ -25,12 +25,13 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
         borderRadius: circleSize / 2,
     };
     const dynamicShadowStyle = {
-        borderRadius: circleShape ?  circleSize / 2 : 6,
-        shadowColor: 'black',
-        shadowOffset: { width: 1, height: 5 },
-        shadowOpacity: 0.15,
-        shadowRadius: 3,
-        elevation: 7, // android
+        borderRadius: circleShape ? circleSize / 2 : 6,
+        ...theme.shadow,
+        //shadowColor: 'black',
+        //shadowOffset: { width: 1, height: 5 },
+        //shadowOpacity: 0.15,
+        //shadowRadius: 3,
+        //elevation: 7, // android
 
     }
     const dynamicTooltipStyle = circleShape
@@ -148,11 +149,11 @@ const styles = StyleSheet.create({
     shadow: {
         //backgroundColor: '#fff',
         //borderRadius: 99,
-        shadowColor: 'black',
-        shadowOffset: { width: 5, height: 3 },
-        shadowOpacity: 0.4,
-        shadowRadius: 3,
-        elevation: 5,
+        //shadowColor: 'black',
+        //shadowOffset: { width: 5, height: 3 },
+        //shadowOpacity: 0.4,
+        //shadowRadius: 3,
+        //elevation: 5,
         //...Platform.select({
         //    ios: {
         //        shadowColor: 'white',

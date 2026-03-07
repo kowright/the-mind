@@ -25,7 +25,7 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
     const cardHeight = theme.size.cardHeight;
     const isDiscardEmptyPlaceholder = total === -1;
 
-    const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black';
+    const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black'; //TODO this red too red
       
     const { state } = useGame();
 

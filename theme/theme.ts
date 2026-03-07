@@ -185,39 +185,6 @@ export const theme = {
         xxl: 32,
     },
 
-    //typography: {
-    //    //TODO: should be the line weight, font weight, letter spacing, font size
-    //    //small: 12,
-    //    //body: 16,
-    //    //heading: 28,
-    //    //title: 32,
-
-    //    heading: {
-    //        fontSize: tokens.typography.heading,
-    //        fontWeight: tokens.font.weight.bold,
-    //        color: tokens.colors.white,
-    //    },
-
-    //    small: {
-    //        fontSize: tokens.typography.small,
-    //        color: tokens.colors.white,
-
-    //    },
-
-    //    body: {
-    //        fontSize: tokens.typography.body,
-    //        color: tokens.colors.white,
-
-    //    },
-
-    //    title: {
-    //        fontSize: tokens.typography.title,
-    //        color: tokens.colors.orange[500],
-    
-    //    }
-    //},
-
-
     size: {
         circleSize: tokens.size[400],
         //iconSize
@@ -254,6 +221,13 @@ export const theme = {
         textShadowColor: 'black',
         textShadowOffset: { width: 1, height: 2 },
         textShadowRadius: 5,
+    },
+    shadow: {
+        shadowColor: 'black',
+        shadowOffset: { width: 1, height: 5 },
+        shadowOpacity: 0.15,
+        shadowRadius: 3,
+        elevation: 7, // android
     }
 };
 

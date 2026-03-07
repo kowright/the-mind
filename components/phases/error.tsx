@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 import { GameOverlayView } from '../models/gameOverlay';
 import { StyleSheet } from 'react-native';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
-import { overlayStyle, theme } from '../../theme/theme';
+import { overlayStyle, theme, themeStyles } from '../../theme/theme';
 
 interface ErrorProps {
     errorMessage?: string;
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     },
     overlay: overlayStyle(theme),
     text: {
-        color: theme.color.overlay.color,
+        ...themeStyles.body,
+        //color: theme.color.overlay.color,
     }
 });

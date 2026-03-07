@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
 import { CardView } from '../models/card';
-import { overlayStyle, theme } from '../../theme/theme';
+import { overlayStyle, theme, themeStyles } from '../../theme/theme';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { IconText } from '../models/iconText';
 import { GetReadyView } from '../models/getReady';
@@ -16,7 +16,8 @@ export function MistakeView({ countdown }: MistakeProps) {
     const { state } = useGame();
     const theme = useResponsiveTheme();
 
-    // TODO: does it go to fast? Maybe reformatting it so it can be understood faster
+    // TODO UX: does it go to fast? Maybe reformatting it so it can be understood faster
+    // TODO UX: how do make wording shorter
     return (
         <GameOverlayView>
             <View style={[styles.overlay, styles.overlayContainer]}>
@@ -24,7 +25,7 @@ export function MistakeView({ countdown }: MistakeProps) {
                 <Text style={styles.text}>PLAYED TOO EARLY:</Text>
                 <View
                     key={`last-played-card-mistake`}
-                    style={{
+                    style={{ marginVertical: 12,
                         marginLeft: state.lastRemovedCards.length === 0 ? 0 : theme.size.cardWidth,
                     }}
                 >
@@ -88,6 +89,7 @@ const styles = StyleSheet.create({
     },
     overlay: overlayStyle(theme),
     text: {
-        color: theme.color.overlay.color,
+        ...themeStyles.body,
+        //color: theme.color.overlay.color,
     }
 });

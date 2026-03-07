@@ -33,7 +33,6 @@ export default function HomeScreen() {
     const nameInputFieldText = clientPlayer?.name === '' ||
         text !== '' ?
         'Enter your name' : 'Can rename yourself or keep previous name';
-    //TODO: give warning that you are not connected to websocket
 
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {

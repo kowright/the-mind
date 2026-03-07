@@ -25,7 +25,7 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
     const cardHeight = theme.size.cardHeight;
     const isDiscardEmptyPlaceholder = total === -1;
 
-    const backgroundColor = discarded && card.mistakenlyPlayed ? 'red' : 'black'; //TODO this red too red
+    const backgroundColor = discarded && card.mistakenlyPlayed ? theme.color.card.mistake : theme.color.card.primary;
       
     const { state } = useGame();
 
@@ -217,11 +217,11 @@ const styles = StyleSheet.create({
   
         position: 'absolute',
         transform: [{ rotate: '45deg' }],
-        backgroundColor: 'purple',
+        backgroundColor: 'black',
         color: 'white',
         padding: 4,
         //paddingHorizontal: 32,
-       zIndex: 10,
+        zIndex: 10,
     },
 
     middleCircle: {

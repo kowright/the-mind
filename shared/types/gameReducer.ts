@@ -44,7 +44,7 @@ export function gameReducer(
 
             const isValid = hasValidPlayerCount(players);
 
-            if (!isValid) {
+            if (!isValid && state.gamePhase !== 'setup') {
                 return {
                     ...state,
                     players,

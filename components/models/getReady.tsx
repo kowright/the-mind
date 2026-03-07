@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     },
     getReadyContainer: {
         ...theme.shadow,
-        backgroundColor: 'red',
+        backgroundColor: theme.color.overlay.alert,
         padding: 8,
         display: 'flex',
         justifyContent: 'center',

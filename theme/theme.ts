@@ -17,12 +17,14 @@ const tokens = {
             700: '#b56709',
         },
         red: {
+            400: '#ff0800',
             500: '#FF3B30',
         },
         gray: {
             400: '#AAA',
         },
         white: '#FFF',
+        black: '#000',
     },
     spacing: {
         xs: 4,
@@ -133,12 +135,8 @@ export const theme = {
         },
 
         card: {
-            primary: {
-
-            },
-            discard: {
-
-            },
+            primary: tokens.colors.black,
+            mistake: tokens.colors.red[400], 
             gradient: {
                 blueGradient: [tokens.colors.blue[300], 'white', 'white', 'white', tokens.colors.blue[300]],
                 orangeGradient: [tokens.colors.orange[300], 'transparent', 'transparent', 'transparent', tokens.colors.orange[300]],
@@ -167,12 +165,17 @@ export const theme = {
         overlay: {
             backgroundColor: tokens.colors.blue[400],
             color: tokens.colors.white,
+            alert: tokens.colors.red[400],
         },
 
         text: {
             heading: tokens.colors.white,
             body: tokens.colors.white,
             small: tokens.colors.white,
+        },
+        gameResult: {
+            win: 'green',
+            lose: tokens.colors.red[400],
         }
     },
 

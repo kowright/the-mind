@@ -80,7 +80,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                     circleShape && dynamicCircleStyle,
                     { backgroundColor: theme.color.button[variant].background },
                     dynamicShadowStyle,
-                    disabled && styles.disabled,
+                    disabled && styles.disabled && {backgroundColor: theme.color.button[variant].disabled},
                     hovered && !disabled && { backgroundColor: theme.color.button[variant].hover },
                     pressed && !disabled && { backgroundColor: theme.color.button[variant].pressed },
                 ]}
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         maxWidth: '75%',
     },
     disabled: {
-        backgroundColor: theme.colors.disabled,
+        //backgroundColor: theme.color.button.primary.disabled,
         opacity: 0.5,
     },
     disabledText: {

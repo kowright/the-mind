@@ -108,29 +108,29 @@ export default function GameResult() {
 const styles = StyleSheet.create({
     wonContainer: {
         ...themeStyles.heading,
-        backgroundColor: 'green',
+        backgroundColor: theme.color.gameResult.win,
         //color: 'white',
         textAlign: 'center',
         //fontWeight: 'bold',
     },
     lostContainer: {
         ...themeStyles.heading,
-        backgroundColor: 'red',
+        backgroundColor: theme.color.gameResult.lose,
         textAlign: 'center',
 
     },
-    discardPileContainerRight: {
-        marginTop: 16,
-        backgroundColor: 'green',
-        display: 'flex',
-        alignItems: 'center',
-    },
-    discardPileContainerWrong: {
-        marginTop: 16,
-        backgroundColor: 'red',
-        display: 'flex',
-        alignItems: 'center',
-    },
+    //discardPileContainerRight: {
+    //    marginTop: 16,
+    //    backgroundColor: 'green',
+    //    display: 'flex',
+    //    alignItems: 'center',
+    //},
+    //discardPileContainerWrong: {
+    //    marginTop: 16,
+    //    backgroundColor: 'red',
+    //    display: 'flex',
+    //    alignItems: 'center',
+    //},
     text: {
         ...themeStyles.body
         //color: 'white',

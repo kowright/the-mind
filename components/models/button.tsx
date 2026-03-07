@@ -67,7 +67,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
             setVisible(false);
         }, 1500);
     };
- 
+ console.log('disabled?', disabled)
     return (
         //<View style={styles.shadow}>
         <View style={[styles.buttonContainer]}>
@@ -78,9 +78,10 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                 style={({ pressed, hovered }) => [
                     styles.button,
                     circleShape && dynamicCircleStyle,
-                    { backgroundColor: theme.color.button[variant].background },
+                    { backgroundColor: theme.color.button[variant].backgroundColor },
                     dynamicShadowStyle,
-                    disabled && styles.disabled && {backgroundColor: theme.color.button[variant].disabled},
+                    disabled && styles.disabled,
+                    disabled && { backgroundColor: theme.color.button[variant].disabled },
                     hovered && !disabled && { backgroundColor: theme.color.button[variant].hover },
                     pressed && !disabled && { backgroundColor: theme.color.button[variant].pressed },
                 ]}
@@ -88,6 +89,7 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                 <Text
                     style={[
                         styles.buttonText,
+                        { color: theme.color.button[variant].text },
                         circleShape && dynamicTextStyle,
                         disabled && styles.disabledText,
                         theme.textShadow,
@@ -122,24 +124,21 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
     },
     button: {
-        //backgroundColor: theme.colors.primary,
         paddingVertical: 10,
         paddingHorizontal: 16,
         borderRadius: 6,
         alignItems: 'center',
-        color: theme.colors.textPrimary,
         justifyContent: 'center',
         
     },
     buttonText: {
-        color: theme.colors.textPrimary,
         fontWeight: 'normal',
         textAlign: 'center',
     },
     tooltip: {
         position: 'absolute',
         bottom: 45,
-        backgroundColor: theme.color.tooltip.background,
+        backgroundColor: theme.color.tooltip.backgroundColor,
         padding: 8,
         borderRadius: 6,
     },

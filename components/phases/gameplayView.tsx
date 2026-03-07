@@ -43,11 +43,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     const enemies = players.filter(p => p.id !== playerId);
 
-    // TODO: make play card and vote shuriken buttons be hierarchily different
-
-    // TODO: make enemy name be more obvious
-
-
     return (
         <LinearGradient 
             colors={theme.color.gameBackground.gradient}

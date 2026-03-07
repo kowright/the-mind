@@ -75,10 +75,7 @@ const tokens = {
         400: 400,
     },
 };
-// TODO: fill this out- should separate raw values from semantics in theme?
 
-
-//TODO: pick background or backgroundColor wording to use 
 export const theme = {
     // semantic meaning of raw values
     colors: {
@@ -98,34 +95,27 @@ export const theme = {
         },
 
         button: {
-            //secondary: {
-            //    background: tokens.colors.blue[500],
-            //    text: tokens.colors.white,
-            //    hover: tokens.colors.blue[300],
-            //    pressed: tokens.colors.blue[700],
-            //    disabled: tokens.colors.gray[400],
-            //    radius: tokens.radius.sm,
-            //}, 
+            primary: {
+                backgroundColor: tokens.colors.orange[500],
+                text: tokens.colors.white,
+                hover: tokens.colors.orange[300],
+                pressed: tokens.colors.orange[700],
+                disabled: tokens.colors.gray[400],
+                radius: tokens.border.radius.sm, // TODO move
+            },
             secondary: {
-                background: tokens.colors.blue[200],
+                backgroundColor: tokens.colors.blue[200],
                 text: tokens.colors.white,
                 hover: tokens.colors.blue[100],
                 pressed: tokens.colors.blue[500],
                 disabled: tokens.colors.gray[400],
                 radius: tokens.border.radius.sm, // TODO move
             },
-            primary: {
-                background: tokens.colors.orange[500],
-                text: tokens.colors.white,
-                hover: tokens.colors.orange[300],
-                pressed: tokens.colors.orange[700],
-                disabled: tokens.colors.gray[400],
-                radius: tokens.border.radius.sm, // TODO move
-            }
+
         },
 
         tooltip: {
-            background: tokens.colors.orange[500],
+            backgroundColor: tokens.colors.orange[500],
             text: tokens.colors.white,
         },
 

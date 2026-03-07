@@ -122,6 +122,14 @@ export const theme = {
 
         gameplayIcon: {
             backgroundColor: tokens.colors.white,
+            voted: tokens.colors.red[400],
+        },
+
+        toggleIcon: {
+            open: tokens.colors.orange[500],
+            close: tokens.colors.white,
+            press: tokens.colors.orange[700],
+            hover: tokens.colors.orange[300],
         },
         gameBackground: {
             // backgroundColor: '#96725c', // mid orange
@@ -146,6 +154,7 @@ export const theme = {
             body: tokens.colors.white,
             small: tokens.colors.white,
             cardCount: tokens.colors.orange[300],
+            gameTitle: tokens.colors.white,
         },
         gameResult: {
             win: tokens.colors.green[300],
@@ -244,5 +253,12 @@ export const themeStyles = StyleSheet.create({
         fontSize: theme.font.size.small,
         color: theme.color.text.small,
     },
-
+    gameTitle: {
+        ...theme.textShadow,
+        fontSize: theme.font.size.title,
+        color: theme.color.text.gameTitle,
+        fontWeight: theme.font.weight.bold,
+    },
+    
 });
+

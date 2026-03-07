@@ -57,7 +57,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                 <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
                 <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
                 <IconText iconFirst={true} iconName='chart.bar.fill' text={`${state.level.number}/${state.winLevel}`} />
-                <IconText iconFirst={true} iconName='hand.thumbsup' text={thumbsUpNumbers} altColor={thumbsUpAsked ? 'red' : ''} />
+                <IconText iconFirst={true} iconName='hand.thumbsup' text={thumbsUpNumbers} altColor={thumbsUpAsked ? theme.color.gameplayIcon.voted : ''} />
             
             </View>
 

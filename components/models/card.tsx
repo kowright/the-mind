@@ -5,6 +5,7 @@ import { StyleSheet, Pressable } from 'react-native';
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
 import { useGame } from "../../hooks/useGame";
 import { LinearGradient } from 'expo-linear-gradient';
+import { themeStyles } from "../../theme/theme";
 interface CardViewProps {
     card: Card;
     //onPlay: (card: Card) => void;
@@ -15,9 +16,10 @@ interface CardViewProps {
     discarded?: boolean;
     rotate?: boolean;
     hideNumbers?: boolean;
+    mistakenPlayerName?: string;
 }
 
-export function CardView({ card, total, index, onPress, discarded = false, rotate = false, hideNumbers = false }: CardViewProps) {
+export function CardView({ card, total, index, onPress, mistakenPlayerName, discarded = false, rotate = false, hideNumbers = false }: CardViewProps) {
 
     const theme = useResponsiveTheme();
 
@@ -30,6 +32,10 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
     const { state } = useGame();
 
     const mistakenPlayer = state.players.find(p => p.id === card.mistakenPlayerId);
+
+    const mistakenName =
+        mistakenPlayerName ??
+        mistakenPlayer?.name;
 
     const overlapAmount = !discarded ? cardWidth * 0.65 : 0;
     const marginLeft = !discarded ? (index === 0 ? 0 : -overlapAmount) : (index === 0 ? 0 : -cardWidth);
@@ -136,14 +142,16 @@ export function CardView({ card, total, index, onPress, discarded = false, rotat
                     ]}>
                         {!hideNumbers && card.number}
                     </Text>
+                  
+                    </View>
                     {card.mistakenlyPlayed && <Text style={[
                         styles.mistakenPlayerText
                     ]}>
-                        {mistakenPlayer?.name}
+                        {mistakenName}
                     </Text>}
-                </View>
             </View>
-            }
+                }
+
 
             {/* Bottom Left */}
             <Text style={[styles.cornerText, bottomLeft, { fontSize: cornerFontSize }]}>
@@ -217,15 +225,15 @@ const styles = StyleSheet.create({
     },
 
     mistakenPlayerText: {
-        fontSize: 16,
-  
+        ...themeStyles.small,
+
         position: 'absolute',
         transform: [{ rotate: '45deg' }],
         backgroundColor: 'black',
-        color: 'white',
+        //color: 'white',
         padding: 4,
         //paddingHorizontal: 32,
-        zIndex: 10,
+        zIndex: 20,
     },
 
     middleCircle: {

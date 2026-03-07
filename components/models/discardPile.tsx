@@ -30,8 +30,6 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
     const isPlayingorMistake: boolean = state.gamePhase === 'playing' || state.gamePhase === 'mistake';
 
 
-    // TODO: contentContainerStyle for scrollview needs to go in styles
-
     return (
         <>
   
@@ -60,7 +58,7 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
                                     <View
                                         key={card.id}
                                         style={{
-                                            marginLeft: index === 0 ? 0 : theme.size.cardWidth, // gap between cards TODO: put in var
+                                            marginLeft: index === 0 ? 0 : theme.size.cardWidth,
                                         }}
                                     >
                                         <CardView card={card} index={index} total={state.discardPile?.length} key={`discard-${card.id}`} discarded={true} rotate={false} />

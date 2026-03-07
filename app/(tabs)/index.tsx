@@ -141,10 +141,7 @@ const styles = StyleSheet.create({
     },
 
     gameTitle: {
-        ...themeStyles.title,
-
-        color: 'white',
-        fontWeight: 'bold',
+        ...themeStyles.gameTitle,
         textAlign: 'center',
     },
 

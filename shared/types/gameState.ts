@@ -1,6 +1,7 @@
 import { Card } from "./card";
 import { ClientAction, GameAction } from "./gameAction";
 import { GamePhase } from "./gamePhase";
+import { GameSettings, initialGameSettings } from "./gameSettings";
 import { Level, levels, RewardType } from "./level";
 import { Player } from "./player";
 
@@ -21,6 +22,7 @@ export interface GameState {
     shurikenedCards: Card[];
     gameOutcome?: 'won' | 'lost';
     errorMessage?: string;
+    gameSettings: GameSettings;
 }
 
 export const initialGameState: GameState = {
@@ -36,6 +38,7 @@ export const initialGameState: GameState = {
     shurikenCalls: [],
     lastRemovedCards: [],
     shurikenedCards: [],
+    gameSettings: initialGameSettings,
 }
 
 

@@ -159,6 +159,10 @@ export const theme = {
         gameResult: {
             win: tokens.colors.green[300],
             lose: tokens.colors.red[400],
+        },
+        checkbox: {
+            checkboxOutline: tokens.colors.white,
+            checkBoxFill: tokens.colors.orange[700],
         }
     },
 
@@ -217,6 +221,7 @@ export const theme = {
         shadowRadius: 3,
         elevation: 7, // android
     },
+
 };
 
 export type Theme = typeof theme; 

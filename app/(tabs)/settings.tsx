@@ -10,26 +10,54 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Fonts } from '@/constants/theme';
 import { Text, View } from 'react-native';
 import { theme, themeStyles } from '../../theme/theme';
-import { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
+import Checkbox from 'expo-checkbox';
+import { IconText } from '../../components/models/iconText';
+import { useGame } from '../../hooks/useGame';
+import { websocketService } from '@/services/websocketService';
+import { ClientAction } from '../../shared/types/gameAction';
+import { GameSetting } from '../../shared/types/gameSettings';
 
 interface SettingItemProps {
     settingName: string;
     settingDescription: string;
-    checked?: boolean;
+    settingType?: GameSetting,
+    //checked: boolean;
 }
 
-export function SettingsItem({ settingDescription, settingName, checked = false }: SettingItemProps) {
+export function SettingsItem({ settingDescription, settingName, settingType }: SettingItemProps) {
+    const { state } = useGame();
+
+
+    const isChecked = state.gameSettings[settingType];
+
+
+    function setSetting() {
+        websocketService.send({
+            type: "SETTINGS",
+            setting: settingType
+        } as ClientAction);
+    }
+
+     
     return (
-       <View>
-            <Text style={themeStyles.body}>{settingName}</Text>
-            <Text style={themeStyles.small}>{settingDescription}</Text>
-       </View>
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+            {settingType && <Checkbox
+                value={isChecked}
+                onValueChange={setSetting}
+                color={isChecked ? theme.color.checkbox.checkBoxFill : theme.color.checkbox.checkboxOutline}
+            />}
+          <View>
+              <Text style={themeStyles.body}>{settingName}</Text>
+              <Text style={themeStyles.small}>{settingDescription}</Text>
+          </View>
+      </View>
     );
 }
 
 export default function TabTwoScreen() {
-
-
+    const { state, playerId } = useGame();
 
     return (
         <View
@@ -43,13 +71,13 @@ export default function TabTwoScreen() {
             </Text>
 
             <View style={{gap: 16}}>
-                <SettingsItem settingName='Skip skipped cards' settingDescription='Hide cards done in a mistake or by shuriken for a challenge' />
+                <SettingsItem settingName='Skip skipped cards' settingDescription='Hide cards done in a mistake or by shuriken for a challenge' settingType='skippedCards' />
 
-                <SettingsItem settingName='Card counting' settingDescription='Hide how many cards other people have for a challenge' />
+                <SettingsItem settingName='Card counting' settingDescription='Hide how many cards other people have for a challenge' settingType='cardCounts' />
 
-                <SettingsItem settingName='One mind, one life' settingDescription='Start with 1 life' />
+                <SettingsItem settingName='One mind, one life' settingDescription='Start with 1 life' settingType='oneLife' />
 
-                <SettingsItem settingName='Blind' settingDescription='Cannot see card numbers while playing' />
+                <SettingsItem settingName='Blind' settingDescription='Cannot see card numbers while playing' settingType='blind' />
 
                 <Text style={themeStyles.heading}>Next updates settings!</Text>
 

@@ -365,6 +365,23 @@ export function gameReducer(
 
             }
 
+        case 'SETTINGS': {
+            console.log('SETTINGS', state.gameSettings)
+            console.log('action', action)
+            const settings = state.gameSettings;
+            const setting = settings[action.setting] 
+            console.log('old val = ', setting)
+            settings[action.setting] = !setting;
+            console.log('new val = ', settings[action.setting])
+
+            
+            return {
+                ...state,
+                gameSettings: settings,
+            }
+        }
+          
+
         case 'ERROR':
             log.warn('Error in reducer')
             return {

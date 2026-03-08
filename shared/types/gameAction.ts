@@ -1,4 +1,5 @@
 import { GamePhase } from "./gamePhase";
+import { GameSetting } from "./gameSettings";
 import { GameState } from "./gameState";
 
 // events & intent, not how they happen
@@ -25,7 +26,8 @@ const gameActionSchema = {
     TRANSITION: { requiresPlayerId: false },
     GAME_RESTART: { requiresPlayerId: false },  
     TRANSITION_TO_PLAYING: { requiresPlayerId: false },
-    ERROR: { requiresPlayerId: false},
+    ERROR: { requiresPlayerId: false },
+    SETTINGS: { requiresPlayerId: false },
 } as const;
 
 export type GameActionType = keyof typeof gameActionSchema;
@@ -51,7 +53,8 @@ export interface ActionPayloads {
     TRANSITION: { nextAction: ServerAction }
     GAME_RESTART: {};
     TRANSITION_TO_PLAYING: {};
-    ERROR: {errorMessage: string};
+    ERROR: { errorMessage: string };
+    SETTINGS: { setting: GameSetting};
 }
 export type ClientAction = {
     [K in GameActionType]: { type: K } & ActionPayloads[K]

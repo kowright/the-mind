@@ -25,10 +25,6 @@ export function RuleText({ children, breaks = 0 }: RuleTextProps) {
 }
 export default function TabThreeScreen() {
 
-    // TODO: what are the rules? 
-
-    
-
     return (
         <View
             style={styles.screen}

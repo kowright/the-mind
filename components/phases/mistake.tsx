@@ -38,9 +38,9 @@ export function MistakeView({ countdown }: MistakeProps) {
                    
                     />
                 </View>
-                <Text style={styles.text}>DID NOT PLAY WHEN THEY SHOULD HAVE:</Text>
-                <View style={styles.removedCardsContainer}>
-              
+                {!state.gameSettings.skippedCards && <Text style={styles.text}>DID NOT PLAY WHEN THEY SHOULD HAVE:</Text>}
+                {!state.gameSettings.skippedCards && <View style={styles.removedCardsContainer}>
+
                     {state.lastRemovedCards.map((card, index) => (
                         <View
                             key={card.id}
@@ -51,15 +51,15 @@ export function MistakeView({ countdown }: MistakeProps) {
                             <CardView
                                 card={card}
                                 index={index}
-                                total={state.lastRemovedCards.length+1}
+                                total={state.lastRemovedCards.length + 1}
                                 discarded={true}
                                 rotate={false}
-                         
+
                             />
                         </View>
                     ))}
-            
-                </View>
+
+                </View>}
 
                 <View style={styles.lostLivesContainer}>
                     <IconText iconFirst={false} iconName='hare.fill' text={`Lost ${state.lastRemovedCards.length}`} />

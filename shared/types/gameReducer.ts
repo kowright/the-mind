@@ -74,7 +74,7 @@ export function gameReducer(
                 return state;
             }
 
-            const lives = determineLives(playerCount);
+            const lives = state.gameSettings.oneLife ? 1 : determineLives(playerCount);
             const winLevel = determineWinLevel(playerCount);
 
             return {
@@ -91,6 +91,7 @@ export function gameReducer(
             return {
                 ...initialGameState,
                 players: state.players,
+                gameSettings: state.gameSettings,
             }
 
 

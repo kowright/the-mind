@@ -29,7 +29,6 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
 
     const isPlayingorMistake: boolean = state.gamePhase === 'playing' || state.gamePhase === 'mistake';
 
-
     return (
         <>
   
@@ -42,7 +41,7 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
                                 //<View key={`discard-${card.id}`} style={card.mistakenlyPlayed ? styles.discardPileContainerWrong : styles.discardPileContainerRight}>
                                 //    <Text>{card.number}</Text>
                                 //</View>
-                                <CardView card={card} index={index} total={state.discardPile?.length} key={`discard-${card.id}`} discarded={true} rotate={true} />
+                                <CardView card={card} index={index} total={state.discardPile?.length} key={`discard-${card.id}`} discarded={true} rotate={true} hideNumbers={state.gameSettings.blind ? true : false } />
                         )) }
                     </> )
                    

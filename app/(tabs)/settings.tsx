@@ -70,14 +70,16 @@ export default function TabTwoScreen() {
                 SETTINGS
             </Text>
 
+            <Text style={themeStyles.body}>These are not neccesary to play the game. These will all make the game significantly harder.</Text>
+
             <View style={{gap: 16}}>
                 <SettingsItem settingName='Skip skipped cards' settingDescription='Hide cards done in a mistake or by shuriken for a challenge' settingType='skippedCards' />
 
                 <SettingsItem settingName='Card counting' settingDescription='Hide how many cards other people have for a challenge' settingType='cardCounts' />
 
-                <SettingsItem settingName='One mind, one life' settingDescription='Start with 1 life' settingType='oneLife' />
+                <SettingsItem settingName='One mind, one life' settingDescription='Start with 1 life for a challenge' settingType='oneLife' />
 
-                <SettingsItem settingName='Blind' settingDescription='Cannot see card numbers while playing' settingType='blind' />
+                <SettingsItem settingName='Blind' settingDescription='Cannot see card numbers in pile while playing for a challenge' settingType='blind' />
 
                 <Text style={themeStyles.heading}>Next updates settings!</Text>
 
@@ -85,6 +87,7 @@ export default function TabTwoScreen() {
 
                 <SettingsItem settingName='Silent chat' settingDescription='Let other players know what you are thinking if they cannot see you. Add PASS and WAIT options next to player names' />
 
+                <SettingsItem settingName='No rewards' settingDescription='There are no rewards when you beat levels- what you have at the start is all you have' />
             </View>
         </View>
     );

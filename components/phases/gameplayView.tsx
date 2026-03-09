@@ -40,7 +40,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
     const thumbsUpAsked =  agreeToStartVersion ? state.readyToStartPlayers.length > 0 :
         state.shurikenCalls.length > 0
 
-
+    console.log('settings card count', state.gameSettings.cardCounts)
     const enemies = players.filter(p => p.id !== playerId);
 
     return (
@@ -53,10 +53,13 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
         <View style={styles.container} >
             <View style={{
                flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginVertical: 4,
-            }}>
+                }}>
+
+
                 <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
                 <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
-                <IconText iconFirst={true} iconName='chart.bar.fill' text={`${state.level.number}/${state.winLevel}`} />
+                    <IconText iconFirst={true} iconName='chart.bar.fill' text={`${state.level.number}/${state.winLevel}`} />
+
                 <IconText iconFirst={true} iconName='hand.thumbsup' text={thumbsUpNumbers} altColor={thumbsUpAsked ? theme.color.gameplayIcon.voted : ''} />
             
             </View>
@@ -78,7 +81,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                         {enemies.length > 1 &&
                                             <View style={{marginTop: 20}}>
                                                 <Text style={styles.topEnemyText}>{`${enemies[0].name} `}
-                                                        <Text style={styles.cardCount}>[{enemies[0].cardCount}]</Text>
+                                                        {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>[{enemies[0].cardCount}]</Text>}
                                                     </Text>
                                             </View>
                                         }
@@ -96,9 +99,13 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                                     }}
                                                 >
                                                     {/* Keep text normal */}
-                                                    <Text style={styles.topEnemyTwoPlayerText}>
-                                                        {`${enemies[0].name} [${enemies[0].cardCount}]`}
-                                                    </Text>
+                                                    {/*<Text style={styles.topEnemyTwoPlayerText}>*/}
+                                                    {/*    {`${enemies[0].name} [${enemies[0].cardCount}]`}*/}
+                                                    {/*    </Text>*/}
+
+                                                        <Text style={styles.topEnemyTwoPlayerText}>{`${enemies[0].name} `}
+                                                            {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>[{enemies[0].cardCount}]</Text>}
+                                                        </Text>
 
                                                     {/* Rotate ONLY the hand */}
                                                     <View
@@ -125,7 +132,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                         <View style={styles.leftEnemy}>
                                             <Text style={styles.horizontalEnemyText}>
                                                 {enemies[1].name}{' '}
-                                                <Text style={styles.cardCount}>[{enemies[1].cardCount}]</Text>
+                                                {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>[{enemies[1].cardCount}]</Text>}
                                             </Text>
                                         </View>
                                         
@@ -135,7 +142,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                         <View style={styles.rightEnemy}>
                                             <Text style={styles.horizontalEnemyText}>
                                                 {enemies[2].name}{' '}
-                                                <Text style={styles.cardCount}>[{enemies[1].cardCount}]</Text>
+                                                {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>[{enemies[1].cardCount}]</Text>}
                                             </Text>
                                         </View>
                                     )}

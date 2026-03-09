@@ -145,7 +145,7 @@ export function CardView({ card, total, index, onPress, mistakenPlayerName, disc
                   
                     </View>
                     {card.mistakenlyPlayed && <Text style={[
-                        styles.mistakenPlayerText
+                        styles.mistakenPlayerText, {fontSize: theme.typography.small }
                     ]}>
                         {mistakenName}
                     </Text>}

@@ -57,6 +57,18 @@ export default function TabThreeScreen() {
 
 
                 <ToggleText
+                    title='Phases'
+                    defaultOpen={false}
+                >
+                    <RuleText>The game starts in a preparation phase where players review their cards, check the game stats like lives, shuriken and level and get themselves ready to play. When all players have pressed the ready button, a countdown to the play phas starts</RuleText>
+                    <RuleText breaks={1}>In the play phase is where the gameplay happens and cards from players hands are played during the level.</RuleText>
+                    <RuleText breaks={1}>The level either ends in a game win if all levels are beat, a game loss if all lives are lost or a level win. All of these lead to the review phase. </RuleText>
+                    <RuleText breaks={1}>The review phase is where you see what happened in the level. You will see any rewards you get if it was a level win or if it was a game win or loss, you see what lives, shuriken and level you ended on. All review stages will show you what order the cards were put down in.</RuleText>
+                    <RuleText breaks={1}>At the end of the review stage, we either loop back to the preparation phase for the next level if it was a level win or if it was a game win or loss, we go back to the home screen where you can restart the game from the top.</RuleText>
+                </ToggleText>
+
+
+                <ToggleText
                     title='Levels'
                     defaultOpen={false}
                 >
@@ -148,8 +160,8 @@ export default function TabThreeScreen() {
                     title='Thumbs Up'
                     defaultOpen={false}
                 >
-                    <RuleText>During the ready to start and play screens, there are opportunities to vote on when an event happens</RuleText>
-                    <RuleText breaks={1}>During the ready to start level phase, players can use the &#39;READY??&#39; button to cast their vote to start the level. During game play, casting a vote will denote interest in using a shuriken.</RuleText>
+                    <RuleText>During the preparation and play screens, there are opportunities to vote on when an event happens</RuleText>
+                    <RuleText breaks={1}>During the preparation level phase, players can use the &#39;READY??&#39; button to cast their vote to start the level. During game play, casting a vote will denote interest in using a shuriken.</RuleText>
                     <RuleText breaks={1}>Once the first player&#39;s vote is cast, the thumbs up symbol will be red to signify voting has started. If there are no votes, the thumbs up symbol will be white. The votes are reset after all players voted.</RuleText>
                     <RuleText breaks={1}>The thumbs up is also denoted by this symbol and can be found at the top of the play screen:</RuleText>
 

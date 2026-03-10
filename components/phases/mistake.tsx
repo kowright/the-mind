@@ -8,6 +8,8 @@ import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { IconText } from '../models/iconText';
 import { GetReadyView } from '../models/getReady';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
+import { useEffect } from 'react';
+import { soundService } from '../../services/soundService';
 
 interface MistakeProps {
     countdown: number;
@@ -16,8 +18,15 @@ export function MistakeView({ countdown }: MistakeProps) {
     const { state } = useGame();
     const theme = useResponsiveTheme();
 
+    useEffect(() => {
+        if (!state) return;
+
+        soundService.play('mistake');
+
+    }, []);
+
     // TODO UX: does it go to fast? Maybe reformatting it so it can be understood faster
-    // TODO UX: how do make wording shorter
+
     return (
         <GameOverlayView>
             <View style={[styles.overlay, styles.overlayContainer]}>

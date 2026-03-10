@@ -4,6 +4,7 @@ import { StyleSheet, Pressable } from 'react-native';
 import { theme, themeStyles } from "../../theme/theme";
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
 import { Platform } from 'react-native';
+import { soundService } from "../../services/soundService";
 interface ButtonProps {
     text: string;
     onPress: () => void;

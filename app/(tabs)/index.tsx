@@ -114,7 +114,7 @@ export default function HomeScreen() {
                     </Text>
 
                     <Text style={styles.meta}>
-                        {`We got ${playerNames}${!allPlayersHaveNames ? '...' : '!'} `}
+                        {`We got ${playerNames}${(!playersHaveNames) ? '...' : '!'} `}
                     </Text>
                 </View>
             </View>

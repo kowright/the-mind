@@ -20,7 +20,7 @@ export function handlePostActionEffects(
     oldState: GameState,
     newState: GameState
 ) {
-    log.info(`${oldState.gamePhase}->${newState.gamePhase}`)
+    log.info(`${oldState.gamePhase}->${newState.gamePhase} ${action.type}`)
 
     if (enterPhase('shuriken', oldState, newState)) {
         const shuriken = applyAction({ type: 'SHURIKEN_CALLED' });
@@ -33,7 +33,7 @@ export function handlePostActionEffects(
 
     if (enterPhase('mistake', oldState, newState)) {
         setTimeout(() => {
-            broadcastServerAction({ type: 'SHURIKEN_OVER' })
+            broadcastServerAction({ type: 'MISTAKE_OVER' })
         }, waitTime(mistakeWaitTime));
 
 

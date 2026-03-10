@@ -370,45 +370,45 @@ export function gameReducer(
             };
         }
 
-        //case 'MISTAKE_OVER': {
-        //    console.log('mistake over')
-        //    let updatedGamePhase: GamePhase = 'playing'
-        //    let updatedLevel = state.level;
-        //    let rewardedShuriken = state.shuriken;
-        //    let rewardedLives = state.lives;
+        case 'MISTAKE_OVER': {
+            console.log('mistake over')
+            let updatedGamePhase: GamePhase = 'playing'
+            let updatedLevel = state.level;
+            let rewardedShuriken = state.shuriken;
+            let rewardedLives = state.lives;
 
 
-        //    const noMoreCards = areAllHandsEmpty(state.players);
+            const noMoreCards = areAllHandsEmpty(state.players);
 
-        //    if (noMoreCards) {
+            if (noMoreCards) {
 
-        //        const gameWon = isGameWon(state);
-        //        updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
+                const gameWon = isGameWon(state);
+                updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
 
-        //        const nextLevelNumber = state.level.number + 1;
-        //        updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
+                const nextLevelNumber = state.level.number + 1;
+                updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
 
-        //        const { rewardLives, rewardShuriken } = determineRewards(state.lives, state.shuriken, state.level);
-        //        rewardedLives = rewardLives;
-        //        rewardedShuriken = rewardShuriken;
-        //    }
+                const { rewardLives, rewardShuriken } = determineRewards(state.lives, state.shuriken, state.level);
+                rewardedLives = rewardLives;
+                rewardedShuriken = rewardShuriken;
+            }
 
-        //    return {
-        //        ...state,
+            return {
+                ...state,
 
-        //        shurikenCalls: [],
-        //        gamePhase: updatedGamePhase,
+                shurikenCalls: [],
+                gamePhase: updatedGamePhase,
 
-        //        lives: rewardedLives,
+                lives: rewardedLives,
 
-        //        shuriken: rewardedShuriken,
-        //        level: updatedLevel,
+                shuriken: rewardedShuriken,
+                level: updatedLevel,
 
-        //        readyToStartPlayers: [],
+                readyToStartPlayers: [],
 
-        //        lastRemovedCards: [],
-        //    };
-        //}
+                lastRemovedCards: [],
+            };
+        }
 
         case 'READY_TO_START': 
 

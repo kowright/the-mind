@@ -19,7 +19,7 @@ export default function TabLayout() {
     const isValidPlayerCount = hasValidPlayerCount(state.players);
 
     const readyToPlay = playersHaveNames && isValidPlayerCount;
-    console.log('ready ', readyToPlay)
+
 
   return (
     <Tabs

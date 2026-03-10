@@ -16,6 +16,7 @@ import { IconText } from '../models/iconText';
 import { LevelProgression } from '../models/levelProgression';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { LinearGradient } from 'expo-linear-gradient';
+import { soundService } from '../../services/soundService';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
     discardPileStacked: boolean; // keep the discard pile stacked and not straight
@@ -163,8 +164,11 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 {!agreeToStartVersion ?
                             <>
                             <ButtonView
-                                onPress={() =>
-                                    websocketService.send({ type: "PLAY" } as ClientAction)
+                                            onPress={() => {
+                                                websocketService.send({ type: "PLAY" } as ClientAction);
+                                                soundService.play('click');
+                                                console.log('sound')
+                                            }
                                 }
                                 text="PLAY CARD"
                                 circleShape={false}
@@ -189,7 +193,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                             clientPlayer={clientPlayer}
                             enemyPlayer={false}
                                 onPressCard={() =>
-                                agreeToStartVersion ? console.log('nah') :
+                                    agreeToStartVersion ? console.log('nah') :
+
                                 websocketService.send({ type: "PLAY" } as ClientAction)
                             } />
                                 </View>

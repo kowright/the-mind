@@ -6,6 +6,7 @@ import { websocketService } from '@/services/websocketService';
 import Constants from "expo-constants";
 import { ServerMessage } from '../../shared/types/serverMessage';
 import { createLogger } from '../../shared/types/logger';
+import { soundService } from "@/services/soundService";
 
 type GameContextType = {
     state: GameState;
@@ -24,6 +25,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const [socketError, setSocketError] = useState<string | null>(null);
 
     const wsURL = Constants.expoConfig?.extra?.WS_URL_WEB;
+
+    useEffect(() => {
+        soundService.load();
+    }, []);
 
     useEffect(() => {
 

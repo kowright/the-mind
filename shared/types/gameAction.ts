@@ -28,7 +28,7 @@ const gameActionSchema = {
     TRANSITION_TO_PLAYING: { requiresPlayerId: false },
     ERROR: { requiresPlayerId: false },
     SETTINGS: { requiresPlayerId: false },
-    //MISTAKE_OVER: { requiresPlayerId: false },
+    MISTAKE_OVER: { requiresPlayerId: false },
 } as const;
 
 export type GameActionType = keyof typeof gameActionSchema;
@@ -56,7 +56,7 @@ export interface ActionPayloads {
     TRANSITION_TO_PLAYING: {};
     ERROR: { errorMessage: string };
     SETTINGS: { setting: GameSetting };
-    //MISTAKE_OVER: {};
+    MISTAKE_OVER: {};
 }
 export type ClientAction = {
     [K in GameActionType]: { type: K } & ActionPayloads[K]

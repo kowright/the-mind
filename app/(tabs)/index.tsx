@@ -24,13 +24,16 @@ export default function HomeScreen() {
     const [visible, setVisible] = useState(false);
 
     const playersHaveNames = allPlayersHaveNames(state.players)
-
+    console.log('player name', playersHaveNames)
     const clientPlayer = state.players.find(p => p.id === playerId);
+    console.log(clientPlayer?.name === '')
+    console.log(text !== '')
+    console.log('text', text)
+    const restartedGame = 
+        text !== undefined && playersHaveNames;
 
-    const restartedGame = clientPlayer?.name === '' ||
-        text !== '';
-
-    const nameInputFieldText = restartedGame ?
+        console.log('restart game', restartedGame)
+    const nameInputFieldText = !restartedGame ?
         'Enter your name' : 'Rename or do nothing to keep past name';
 
     useEffect(() => {
@@ -95,8 +98,8 @@ export default function HomeScreen() {
 
 
                             <ButtonView
-                                text="Give yourself a name!"
-                                onPress={() => {
+                                text={restartedGame ? "Rename yourself?" : "Give yourself a name!"}
+                                onPress={() => { 
                                     setName(text)
                                 }}
                                 variant='secondary'

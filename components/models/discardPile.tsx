@@ -50,7 +50,7 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
                             <ScrollView
                                 horizontal
                                 showsHorizontalScrollIndicator
-                                contentContainerStyle={{ flexGrow: 1,marginTop: 12,paddingHorizontal: 12, overflow: 'visible' }}
+                                contentContainerStyle={{ flexGrow: 1,marginTop: 12,paddingHorizontal: 12, overflow: 'visible', justifyContent: 'center' }}
 
                             >
                                 {state.discardPile?.map((card, index) => (

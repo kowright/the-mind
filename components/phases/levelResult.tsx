@@ -8,7 +8,7 @@ import { IconSymbol } from '../ui/icon-symbol';
 import { IconText } from '../models/iconText';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
 import { CardView } from '../models/card';
-import { overlayStyle, theme } from '../../theme/theme';
+import { overlayStyle, theme, themeStyles } from '../../theme/theme';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 
 interface LevelResultProps {
@@ -35,17 +35,18 @@ export function LevelResultView() {
                 <View style={[styles.overlay, styles.overlayContainer]}>
                     <GameOverlayHeading text={`YOU BEAT LEVEL ${nextLevelIndex}!`} />
                     <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems:'center', marginTop: 8, marginBottom: 16 } }>
-                        <IconText iconFirst={false} iconName={pastLevelIcon} altIconSize={36} text='REWARD:' />
+                        <IconText iconFirst={false} iconName={pastLevelIcon} altIconSize={36} text='RECEIVED REWARD:' />
                         <IconText iconFirst={false} iconName={nextLevelIcon} altIconSize={36} text='NEXT LEVEL REWARD:' />
-                    </View>
 
                     <DiscardPileView keepStacked={false} />
-                    {state.shurikenedCards.length > 0 && <Text>Removed Cards</Text>}
+                    {state.shurikenedCards.length > 0 && <Text style={themeStyles.body}>Removed Cards:</Text>}
                     {/*<View style={styles.removedCardsContainer}>*/}
                         <ScrollView
                         horizontal
-                        persistentScrollbar 
+                        persistentScrollbar
                         showsHorizontalScrollIndicator
+                        contentContainerStyle={state.shurikenedCards.length > 0 && styles.removedCards }
+
                         >
                         {state.shurikenedCards.map((card, index) => (
                             <View
@@ -67,7 +68,9 @@ export function LevelResultView() {
                         </ScrollView>
 
                     {/*</View>*/}
+                    </View>
                 </View>
+
                 </GameOverlayView>
         </>
     );
@@ -88,4 +91,8 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         marginTop: 16,
     },
+    removedCards: {
+        marginVertical: 16,
+        paddingHorizontal: 16
+    }
 });

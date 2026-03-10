@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     textRight: {
         ...themeStyles.body,
         //fontSize: 14,
-        marginLeft: 4,
+        //marginLeft: 4,
         //color: theme.color.gameplayIcon.text,
     },
     textLeft: {

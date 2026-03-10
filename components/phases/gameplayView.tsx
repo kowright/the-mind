@@ -45,6 +45,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     //TODO: enemies 1 and 2 might be able to be automated? and the text for card in a different function
 
+    //TODO UX: is subtext for shuriken noticable? 
 
     //TODO UX: only have level progression in ready to start phase? Not when playing? 
     return (
@@ -230,7 +231,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 variant='primary'
                                         />
                                     </>
-                            :
+                                    :
+                            <>
                             <ButtonView
                                     onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
                                     text={shurikenButtonText}
@@ -239,7 +241,9 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                     showTooltip={false}
                                     variant='secondary'
                                
-                            />
+                                    />
+                                        {thumbsUpAsked && <Text style={[themeStyles.small ]}>{`Shuriken votes: ${thumbsUpNumbers}`}</Text>}
+                           </>
                         }
                         </View>
 

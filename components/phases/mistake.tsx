@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
@@ -21,7 +21,8 @@ export function MistakeView({ countdown }: MistakeProps) {
     return (
         <GameOverlayView>
             <View style={[styles.overlay, styles.overlayContainer]}>
-                <GameOverlayHeading text={`LOST ${state.lastRemovedCards.length} LIVE${state.lastRemovedCards.length === 1 ? '': 's'}!`} />
+                
+                <GameOverlayHeading text={`LOST ${state.lastRemovedCards.length} ${state.lastRemovedCards.length === 1 ? 'LIFE': 'LIVES'}!`} />
                 <Text style={styles.text}>PLAYED TOO EARLY:</Text>
                 <View
                     key={`last-played-card-mistake`}
@@ -40,7 +41,12 @@ export function MistakeView({ countdown }: MistakeProps) {
                 </View>
                 {!state.gameSettings.skippedCards && <Text style={styles.text}>DID NOT PLAY WHEN THEY SHOULD HAVE:</Text>}
                 {!state.gameSettings.skippedCards && <View style={styles.removedCardsContainer}>
-
+                    <ScrollView
+                        horizontal
+                        persistentScrollbar
+                        showsHorizontalScrollIndicator
+                        contentContainerStyle={{ marginVertical: 16,paddingHorizontal: 16 } }
+                    >
                     {state.lastRemovedCards.map((card, index) => (
                         <View
                             key={card.id}
@@ -58,7 +64,7 @@ export function MistakeView({ countdown }: MistakeProps) {
                             />
                         </View>
                     ))}
-
+                    </ScrollView>
                 </View>}
 
                 {/*<View style={styles.lostLivesContainer}>*/}

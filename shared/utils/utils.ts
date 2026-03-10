@@ -3,7 +3,7 @@ import { Player } from "../types/player";
 import { Card } from "../types/card";
 import { Hand } from "../types/hand";
 
-export const mistakeWaitTime: number = 50;
+export const mistakeWaitTime: number = 5;
 export const winLevelWaitTime: number = 10;
 export const startLevelWaitTime: number = 3;
 export const shurikenWaitTime: number = 5;

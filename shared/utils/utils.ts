@@ -3,12 +3,18 @@ import { Player } from "../types/player";
 import { Card } from "../types/card";
 import { Hand } from "../types/hand";
 
-export const mistakeWaitTime: number = 5;
+export const mistakeWaitTime: number = 50;
 export const winLevelWaitTime: number = 10;
 export const startLevelWaitTime: number = 3;
 export const shurikenWaitTime: number = 5;
 export const countdownInterval: number = 1000;
 export const errorWaitTime: number = 5;
+
+export function allPlayersHaveNames(players: Player[]) {
+    return players.every(
+        player => player.name && player.name.trim().length > 0
+    );
+}
 
 export function hasValidPlayerCount(players: Player[]) {
     const playerCount = players.length;

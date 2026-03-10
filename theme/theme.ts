@@ -55,8 +55,8 @@ const tokens = {
             //bold: 700,
         }, 
         size: {
-            sm: 12,
-            md: 16,
+            sm: 14,
+            md: 20,
             lg: 28,
             xl: 32,
         }
@@ -252,6 +252,12 @@ export const themeStyles = StyleSheet.create({
         ...theme.textShadow,
         fontSize: theme.font.size.body,
         color: theme.color.text.body,
+    },
+    bodyTitle: {
+        ...theme.textShadow,
+        fontSize: theme.font.size.body,
+        color: theme.color.text.body,
+        fontWeight: theme.font.weight.bold,
     },
     small: {
         ...theme.textShadow,

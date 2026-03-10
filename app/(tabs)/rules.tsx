@@ -10,6 +10,7 @@ import { ScrollView } from "react-native";
 import { ReactNode } from "react";
 import { CardView } from '../../components/models/card';
 
+//TODO move to file
 interface RuleTextProps {
     children: ReactNode;
     breaks?: number;

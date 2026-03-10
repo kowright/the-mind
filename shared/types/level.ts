@@ -9,7 +9,7 @@ export type RewardToIcon = Record<RewardType, string>;
 
     
 export const LevelToRewardIconMapping = {
-    Life: 'hare.fill',
+    Life: 'heart.fill',
     Shuriken: 'staroflife.fill',
     None: 'xmark',
 

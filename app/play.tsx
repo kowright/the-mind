@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         backgroundColor: theme.color.gameBackground.backgroundColor,
     },
     nameText: {
-       ...themeStyles.body,
+       ...themeStyles.small,
         backgroundColor: theme.color.brand.primary,
         textAlign: 'center'
     },

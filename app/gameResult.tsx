@@ -21,7 +21,7 @@ export default function GameResult() {
     const wonGame = state.gameOutcome === 'won';
 
     const title = wonGame ? 'YOU WON!' : 'WOW, YOU LOST.';
-    const levelAchieved = wonGame ? state.winLevel : `${state.level.number} out of ${state.winLevel}`
+    const levelAchieved = wonGame ? state.winLevel : `L${state.level.number}/${state.winLevel}`
     const snarkyText = wonGame ? 'YOU ALL REALLY ARE ONE MIND!' : 'YOU DEFINITELY COULD HAVE TRIED HARDER BRUH';
 
     // TODO UX: make this look more sad or fun
@@ -36,7 +36,7 @@ export default function GameResult() {
                 <View style={{
                     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor: 'black'
                 }}>
-                    <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
+                    <IconText iconFirst={true} iconName='heart.fill' text={state.lives} />
                     <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
                     <IconText iconFirst={true} iconName='chart.bar.fill' text={`${levelAchieved}`} />
                
@@ -54,15 +54,15 @@ export default function GameResult() {
                 >
                     <DiscardPileView keepStacked={false} />
                 </View>
-                <View style={{flexDirection: 'column', alignItems: 'center', gap: 4} }>
-                {!wonGame && state.players.map(p => {
-                    return (
-                        <Text style={styles.text} key={`${p.id}-card-count`}>
-                            {`${p.name}'s end card count: ${p.cardCount}`}
-                        </Text>
-                    )
-                })}
-                </View>
+                {/*<View style={{flexDirection: 'column', alignItems: 'center', gap: 4} }>*/}
+                {/*{!wonGame && state.players.map(p => {*/}
+                {/*    return (*/}
+                {/*        <Text style={styles.text} key={`${p.id}-card-count`}>*/}
+                {/*            {`${p.name}'s end card count: ${p.cardCount}`}*/}
+                {/*        </Text>*/}
+                {/*    )*/}
+                {/*})}*/}
+                {/*</View>*/}
             </View>
 
             {/* Scroll Section */}

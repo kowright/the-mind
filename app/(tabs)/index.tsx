@@ -6,7 +6,7 @@ import { useGame } from '@/hooks/useGame';
 import { websocketService } from '@/services/websocketService';
 import { useEffect, useState } from 'react';
 import { ClientAction } from '../../shared/types/gameAction';
-import { hasValidPlayerCount } from '@/shared/utils/utils';
+import { hasValidPlayerCount, allPlayersHaveNames } from '@/shared/utils/utils';
 import { StyleSheet, Pressable } from 'react-native';
 import { theme, themeStyles } from '../../theme/theme';
 import { ButtonView } from '../../components/models/button';
@@ -23,16 +23,15 @@ export default function HomeScreen() {
     const [enteredName, setEnteredName] = useState(false);
     const [visible, setVisible] = useState(false);
 
-    const allPlayersHaveNames : boolean = state.players.every(
-        player => player.name && player.name.trim().length > 0
-    );
+    const playersHaveNames = allPlayersHaveNames(state.players)
 
     const clientPlayer = state.players.find(p => p.id === playerId);
 
+    const restartedGame = clientPlayer?.name === '' ||
+        text !== '';
 
-    const nameInputFieldText = clientPlayer?.name === '' ||
-        text !== '' ?
-        'Enter your name' : 'Can rename yourself or keep previous name';
+    const nameInputFieldText = restartedGame ?
+        'Enter your name' : 'Rename or do nothing to keep past name';
 
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {
@@ -44,7 +43,7 @@ export default function HomeScreen() {
     let startButtonText = '';
     if (!isValidPlayerCount) {
         startButtonText = "You need 2-4 players to start";
-    } else if (!allPlayersHaveNames) {
+    } else if (!playersHaveNames) {
         startButtonText = "All players must enter a name to start";
     }
 
@@ -74,8 +73,8 @@ export default function HomeScreen() {
                     <ButtonView
                         onPress={startGame}
                         text="EVERYONE READY?"
-                        disabled={!isValidPlayerCount || !allPlayersHaveNames}
-                        showTooltip={!isValidPlayerCount || !allPlayersHaveNames}
+                        disabled={!isValidPlayerCount || !playersHaveNames}
+                        showTooltip={!isValidPlayerCount || !playersHaveNames}
                         tooltipText={startButtonText}
                         circleShape
                         variant='primary'
@@ -93,6 +92,7 @@ export default function HomeScreen() {
                                 placeholderTextColor={theme.color.nameInput.text}
                                 onChangeText={setText}
                             />
+
 
                             <ButtonView
                                 text="Give yourself a name!"

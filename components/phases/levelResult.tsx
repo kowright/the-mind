@@ -33,18 +33,19 @@ export function LevelResultView() {
         <>
             <GameOverlayView>
                 <View style={[styles.overlay, styles.overlayContainer]}>
-                    <GameOverlayHeading text='LEVEL WIN!' />
+                    <GameOverlayHeading text={`YOU BEAT LEVEL ${nextLevelIndex}!`} />
                     <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems:'center', marginTop: 8, marginBottom: 16 } }>
-                        <IconText iconFirst={false} iconName={pastLevelIcon} text='REWARD:' />
-                        <IconText iconFirst={false} iconName={nextLevelIcon} text='NEXT LEVEL REWARD:' />
-                        <IconText iconFirst={false} iconName='chart.bar.fill' text={`LEVEL ${state.level.number} out of ${state.winLevel} `} />
+                        <IconText iconFirst={false} iconName={pastLevelIcon} altIconSize={36} text='REWARD:' />
+                        <IconText iconFirst={false} iconName={nextLevelIcon} altIconSize={36} text='NEXT LEVEL REWARD:' />
                     </View>
 
                     <DiscardPileView keepStacked={false} />
                     {state.shurikenedCards.length > 0 && <Text>Removed Cards</Text>}
                     {/*<View style={styles.removedCardsContainer}>*/}
                         <ScrollView
-                            horizontal
+                        horizontal
+                        persistentScrollbar 
+                        showsHorizontalScrollIndicator
                         >
                         {state.shurikenedCards.map((card, index) => (
                             <View

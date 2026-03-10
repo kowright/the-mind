@@ -21,7 +21,7 @@ export function MistakeView({ countdown }: MistakeProps) {
     return (
         <GameOverlayView>
             <View style={[styles.overlay, styles.overlayContainer]}>
-                <GameOverlayHeading text='MISTAKE!'/>
+                <GameOverlayHeading text={`LOST ${state.lastRemovedCards.length} LIVE${state.lastRemovedCards.length === 1 ? '': 's'}!`} />
                 <Text style={styles.text}>PLAYED TOO EARLY:</Text>
                 <View
                     key={`last-played-card-mistake`}
@@ -61,10 +61,12 @@ export function MistakeView({ countdown }: MistakeProps) {
 
                 </View>}
 
-                <View style={styles.lostLivesContainer}>
-                    <IconText iconFirst={false} iconName='hare.fill' text={`Lost ${state.lastRemovedCards.length}`} />
+                {/*<View style={styles.lostLivesContainer}>*/}
+                {/*    <IconText iconFirst={false} iconName='hare.fill' text={`Lost ${state.lastRemovedCards.length}`} />*/}
+                {/*</View>*/}
+                <View style={{marginTop: 16} }> 
+                    <GetReadyView text='STARTING BACK IN' countdown={countdown} />
                 </View>
-                <GetReadyView text='STARTING BACK IN' countdown={countdown} />
             </View>
         </GameOverlayView>
     );
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
     overlay: overlayStyle(theme),
     text: {
         ...themeStyles.body,
+        textAlign: 'center'
         //color: theme.color.overlay.color,
     }
 });

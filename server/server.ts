@@ -56,7 +56,6 @@ export function broadcastServerAction(action: ServerAction) {
     //}
 
     broadcastLobby(newState);
-    console.log('broadcastServerAction newState', newState)
     handlePostActionEffects(action, oldState, newState);
 }
 

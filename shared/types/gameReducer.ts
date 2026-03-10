@@ -168,6 +168,8 @@ export function gameReducer(
                 updatedGamePhase = 'mistake';
                 wasRightMove = false;
                 updatedLastPlayedCard = playedCard;
+
+                // TODO: make it so if you win level on a mistake, show mistake screen first, then levelResult
             }
 
             let updatedDiscardPile: Card[] = addCardToDiscardPile(

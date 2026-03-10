@@ -9,24 +9,29 @@ interface IconTextProps {
     text: string;
     iconName: string;
     altColor?: string;
+    altIconSize?: number;
 }
 
 const iconColorMapping: IconMapping = {
+    'heart.fill': '#af088f',
     'hare.fill': 'green',
     'staroflife.fill': 'gray',
-    'chart.bar.fill': '#af088f',
+    'chart.bar.fill': 'green',
 };
 
 type IconMapping = Partial<Record<SymbolViewProps['name'], string>>;
 
-export function IconText({ iconFirst, text, iconName, altColor}: IconTextProps) {
+export function IconText({ iconFirst, text, iconName, altColor, altIconSize}: IconTextProps) {
 
     const resolvedColor =
         altColor && altColor !== ''
             ? altColor
             : iconColorMapping[iconName] ?? theme.color.gameplayIcon.backgroundColor 
     
-    const iconSize = iconFirst ? 28 : 20;
+    let iconSize = iconFirst ? 36 : 20;
+    if (altIconSize) {
+        iconSize = altIconSize;
+    }
     return (
         <View style={styles.container} >
             {!iconFirst && <Text style={[styles.textRight, { color: altColor || themeStyles.body.color }]}>{text}</Text>}

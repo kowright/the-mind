@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, ScrollView, StyleSheet } from 'react-native';
 
 import { Collapsible } from '@/components/ui/collapsible';
 import { ExternalLink } from '@/components/external-link';
@@ -18,6 +18,7 @@ import { websocketService } from '@/services/websocketService';
 import { ClientAction } from '../../shared/types/gameAction';
 import { GameSetting } from '../../shared/types/gameSettings';
 
+//TODO: move to file
 interface SettingItemProps {
     settingName: string;
     settingDescription: string;
@@ -42,15 +43,15 @@ export function SettingsItem({ settingDescription, settingName, settingType }: S
      
     return (
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
             {settingType && <Checkbox
                 value={isChecked}
                 onValueChange={setSetting}
                 color={isChecked ? theme.color.checkbox.checkBoxFill : theme.color.checkbox.checkboxOutline}
             />}
-          <View>
-              <Text style={themeStyles.body}>{settingName}</Text>
-              <Text style={themeStyles.small}>{settingDescription}</Text>
+            <View style={{ flex: 1, gap: 2 }}>
+              <Text style={themeStyles.bodyTitle}>{settingName}</Text>
+                <Text style={[themeStyles.small,{ flexShrink: 1 }]}>{settingDescription}</Text>
           </View>
       </View>
     );
@@ -70,9 +71,10 @@ export default function TabTwoScreen() {
                 SETTINGS
             </Text>
 
-            <Text style={themeStyles.body}>These are not neccesary to play the game. These will all make the game significantly harder.</Text>
+            <Text style={[themeStyles.body, {color:'red', textAlign: 'center'}]}>Changes here will make the game significant harder. These are not necessary to set to play a standard game.</Text>
 
-            <View style={{gap: 16}}>
+            <ScrollView style={{ marginTop: 24 }}
+                contentContainerStyle={{ gap: 24 }}>
                 <SettingsItem settingName='Skip skipped cards' settingDescription='Hide cards done in a mistake or by shuriken for a challenge' settingType='skippedCards' />
 
                 <SettingsItem settingName='Card counting' settingDescription='Hide how many cards other people have for a challenge' settingType='cardCounts' />
@@ -81,14 +83,14 @@ export default function TabTwoScreen() {
 
                 <SettingsItem settingName='Blind' settingDescription='Cannot see card numbers in pile while playing for a challenge' settingType='blind' />
 
-                <Text style={themeStyles.heading}>Next updates settings!</Text>
+                <Text style={[themeStyles.heading, {marginTop: 24}]}>Upcoming App Update Settings!</Text>
 
                 <SettingsItem settingName='Extreme' settingDescription='Have 2 decks and 2 piles; one pile needs to be ordered ascending, the other descending' />
 
-                <SettingsItem settingName='Silent chat' settingDescription='Let other players know what you are thinking if they cannot see you. Add PASS and WAIT options next to player names' />
+                <SettingsItem settingName='Silent chat' settingDescription='Let other players know what you are thinking if they cannot see you physically. Add PASS and WAIT options next to player names' />
 
-                <SettingsItem settingName='No rewards' settingDescription='There are no rewards when you beat levels- what you have at the start is all you have' />
-            </View>
+                <SettingsItem settingName='No rewards' settingDescription='There are no rewards when you beat levels- what you have at the start of the game is all you have' />
+            </ScrollView>
         </View>
     );
 }

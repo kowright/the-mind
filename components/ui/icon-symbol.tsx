@@ -28,7 +28,8 @@ const MAPPING = {
     'staroflife.fill': 'star-four-points',
     'chart.bar.fill': 'chart-bar',
     'xmark': 'close',
-    'hand.thumbsup': 'thumb-up'
+    'hand.thumbsup': 'thumb-up',
+    'heart.fill': 'cards-heart',
 } as IconMapping;
 
 /**

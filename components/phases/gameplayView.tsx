@@ -21,6 +21,7 @@ interface GameplayViewProps {
     discardPileStacked: boolean; // keep the discard pile stacked and not straight
 }
 
+// TODO: add sounds!
 export function GameplayView({ agreeToStartVersion = false, discardPileStacked = true, ...props }: GameplayViewProps) {
     const { state, playerId } = useGame();
     const theme = useResponsiveTheme();
@@ -40,9 +41,12 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
     const thumbsUpAsked =  agreeToStartVersion ? state.readyToStartPlayers.length > 0 :
         state.shurikenCalls.length > 0
 
-    console.log('settings card count', state.gameSettings.cardCounts)
     const enemies = players.filter(p => p.id !== playerId);
 
+    //TODO: enemies 1 and 2 might be able to be automated? and the text for card in a different function
+
+
+    //TODO UX: only have level progression in ready to start phase? Not when playing? 
     return (
         <LinearGradient 
             colors={theme.color.gameBackground.gradient}
@@ -56,11 +60,11 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                 }}>
 
 
-                <IconText iconFirst={true} iconName='hare.fill' text={state.lives} />
+                    <IconText iconFirst={true} iconName='heart.fill' text={state.lives} />
                 <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
-                    <IconText iconFirst={true} iconName='chart.bar.fill' text={`${state.level.number}/${state.winLevel}`} />
+                    <IconText iconFirst={true} iconName='chart.bar.fill' text={`L${state.level.number}/${state.winLevel}`} />
 
-                <IconText iconFirst={true} iconName='hand.thumbsup' text={thumbsUpNumbers} altColor={thumbsUpAsked ? theme.color.gameplayIcon.voted : ''} />
+                {/*<IconText iconFirst={true} iconName='hand.thumbsup' text={thumbsUpNumbers} altColor={thumbsUpAsked ? theme.color.gameplayIcon.voted : ''} />*/}
             
             </View>
 
@@ -98,16 +102,14 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                                         
                                                     }}
                                                 >
-                                                    {/* Keep text normal */}
-                                                    {/*<Text style={styles.topEnemyTwoPlayerText}>*/}
-                                                    {/*    {`${enemies[0].name} [${enemies[0].cardCount}]`}*/}
-                                                    {/*    </Text>*/}
+                                  
 
                                                         <Text style={styles.topEnemyTwoPlayerText}>{`${enemies[0].name} `}
-                                                            {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>[{enemies[0].cardCount}]</Text>}
+                                                            {!state.gameSettings.cardCounts &&
+
+                                                                <Text style={styles.cardCount}>{`[${enemies[0].cardCount} card${enemies[0].cardCount === 1 ? '' : 's'}]`}</Text>}
                                                         </Text>
 
-                                                    {/* Rotate ONLY the hand */}
                                                     <View
                                                         style={{
                                                             transform: [
@@ -132,7 +134,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                         <View style={styles.leftEnemy}>
                                             <Text style={styles.horizontalEnemyText}>
                                                 {enemies[1].name}{' '}
-                                                {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>[{enemies[1].cardCount}]</Text>}
+                                                {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>{`[${enemies[1].cardCount} card${enemies[1].cardCount === 1 ? '' : 's'}]`}</Text>}
                                             </Text>
                                         </View>
                                         
@@ -142,7 +144,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                         <View style={styles.rightEnemy}>
                                             <Text style={styles.horizontalEnemyText}>
                                                 {enemies[2].name}{' '}
-                                                {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>[{enemies[1].cardCount}]</Text>}
+                                                {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>{`[${enemies[2].cardCount} card${enemies[2].cardCount === 1 ? '' : 's'}]`}</Text>}
                                             </Text>
                                         </View>
                                     )}
@@ -214,31 +216,11 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
                                 }
                         
-                            {/*<View*/}
-                            {/*    style={{*/}
-                            {/*        height: theme.size.cardHeight *1.2,*/}
-                            {/*        width: '100%',*/}
-                            {/*        overflow: 'visible',*/}
-                            {/*        //paddingHorizontal: 20,*/}
-                            {/*        //backgroundColor: 'white',*/}
-                            {/*        justifyContent: 'center',*/}
-
-                            {/*        //alignItems: 'center', //makes left and right glow clipped*/}
-                                
-                            {/*    }}*/}
-                            {/*>*/}
-                            {/*    <HandView*/}
-                            {/*clientPlayer={clientPlayer}*/}
-                            {/*enemyPlayer={false}*/}
-                            {/*    onPressCard={() =>*/}
-                            {/*    agreeToStartVersion ? console.log('nah') :*/}
-                            {/*    websocketService.send({ type: "PLAY" } as ClientAction)*/}
-                            {/*} />*/}
-                            {/*    </View>*/}
-                      
 
                         
-                        {agreeToStartVersion ?
+                                {agreeToStartVersion ?
+                                    <>
+                                        <Text style={themeStyles.small}>{`${thumbsUpNumbers} are ready to start Level ${state.level.number}`}</Text>
                             <ButtonView
                                 onPress={() => websocketService.send({ type: "READY_TO_START" } as ClientAction)}
                                 text={readyButtonText}
@@ -246,7 +228,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                 disabled={false}
                                     showTooltip={false}
                                 variant='primary'
-                            />
+                                        />
+                                    </>
                             :
                             <ButtonView
                                     onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
@@ -260,7 +243,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                         }
                         </View>
 
-                    <LevelProgression />
+                            {agreeToStartVersion && <LevelProgression />}
 
 
                 </View>
@@ -308,6 +291,7 @@ const styles = StyleSheet.create({
     topEnemyTwoPlayerText: {
         ...themeStyles.body,
         transform: [{ rotate: '180deg' }],
+        color: theme.color.text.cardCount,
         //color: 'orange',
         //fontWeight:'bold',
         //textShadowColor: 'black',
@@ -322,7 +306,8 @@ const styles = StyleSheet.create({
     },
 
     cardCount: {
-        color: theme.color.text.cardCount,
+        ...themeStyles.small,
+        //color: theme.color.text.cardCount,
         fontWeight: 'bold'
     },
     middleEnemyRow: {

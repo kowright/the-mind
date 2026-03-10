@@ -5,9 +5,21 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { theme } from '../../theme/theme';
+import { useGame } from '../../hooks/useGame';
+import { hasValidPlayerCount, allPlayersHaveNames } from '@/shared/utils/utils';
+import { Text, View, TextInput } from 'react-native';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+    const { state, playerId } = useGame();
+
+    const playersHaveNames = allPlayersHaveNames(state.players);
+
+
+    const isValidPlayerCount = hasValidPlayerCount(state.players);
+
+    const readyToPlay = playersHaveNames && isValidPlayerCount;
+    console.log('ready ', readyToPlay)
 
   return (
     <Tabs
@@ -20,7 +32,12 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+            tabBarIcon: ({ color }) =>
+                <View style={{}}>
+                    <IconSymbol size={28} name="house.fill" color={readyToPlay ? 'orange' : color} />
+              
+                </View>
+            ,
         }}
       />
       <Tabs.Screen
@@ -34,7 +51,11 @@ export default function TabLayout() {
             name="settings"
             options={{
                 title: 'Settings',
-                tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
+                tabBarIcon: ({ color }) =>
+           
+                        <IconSymbol size={28} name="gearshape.fill" color={color} /> 
+  
+                ,
             }}
         />
     </Tabs>

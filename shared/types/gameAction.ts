@@ -28,6 +28,7 @@ const gameActionSchema = {
     TRANSITION_TO_PLAYING: { requiresPlayerId: false },
     ERROR: { requiresPlayerId: false },
     SETTINGS: { requiresPlayerId: false },
+    //MISTAKE_OVER: { requiresPlayerId: false },
 } as const;
 
 export type GameActionType = keyof typeof gameActionSchema;
@@ -42,7 +43,7 @@ export interface ActionPayloads {
     READY_TO_START: {};
     FAILED_ORDER: {};
     SHURIKEN_CALLED: {};
-    SHURIKEN_OVER: {};
+    SHURIKEN_OVER: {}; //TODO rename to like PHASE OVER or something cause mistake and shuriken use this 
     GAME_START: {};
     GAME_WON: {};
     GAME_LOST: {};
@@ -54,7 +55,8 @@ export interface ActionPayloads {
     GAME_RESTART: {};
     TRANSITION_TO_PLAYING: {};
     ERROR: { errorMessage: string };
-    SETTINGS: { setting: GameSetting};
+    SETTINGS: { setting: GameSetting };
+    //MISTAKE_OVER: {};
 }
 export type ClientAction = {
     [K in GameActionType]: { type: K } & ActionPayloads[K]

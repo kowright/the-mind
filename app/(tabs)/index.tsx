@@ -24,15 +24,12 @@ export default function HomeScreen() {
     const [visible, setVisible] = useState(false);
 
     const playersHaveNames = allPlayersHaveNames(state.players)
-    console.log('player name', playersHaveNames)
+
     const clientPlayer = state.players.find(p => p.id === playerId);
-    console.log(clientPlayer?.name === '')
-    console.log(text !== '')
-    console.log('text', text)
+
     const restartedGame = 
         text !== undefined && playersHaveNames;
 
-        console.log('restart game', restartedGame)
     const nameInputFieldText = !restartedGame ?
         'Enter your name' : 'Rename or do nothing to keep past name';
 

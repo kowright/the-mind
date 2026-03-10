@@ -1,7 +1,9 @@
-import { GameState } from "../types/gameState";
+import { GameState, areAllHandsEmpty, determineRewards } from "../types/gameState";
 import { Player } from "../types/player";
 import { Card } from "../types/card";
 import { Hand } from "../types/hand";
+import { Level, levels } from "../types/level";
+import { GamePhase } from "../types/gamePhase";
 
 export const mistakeWaitTime: number = 5;
 export const winLevelWaitTime: number = 10;
@@ -216,3 +218,43 @@ export function removeOtherPlayersFromStateForClient(
     };
 }
 
+export function resolveEndOfRound(
+    state: GameState,
+    players: Player[],
+    lives: number,
+    shuriken: number,
+    level: Level
+) {
+    let updatedGamePhase: GamePhase = state.gamePhase;
+    let updatedLevel = level;
+    let rewardedLives = lives;
+    let rewardedShuriken = shuriken;
+    let updatedGameOutcome = state.gameOutcome;
+
+    const noMoreCards = areAllHandsEmpty(players);
+
+    if (noMoreCards) {
+        const gameWon = level.number === state.winLevel;
+
+        updatedGamePhase = gameWon ? "gameOver" : "levelComplete";
+        updatedGameOutcome = gameWon ? "won" : "lost";
+
+        if (!gameWon) {
+            const nextLevelNumber = level.number + 1;
+            updatedLevel =
+                levels.find(l => l.number === nextLevelNumber) ?? level;
+
+            const rewards = determineRewards(lives, shuriken, level);
+            rewardedLives = rewards.rewardLives;
+            rewardedShuriken = rewards.rewardShuriken;
+        }
+    }
+
+    return {
+        updatedGamePhase,
+        updatedLevel,
+        rewardedLives,
+        rewardedShuriken,
+        updatedGameOutcome,
+    };
+}

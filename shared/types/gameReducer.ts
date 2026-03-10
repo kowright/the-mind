@@ -1,6 +1,6 @@
 import { ServerAction } from '@/shared/types/gameAction';
 import { GamePhase } from '@/shared/types/gamePhase';
-import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber, makePlayer, resetAllCardMistakes } from '@/shared/utils/utils';
+import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber, makePlayer, resetAllCardMistakes, resolveEndOfRound } from '@/shared/utils/utils';
 import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, getLastValidCard, areAllHandsEmpty, determineRewards } from '@/shared/types/gameState';
 import { Card } from '@/shared/types/card';
 import { Level, levels } from "./level";
@@ -152,7 +152,7 @@ export function gameReducer(
                 index === playerIndex ? updatedPlayer : p
             );
 
-            let updatedGamePhase: GamePhase = state.gamePhase;
+            //let updatedGamePhase: GamePhase = state.gamePhase;
 
             let wasRightMove: boolean = true;
 
@@ -165,11 +165,39 @@ export function gameReducer(
                     mistakenlyPlayed: true,
                     mistakenPlayerId: updatedPlayer.id,
                 };
-                updatedGamePhase = 'mistake';
+                const updatedGamePhase = 'mistake';
                 wasRightMove = false;
                 updatedLastPlayedCard = playedCard;
 
-                // TODO: make it so if you win level on a mistake, show mistake screen first, then levelResult
+                let updatedDiscardPile: Card[] = addCardToDiscardPile(
+                    state.discardPile,
+                    playedCard
+                );
+
+                updatedDiscardPile = [
+                    ...updatedDiscardPile,
+                    ...removedCards,
+                ];
+
+                updatedPlayers = updatedPlayers.map(p =>
+                    editedPlayers.find(ep => ep.id === p.id) ?? p
+                );
+
+
+
+                return {
+                    ...state,
+                    players: updatedPlayers,
+                    discardPile: updatedDiscardPile,
+                    //lives: rewardedLives,
+                    gamePhase: updatedGamePhase,
+                    //shuriken: rewardedShuriken,
+                    //level: updatedLevel,
+                    lastRemovedCards: removedCards,
+                    readyToStartPlayers: [],
+                    lastPlayedCard: updatedLastPlayedCard,
+                    //gameOutcome: updatedGameOutcome,
+                };
             }
 
             let updatedDiscardPile: Card[] = addCardToDiscardPile(
@@ -190,51 +218,69 @@ export function gameReducer(
             let updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
             updatedLives = removedCards.length > 1 ? loseLife(updatedLives) : updatedLives;
 
-            let updatedLevel: Level = state.level;
-            let completedLevel = state.level;
 
-            let rewardedLives: number = updatedLives;
-            let rewardedShuriken: number = state.shuriken;
-            let updatedGameOutcome = state.gameOutcome;
 
-            const noMoreLives = areAllLivesLost(updatedLives);
+            let {
+                updatedGamePhase,
+                updatedLevel,
+                rewardedLives,
+                rewardedShuriken,
+                updatedGameOutcome
+            } = resolveEndOfRound(
+                state,
+                updatedPlayers,
+                updatedLives,
+                state.shuriken,
+                state.level
+            );
 
-            updatedGamePhase = noMoreLives ? 'gameOver' : updatedGamePhase;
-            updatedGameOutcome = 'lost';
 
-            if (noMoreLives) {
-                return {
-                    ...state,
-                    players: updatedPlayers,
-                    discardPile: updatedDiscardPile,
-                    lives: rewardedLives,
-                    gamePhase: updatedGamePhase,
-                    shuriken: rewardedShuriken,
-                    level: updatedLevel,
-                    lastRemovedCards: removedCards,
-                    lastPlayedCard: updatedLastPlayedCard,
-                    gameOutcome: updatedGameOutcome,
-                };
-            }
+            //let updatedLevel: Level = state.level;
+            //let completedLevel = state.level;
 
-            const noMoreCards = areAllHandsEmpty(updatedPlayers);
+            //let rewardedLives: number = updatedLives;
+            //let rewardedShuriken: number = state.shuriken;
+            //let updatedGameOutcome = state.gameOutcome;
+
+
+            //const noMoreLives = areAllLivesLost(updatedLives);
+
+            //updatedGamePhase = noMoreLives ? 'gameOver' : updatedGamePhase;
+            //updatedGameOutcome = 'lost';
+
+            //if (noMoreLives) {
+            //    return {
+            //        ...state,
+            //        players: updatedPlayers,
+            //        discardPile: updatedDiscardPile,
+            //        lives: rewardedLives,
+            //        gamePhase: updatedGamePhase,
+            //        shuriken: rewardedShuriken,
+            //        level: updatedLevel,
+            //        lastRemovedCards: removedCards,
+            //        lastPlayedCard: updatedLastPlayedCard,
+            //        gameOutcome: updatedGameOutcome,
+            //    };
+            //}
+
+            //const noMoreCards = areAllHandsEmpty(updatedPlayers);
             
-            if (noMoreCards) {
+            //if (noMoreCards) {
               
-                const gameWon = completedLevel.number === state.winLevel;
-                updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
-                updatedGameOutcome = gameWon ? 'won' : 'lost';
+            //    const gameWon = completedLevel.number === state.winLevel;
+            //    updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
+            //    updatedGameOutcome = gameWon ? 'won' : 'lost';
 
-                if (!gameWon) {
-                    const nextLevelNumber = updatedLevel.number + 1;
-                    updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
+            //    if (!gameWon) {
+            //        const nextLevelNumber = updatedLevel.number + 1;
+            //        updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
 
-                    const { rewardLives, rewardShuriken } = determineRewards(updatedLives, state.shuriken, completedLevel);
-                    rewardedLives = rewardLives;
-                    rewardedShuriken = rewardShuriken;
-                }
+            //        const { rewardLives, rewardShuriken } = determineRewards(updatedLives, state.shuriken, completedLevel);
+            //        rewardedLives = rewardLives;
+            //        rewardedShuriken = rewardShuriken;
+            //    }
             
-            }
+            //}
 
             return {
                 ...state,
@@ -299,44 +345,70 @@ export function gameReducer(
             };
 
         case 'SHURIKEN_OVER': { 
-
-            let updatedGamePhase: GamePhase = 'playing'
-            let updatedLevel = state.level;
-            let rewardedShuriken = state.shuriken;
-            let rewardedLives = state.lives;
-
-
-            const noMoreCards = areAllHandsEmpty(state.players);
- 
-            if (noMoreCards) {
-     
-                const gameWon = isGameWon(state);
-                updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
-
-                const nextLevelNumber = state.level.number + 1;
-                updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
-
-                const { rewardLives, rewardShuriken } = determineRewards(state.lives, state.shuriken, state.level);
-                rewardedLives = rewardLives;
-                rewardedShuriken = rewardShuriken;
-            }
+            const {
+                updatedGamePhase,
+                updatedLevel,
+                rewardedLives,
+                rewardedShuriken
+            } = resolveEndOfRound(
+                state,
+                state.players,
+                state.lives,
+                state.shuriken,
+                state.level
+            );
 
             return {
                 ...state,
-
                 shurikenCalls: [],
                 gamePhase: updatedGamePhase,
-          
                 lives: rewardedLives,
-            
                 shuriken: rewardedShuriken,
                 level: updatedLevel,
-        
                 readyToStartPlayers: [],
-  
                 lastRemovedCards: [],
             };
         }
+
+        //case 'MISTAKE_OVER': {
+        //    console.log('mistake over')
+        //    let updatedGamePhase: GamePhase = 'playing'
+        //    let updatedLevel = state.level;
+        //    let rewardedShuriken = state.shuriken;
+        //    let rewardedLives = state.lives;
+
+
+        //    const noMoreCards = areAllHandsEmpty(state.players);
+
+        //    if (noMoreCards) {
+
+        //        const gameWon = isGameWon(state);
+        //        updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
+
+        //        const nextLevelNumber = state.level.number + 1;
+        //        updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
+
+        //        const { rewardLives, rewardShuriken } = determineRewards(state.lives, state.shuriken, state.level);
+        //        rewardedLives = rewardLives;
+        //        rewardedShuriken = rewardShuriken;
+        //    }
+
+        //    return {
+        //        ...state,
+
+        //        shurikenCalls: [],
+        //        gamePhase: updatedGamePhase,
+
+        //        lives: rewardedLives,
+
+        //        shuriken: rewardedShuriken,
+        //        level: updatedLevel,
+
+        //        readyToStartPlayers: [],
+
+        //        lastRemovedCards: [],
+        //    };
+        //}
 
         case 'READY_TO_START': 
 

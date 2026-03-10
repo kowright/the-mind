@@ -33,8 +33,10 @@ export function handlePostActionEffects(
 
     if (enterPhase('mistake', oldState, newState)) {
         setTimeout(() => {
-            broadcastServerAction({ type: 'TRANSITION_TO_PLAYING' })
+            broadcastServerAction({ type: 'SHURIKEN_OVER' })
         }, waitTime(mistakeWaitTime));
+
+
     }
 
     if (

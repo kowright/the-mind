@@ -10,6 +10,8 @@ import { GameOverlayHeading } from '../models/gameOverlayHeading';
 import { CardView } from '../models/card';
 import { overlayStyle, theme, themeStyles } from '../../theme/theme';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
+import { soundService } from '../../services/soundService';
+import { useEffect } from 'react';
 
 interface LevelResultProps {
     // fake props
@@ -17,6 +19,14 @@ interface LevelResultProps {
 export function LevelResultView() {
     const { state } = useGame();
     const theme = useResponsiveTheme();
+
+
+    useEffect(() => {
+        if (!state) return;
+
+        soundService.play('win');
+
+    }, []);
 
     const pastLevelIndex = state.level.number - 2;
     const nextLevelIndex = state.level.number - 1;

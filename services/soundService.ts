@@ -12,10 +12,11 @@ export type GameSound =
     | "countdown" //
     | "shuriken"//
     | "mistake"//
-    | "toggle_tick";//
+    | "toggle_tick"
+    | "win";
 
 class SoundService {
-    private sounds: Partial<Record<GameSound, Audio.Sound>> = {};
+    public sounds: Partial<Record<GameSound, Audio.Sound>> = {};
     private muted = false;
 
     setMuted(value: boolean) {
@@ -35,9 +36,13 @@ class SoundService {
     //    await this.loadSound("success", SOUND_FILES.success);
     //}
     async load() {
+        console.log('soundServiceLOAD!')
         for (const [key, file] of Object.entries(SOUND_FILES)) {
-            const sound = new Audio.Sound();
-            await sound.loadAsync(file, { shouldPlay: false, volume: 1.0 });
+            //const sound = new Audio.Sound();
+            //await sound.loadAsync(file, { shouldPlay: false, volume: 1.0 });
+            //console.log('loading sound file: ', key)
+            //this.sounds[key as GameSound] = sound;
+            const { sound } = await Audio.Sound.createAsync(file, { shouldPlay: true })
             this.sounds[key as GameSound] = sound;
         }
     }
@@ -52,10 +57,19 @@ class SoundService {
         if (this.muted) return; 
 
         const sound = this.sounds[name];
-        if (!sound) return;
-      
-        await sound.stopAsync();
-        await sound.playAsync();
+        if (!sound) {
+            console.log("IT IS NOT LOADED YET DANG")
+            return;
+        }
+        await sound.getStatusAsync().then(status => {
+            if (!status.isLoaded) {
+                console.warn(`${name} not loaded yet`);
+                return;
+            }
+        });
+        //await sound.stopAsync();
+        console.log('sound should play')
+        await sound.replayAsync();
     }
 }
 

@@ -183,13 +183,14 @@ export function gameReducer(
                     editedPlayers.find(ep => ep.id === p.id) ?? p
                 );
 
-
+                let updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
+                updatedLives = removedCards.length > 1 ? loseLife(updatedLives) : updatedLives;
 
                 return {
                     ...state,
                     players: updatedPlayers,
                     discardPile: updatedDiscardPile,
-                    //lives: rewardedLives,
+                    lives: updatedLives,
                     gamePhase: updatedGamePhase,
                     //shuriken: rewardedShuriken,
                     //level: updatedLevel,
@@ -349,7 +350,9 @@ export function gameReducer(
                 updatedGamePhase,
                 updatedLevel,
                 rewardedLives,
-                rewardedShuriken
+                rewardedShuriken,
+                updatedGameOutcome
+
             } = resolveEndOfRound(
                 state,
                 state.players,
@@ -358,6 +361,10 @@ export function gameReducer(
                 state.level
             );
 
+            console.log('shu game phase', updatedGamePhase)
+            console.log('shu lives', rewardedLives)
+            console.log('shu game outcome', updatedGameOutcome)
+
             return {
                 ...state,
                 shurikenCalls: [],
@@ -367,46 +374,97 @@ export function gameReducer(
                 level: updatedLevel,
                 readyToStartPlayers: [],
                 lastRemovedCards: [],
+                gameOutcome: updatedGameOutcome,
             };
         }
 
         case 'MISTAKE_OVER': {
-            console.log('mistake over')
-            let updatedGamePhase: GamePhase = 'playing'
-            let updatedLevel = state.level;
-            let rewardedShuriken = state.shuriken;
-            let rewardedLives = state.lives;
+            //console.log('mistake over')
+            //let updatedGamePhase: GamePhase = 'playing'
+            //let updatedLevel = state.level;
+            //let rewardedShuriken = state.shuriken;
+            //let rewardedLives = state.lives;
+
+                    //const noMoreLives = areAllLivesLost(updatedLives);
+
+            //updatedGamePhase = noMoreLives ? 'gameOver' : updatedGamePhase;
+            //updatedGameOutcome = 'lost';
+
+            //if (noMoreLives) {
+            //    return {
+            //        ...state,
+            //        players: updatedPlayers,
+            //        discardPile: updatedDiscardPile,
+            //        lives: rewardedLives,
+            //        gamePhase: updatedGamePhase,
+            //        shuriken: rewardedShuriken,
+            //        level: updatedLevel,
+            //        lastRemovedCards: removedCards,
+            //        lastPlayedCard: updatedLastPlayedCard,
+            //        gameOutcome: updatedGameOutcome,
+            //    };
+            //}
 
 
-            const noMoreCards = areAllHandsEmpty(state.players);
+            //const noMoreCards = areAllHandsEmpty(state.players);
+            //console.log('mistake over no more cards', noMoreCards)
+            //if (noMoreCards) {
 
-            if (noMoreCards) {
+            //    const gameWon = isGameWon(state);
+            //    updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
 
-                const gameWon = isGameWon(state);
-                updatedGamePhase = gameWon ? 'gameOver' : 'levelComplete';
+            //    const nextLevelNumber = state.level.number + 1;
+            //    updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
 
-                const nextLevelNumber = state.level.number + 1;
-                updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
+            //    const { rewardLives, rewardShuriken } = determineRewards(state.lives, state.shuriken, state.level);
+            //    rewardedLives = rewardLives;
+            //    rewardedShuriken = rewardShuriken;
+            //}
 
-                const { rewardLives, rewardShuriken } = determineRewards(state.lives, state.shuriken, state.level);
-                rewardedLives = rewardLives;
-                rewardedShuriken = rewardShuriken;
-            }
+            //return {
+            //    ...state,
+
+            //    shurikenCalls: [],
+            //    gamePhase: updatedGamePhase,
+
+            //    lives: rewardedLives,
+
+            //    shuriken: rewardedShuriken,
+            //    level: updatedLevel,
+
+            //    readyToStartPlayers: [],
+
+            //    lastRemovedCards: [],
+            //};
+            console.log('')
+
+            const {
+                updatedGamePhase,
+                updatedLevel,
+                rewardedLives,
+                rewardedShuriken,
+                updatedGameOutcome,
+            } = resolveEndOfRound(
+                state,
+                state.players,
+                state.lives,
+                state.shuriken,
+                state.level
+            );
+            console.log('mistake game phase', updatedGamePhase)
+            console.log('mistake lives', rewardedLives)
+            console.log('mistake game outcome', updatedGameOutcome)
 
             return {
                 ...state,
-
                 shurikenCalls: [],
                 gamePhase: updatedGamePhase,
-
                 lives: rewardedLives,
-
                 shuriken: rewardedShuriken,
                 level: updatedLevel,
-
                 readyToStartPlayers: [],
-
                 lastRemovedCards: [],
+                gameOutcome: updatedGameOutcome,
             };
         }
 

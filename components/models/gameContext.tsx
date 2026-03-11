@@ -6,7 +6,9 @@ import { websocketService } from '@/services/websocketService';
 import Constants from "expo-constants";
 import { ServerMessage } from '../../shared/types/serverMessage';
 import { createLogger } from '../../shared/types/logger';
-import { soundService } from "@/services/soundService";
+import { GameSound, soundService } from "@/services/soundService";
+import { SOUND_FILES } from '../../constants/sounds';
+import { Audio } from 'expo-av';
 
 type GameContextType = {
     state: GameState;
@@ -25,9 +27,34 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const [socketError, setSocketError] = useState<string | null>(null);
 
     const wsURL = Constants.expoConfig?.extra?.WS_URL_WEB;
-
+    //useEffect(() => {
+    //    (async () => {
+    //        await soundService.load();
+    //        console.log('sounds loaded from Game Context!');
+    //    })();
+    //}, []);
+ 
     useEffect(() => {
-        soundService.load();
+        (async () => {
+            await soundService.load();
+
+            await Audio.setAudioModeAsync({
+                allowsRecordingIOS: false,
+                staysActiveInBackground: false,
+                playsInSilentModeIOS: true,
+                shouldDuckAndroid: false,
+            });
+
+            // Warm up all sounds so first play works
+            for (const soundName of Object.keys(SOUND_FILES) as GameSound[]) {
+                const sound = soundService.sounds[soundName];
+                if (sound) {
+                    console.log('playing sound in game context', soundName)
+                    await sound.playAsync();  // play once
+                    //await sound.stopAsync();  // stop immediately
+                }
+            }
+        })();
     }, []);
 
     useEffect(() => {

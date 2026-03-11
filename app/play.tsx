@@ -63,8 +63,6 @@ export default function PlayView() {
                         ? mistakeWaitTime
                         : 0),
 
-        tickSound: "countdown",
-        endSound: "success",
     });
 
     //useEffect(() => {

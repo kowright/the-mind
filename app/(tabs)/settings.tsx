@@ -90,6 +90,8 @@ export default function TabTwoScreen() {
                 <SettingsItem settingName='Silent chat' settingDescription='Let other players know what you are thinking if they cannot see you physically. Add PASS and WAIT options next to player names' />
 
                 <SettingsItem settingName='No rewards' settingDescription='There are no rewards when you beat levels- what you have at the start of the game is all you have' />
+
+                <SettingsItem settingName='Timed levels' settingDescription='Beat in each level in a specified amount of time' />
             </ScrollView>
         </View>
     );

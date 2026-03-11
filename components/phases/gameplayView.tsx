@@ -167,7 +167,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                             onPress={() => {
                                                 websocketService.send({ type: "PLAY" } as ClientAction);
                                                 soundService.play('click');
-                                                console.log('sound')
+                                                console.log('play card sound')
                                             }
                                 }
                                 text="PLAY CARD"

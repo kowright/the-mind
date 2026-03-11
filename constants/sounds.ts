@@ -11,4 +11,5 @@ export const SOUND_FILES: Record<GameSound, any> = {
     toggle_tick: require("../assets/sounds/switch_002.wav"),
     countdown: require("../assets/sounds/tick_004.wav"),
     success: require("../assets/sounds/bong_001.wav"),
+    win: require("../assets/sounds/open_004.wav"),
 };

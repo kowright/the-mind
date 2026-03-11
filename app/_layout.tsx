@@ -10,6 +10,8 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+
+
    // const game = useContext(GameContext);
 
     //if (game?.socketError) {

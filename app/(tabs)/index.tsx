@@ -117,21 +117,21 @@ export default function HomeScreen() {
                             <ButtonView
                                 text={restartedGame ? "Rename yourself?" : "Give yourself a name!"}
                                 onPress={() => { 
-                                    console.log('everyone press')
-                                    // play the first click immediately in the gesture
-                                    const firstSound = soundService.sounds['click'];
-                                    if (firstSound) {
-                                        firstSound.playAsync(); // no await here
-                                        firstSound.stopAsync();  // stop immediately
-                                    }
-                                    console.log('played sound')
+                                    //console.log('everyone press')
+                                    //// play the first click immediately in the gesture
+                                    //const firstSound = soundService.sounds['click'];
+                                    //if (firstSound) {
+                                    //    firstSound.playAsync(); // no await here
+                                    //    firstSound.stopAsync();  // stop immediately
+                                    //}
+                                    //console.log('played sound')
 
-                                    // then async load all other sounds in background
-                                    soundService.load().then(() => {
-                                        console.log('sounds loaded');
-                                    });
+                                    //// then async load all other sounds in background
+                                    //soundService.load().then(() => {
+                                    //    console.log('sounds loaded');
+                                    //});
 
-                                    setSoundEnabled(true);
+                                    //setSoundEnabled(true);
 
                                     setName(text);
                                 }}

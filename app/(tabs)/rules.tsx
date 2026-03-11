@@ -65,6 +65,8 @@ export default function TabThreeScreen() {
                     <RuleText breaks={1}>The level either ends in a game win if all levels are beat, a game loss if all lives are lost or a level win. All of these lead to the review phase. </RuleText>
                     <RuleText breaks={1}>The review phase is where you see what happened in the level. You will see any rewards you get if it was a level win or if it was a game win or loss, you see what lives, shuriken and level you ended on. All review stages will show you what order the cards were put down in.</RuleText>
                     <RuleText breaks={1}>At the end of the review stage, we either loop back to the preparation phase for the next level if it was a level win or if it was a game win or loss, we go back to the home screen where you can restart the game from the top.</RuleText>
+                    <RuleText breaks={2}>If you read up to here from the top, you have enough info to start playing so start trying! Or keep reading. You do you.</RuleText>
+
                 </ToggleText>
 
 

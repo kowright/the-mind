@@ -6,6 +6,8 @@ import { CardView } from '../models/card';
 import { GetReadyView } from '../models/getReady';
 import { overlayStyle, theme, themeStyles } from '../../theme/theme';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
+import { useEffect } from 'react';
+import { soundService } from '../../services/soundService';
 
 interface ShurikenViewProps {
     countdown: number;
@@ -13,6 +15,13 @@ interface ShurikenViewProps {
 
 export function ShurikenView({ countdown }: ShurikenViewProps) {
     const { state } = useGame();
+
+    useEffect(() => {
+        if (!state) return;
+
+        soundService.play('shuriken');
+
+    }, []);
 
     return (
         <GameOverlayView>

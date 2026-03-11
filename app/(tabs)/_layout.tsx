@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
@@ -8,6 +8,7 @@ import { theme } from '../../theme/theme';
 import { useGame } from '../../hooks/useGame';
 import { hasValidPlayerCount, allPlayersHaveNames } from '@/shared/utils/utils';
 import { Text, View, TextInput } from 'react-native';
+import { soundService } from '../../services/soundService';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -19,6 +20,14 @@ export default function TabLayout() {
     const isValidPlayerCount = hasValidPlayerCount(state.players);
 
     const readyToPlay = playersHaveNames && isValidPlayerCount;
+
+    useEffect(() => {
+        if (!state) return;
+
+        if (readyToPlay) {
+            soundService.play('everyone_here');
+        }
+    }, [readyToPlay]);
 
 
   return (

@@ -13,7 +13,10 @@ export type GameSound =
     | "shuriken"//
     | "mistake"//
     | "toggle_tick"
-    | "win";
+    | "win"
+    | "lose"
+    | "everyone_here"
+    ;
 
 class SoundService {
     public sounds: Partial<Record<GameSound, Audio.Sound>> = {};

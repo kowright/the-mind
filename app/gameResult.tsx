@@ -10,6 +10,8 @@ import { theme, themeStyles } from '../theme/theme';
 import { useResponsiveTheme } from '../hooks/useResponsiveTheme';
 import { ButtonView } from '../components/models/button';
 import { IconText } from '../components/models/iconText';
+import { useEffect } from 'react';
+import { soundService } from '../services/soundService';
 
 interface GameResultProps {
 
@@ -25,6 +27,17 @@ export default function GameResult() {
     const snarkyText = wonGame ? 'YOU ALL REALLY ARE ONE MIND!' : 'YOU DEFINITELY COULD HAVE TRIED HARDER BRUH';
 
     // TODO UX: make this look more sad or fun
+
+    useEffect(() => {
+        if (!state) return;
+
+        if (wonGame) {
+            soundService.play('success')
+        } else {
+            soundService.play('lose');
+        }
+
+    }, []);
 
     return (
         <View style={styles.container}>

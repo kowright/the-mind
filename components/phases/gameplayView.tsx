@@ -22,7 +22,6 @@ interface GameplayViewProps {
     discardPileStacked: boolean; // keep the discard pile stacked and not straight
 }
 
-// TODO: add sounds!
 export function GameplayView({ agreeToStartVersion = false, discardPileStacked = true, ...props }: GameplayViewProps) {
     const { state, playerId } = useGame();
     const theme = useResponsiveTheme();
@@ -48,7 +47,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
     //TODO UX: is subtext for shuriken noticable? 
 
-    //TODO UX: only have level progression in ready to start phase? Not when playing? 
     return (
         <LinearGradient 
             colors={theme.color.gameBackground.gradient}

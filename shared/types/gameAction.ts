@@ -43,7 +43,7 @@ export interface ActionPayloads {
     READY_TO_START: {};
     FAILED_ORDER: {};
     SHURIKEN_CALLED: {};
-    SHURIKEN_OVER: {}; //TODO rename to like PHASE OVER or something cause mistake and shuriken use this 
+    SHURIKEN_OVER: {}; 
     GAME_START: {};
     GAME_WON: {};
     GAME_LOST: {};

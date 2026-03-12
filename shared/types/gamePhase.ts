@@ -10,4 +10,5 @@ export type GamePhase =
     | 'agreeToStart'
     | 'error'
     | 'levelComplete'
-    | 'startLevel';
+    | 'startLevel'
+    | 'pause';

@@ -13,11 +13,12 @@ import { GameOverlayView } from '../components/models/gameOverlay';
 import { theme, themeStyles } from '../theme/theme';
 import { soundService } from '@/services/soundService';
 import { useCountdown } from '../hooks/useCountdown';
+import { PauseView } from '../components/phases/pause';
 
 export default function PlayView() {
     const { state, playerId } = useGame();
     //const [countdown, setCountdown] = useState(3);
-
+    console.log('state paused', state.paused)
     const player = state.players.find(p => p.id === playerId);
 
     //useEffect(() => {
@@ -148,6 +149,14 @@ export default function PlayView() {
                     <LevelResultView />
                 </GameOverlayView>
             )}
+
+            {state.gamePhase === 'pause' && state.paused && (
+                <PauseView />
+            )}
+
+            
+
+            
         </View>
     );
 }

@@ -5,17 +5,29 @@ import { theme, themeStyles } from "../../theme/theme";
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
 import { Platform } from 'react-native';
 import { soundService } from "../../services/soundService";
-interface ButtonProps {
+import { IconSymbol } from '../ui/icon-symbol';
+
+interface BaseButtonProps {
     text: string;
     onPress: () => void;
     showTooltip?: boolean;
     disabled?: boolean;
     tooltipText?: string;
     circleShape?: boolean;
-    variant: 'primary' | 'secondary',
+    variant: 'primary' | 'secondary';
 }
 
-export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false, circleShape = false, variant = 'primary' }: ButtonProps) {
+type ButtonProps =
+    | (BaseButtonProps & {
+        iconName: string;
+        iconColor: string;
+    })
+    | (BaseButtonProps & {
+        iconName?: undefined;
+        iconColor?: undefined;
+    });
+
+export function ButtonView({ text, onPress, tooltipText = '', disabled = false, showTooltip = false, circleShape = false, variant = 'primary', iconName='', iconColor=''}: ButtonProps) {
     const [visible, setVisible] = useState(false);
     const theme = useResponsiveTheme();
   
@@ -87,7 +99,11 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                     pressed && !disabled && { backgroundColor: theme.color.button[variant].pressed },
                 ]}
             >
-                <Text
+                {iconName ?
+
+                    <IconSymbol name={iconName} color={iconColor} />
+                    :
+                    <Text
                     style={[
                         styles.buttonText,
                         { color: theme.color.button[variant].text },
@@ -97,7 +113,8 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                         { fontWeight: theme.font.weight.button[variant] },
                     ]}
                 >
-                    {text}</Text>
+                    {text}</Text> 
+               }
             </Pressable>
 
             {visible && showTooltip && (

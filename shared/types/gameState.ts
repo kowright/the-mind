@@ -23,6 +23,7 @@ export interface GameState {
     gameOutcome?: 'won' | 'lost';
     errorMessage?: string;
     gameSettings: GameSettings;
+    paused?: boolean;
 }
 
 export const initialGameState: GameState = {
@@ -39,7 +40,9 @@ export const initialGameState: GameState = {
     lastRemovedCards: [],
     shurikenedCards: [],
     gameSettings: initialGameSettings,
+    paused: false,
 }
+
 
 
 export function determineWinLevel(playerCount: number) {

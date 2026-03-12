@@ -235,16 +235,29 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                         />
                                     </>
                                     :
-                            <>
+                                    <>
+                                        <View style={{flexDirection: 'row', gap: 16} }>
                             <ButtonView
-                                    onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
-                                    text={shurikenButtonText}
-                                    circleShape={false}
-                                    disabled={shurikenDisabled}
-                                    showTooltip={false}
-                                    variant='secondary'
+                                                onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
+                                                text=''
+                                                circleShape={false}
+                                                disabled={shurikenDisabled}
+                                                showTooltip={false}
+                                                variant='secondary'
+                                                iconName='staroflife.fill'
+                                                iconColor={askedForShuriken ? 'orange' : 'white'}
                                
-                                    />
+                                        />
+                                        <ButtonView
+                                            onPress={() => websocketService.send({ type: "PAUSE" } as ClientAction)}
+                                            text=''
+                                            circleShape={false}
+                                            iconName='pause.fill'
+                                            showTooltip={false}
+                                            variant='secondary'
+                                                iconColor='white'
+                                            />
+                                        </View>
                                         {thumbsUpAsked && <Text style={[themeStyles.small ]}>{`Shuriken votes: ${thumbsUpNumbers}`}</Text>}
                            </>
                         }
@@ -254,7 +267,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
 
                 </View>
-                : <Text>UNDEFINED PLAYER</Text>
+                : <Text>UNDEFINED PLAYER that should be a TODO: loading screen of some kind</Text>
             }
             </View>
         </View>

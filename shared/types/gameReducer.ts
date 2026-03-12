@@ -525,6 +525,25 @@ export function gameReducer(
 
             }
 
+        case 'PAUSE': {
+            console.log('PAUSE!')
+
+            return {
+                ...state,
+                gamePhase: 'pause',
+                paused: true,
+            }
+        }
+
+        case 'PAUSE_OVER': {
+            console.log('pause over');
+            return {
+                ...state,
+               gamePhase: 'startLevel',
+
+            }
+        }
+
         default:
             log.warn('Reducer could not find a case for action');
             return state;

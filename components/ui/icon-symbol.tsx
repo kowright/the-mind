@@ -30,6 +30,7 @@ const MAPPING = {
     'xmark': 'close',
     'hand.thumbsup': 'thumb-up',
     'heart.fill': 'cards-heart',
+    'pause.fill': 'pause'
 } as IconMapping;
 
 /**

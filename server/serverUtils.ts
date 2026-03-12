@@ -70,4 +70,10 @@ export function handlePostActionEffects(
             broadcastServerAction({ type: 'LEVEL_START' })
         }, waitTime(winLevelWaitTime));
     }
+
+    //if (enterPhase('pause', oldState, newState)) {
+    //    setTimeout(() => {
+    //        broadcastServerAction({ type: 'TRANSITION_TO_PLAYING' })
+    //    }, waitTime(startLevelWaitTime));
+    //}
 }

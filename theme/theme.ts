@@ -8,7 +8,7 @@ const tokens = {
             200: '#0049DB',
             300: '#8DABEC',
             400: '#1f305e',
-            500: '#194298', //primary
+            500: '#1d4cb2', //primary
             700: '#0A1A3D'
         },
         orange: {
@@ -135,7 +135,7 @@ export const theme = {
             // backgroundColor: '#96725c', // mid orange
             //backgroundColor: '#5c7296', // mid blue
             // backgroundColor: '#9a9faf', // gray blue
-            backgroundColor: tokens.colors.blue[400],
+            backgroundColor: tokens.colors.blue[700],
             gradient: [
                 tokens.colors.blue[700],
                 tokens.colors.blue[700],
@@ -144,7 +144,7 @@ export const theme = {
             ]
         },
         overlay: {
-            backgroundColor: tokens.colors.blue[400],
+            backgroundColor: tokens.colors.blue[700],
             color: tokens.colors.white,
             alert: tokens.colors.red[400],
         },

@@ -50,8 +50,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
                 const sound = soundService.sounds[soundName];
                 if (sound) {
                     console.log('playing sound in game context', soundName)
-                    await sound.playAsync();  // play once
-                    //await sound.stopAsync();  // stop immediately
+                    //await sound.playAsync();  // play once
+                    await sound.setVolumeAsync(0);
+                    await sound.replayAsync();
+                    await sound.setVolumeAsync(1);
                 }
             }
         })();

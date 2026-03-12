@@ -45,7 +45,7 @@ class SoundService {
             //await sound.loadAsync(file, { shouldPlay: false, volume: 1.0 });
             //console.log('loading sound file: ', key)
             //this.sounds[key as GameSound] = sound;
-            const { sound } = await Audio.Sound.createAsync(file, { shouldPlay: true })
+            const { sound } = await Audio.Sound.createAsync(file, { shouldPlay: false, volume:1 })
             this.sounds[key as GameSound] = sound;
         }
     }

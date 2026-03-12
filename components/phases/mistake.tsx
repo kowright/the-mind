@@ -54,13 +54,20 @@ export function MistakeView({ countdown }: MistakeProps) {
                         horizontal
                         persistentScrollbar
                         showsHorizontalScrollIndicator
-                        contentContainerStyle={{ marginVertical: 16,paddingHorizontal: 16 } }
+                        contentContainerStyle={{
+                            marginVertical: 16, paddingHorizontal: 16,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                   
+                            width: '100%'
+} }
                     >
                     {state.lastRemovedCards.map((card, index) => (
                         <View
                             key={card.id}
                             style={{
                                 marginLeft: index === 0 ? 0 : theme.size.cardWidth,
+                          
                             }}
                         >
                             <CardView
@@ -100,6 +107,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 16,
+
     },
     lostLivesContainer: {
         marginVertical: 12,

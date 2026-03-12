@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+
 import { theme } from '../../theme/theme';
 import { useGame } from '../../hooks/useGame';
 import { hasValidPlayerCount, allPlayersHaveNames } from '@/shared/utils/utils';
@@ -11,7 +11,7 @@ import { Text, View, TextInput } from 'react-native';
 import { soundService } from '../../services/soundService';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+
     const { state, playerId } = useGame();
 
     const playersHaveNames = allPlayersHaveNames(state.players);
@@ -25,6 +25,7 @@ export default function TabLayout() {
         if (!state) return;
 
         if (readyToPlay) {
+            console.log('everyone here sound in layout')
             soundService.play('everyone_here');
         }
     }, [readyToPlay]);

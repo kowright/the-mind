@@ -1,8 +1,6 @@
 import { ScrollView, Text, View } from 'react-native';
 import { useGame } from '@/hooks/useGame';
-import { isGameWon} from '@/shared/utils/utils';
 import { StyleSheet } from 'react-native';
-import { Button } from '@react-navigation/elements';
 import { websocketService } from '../services/websocketService';
 import { DiscardPileView } from '../components/models/discardPile';
 import { CardView } from '../components/models/card';
@@ -13,10 +11,6 @@ import { IconText } from '../components/models/iconText';
 import { useEffect } from 'react';
 import { soundService } from '../services/soundService';
 
-interface GameResultProps {
-
-}
-
 export default function GameResult() {
     const { state } = useGame();
     const theme = useResponsiveTheme();
@@ -26,8 +20,6 @@ export default function GameResult() {
     const levelAchieved = wonGame ? state.winLevel : `L${state.level.number}/${state.winLevel}`
     const snarkyText = wonGame ? 'YOU ALL REALLY ARE ONE MIND!' : 'YOU DEFINITELY COULD HAVE TRIED HARDER BRUH';
 
-    // TODO UX: make this look more sad or fun
-
     useEffect(() => {
         if (!state) return;
 
@@ -36,7 +28,6 @@ export default function GameResult() {
         } else {
             soundService.play('lose');
         }
-
     }, []);
 
     return (
@@ -54,35 +45,16 @@ export default function GameResult() {
                     <IconText iconFirst={true} iconName='chart.bar.fill' text={`${levelAchieved}`} />
                
                 </View>
-                <View
-                    style={{
-                        //height: theme.size.cardHeight * 1.2,
-                        //width: '100%',
-                        //overflow: 'visible',
-  
-                        //justifyContent: 'center',
-
-
-                    }}
-                >
-                    <DiscardPileView keepStacked={false} />
-                </View>
-                {/*<View style={{flexDirection: 'column', alignItems: 'center', gap: 4} }>*/}
-                {/*{!wonGame && state.players.map(p => {*/}
-                {/*    return (*/}
-                {/*        <Text style={styles.text} key={`${p.id}-card-count`}>*/}
-                {/*            {`${p.name}'s end card count: ${p.cardCount}`}*/}
-                {/*        </Text>*/}
-                {/*    )*/}
-                {/*})}*/}
-                {/*</View>*/}
+                <DiscardPileView keepStacked={false} />
             </View>
 
-            {/* Scroll Section */}
             {state.shurikenedCards.length > 0 && (
                 <View style={styles.removedSection}>
-                    <Text style={styles.text}>Removed Cards</Text>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <Text style={styles.text}>Removed Cards:</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={{ flexGrow: 1,paddingVertical: 12, paddingHorizontal: 12, overflow: 'visible', justifyContent: 'center' }}
+
+                    >
                         {state.shurikenedCards.map((card, index) => (
                             <View
                                 key={card.id}
@@ -104,7 +76,6 @@ export default function GameResult() {
                 </View>
             )}
 
-            {/* Bottom Section */}
             <View style={styles.bottomSection}>
                 <Text style={themeStyles.small}>{snarkyText}</Text>
                 <ButtonView
@@ -122,9 +93,7 @@ const styles = StyleSheet.create({
     wonContainer: {
         ...themeStyles.heading,
         backgroundColor: theme.color.gameResult.win,
-        //color: 'white',
         textAlign: 'center',
-        //fontWeight: 'bold',
     },
     lostContainer: {
         ...themeStyles.heading,
@@ -132,33 +101,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
 
     },
-    //discardPileContainerRight: {
-    //    marginTop: 16,
-    //    backgroundColor: 'green',
-    //    display: 'flex',
-    //    alignItems: 'center',
-    //},
-    //discardPileContainerWrong: {
-    //    marginTop: 16,
-    //    backgroundColor: 'red',
-    //    display: 'flex',
-    //    alignItems: 'center',
-    //},
     text: {
         ...themeStyles.body
-        //color: 'white',
     },
     container: {
         flex: 1,
-        backgroundColor: theme.color.gameBackground.backgroundColor,
-        //padding: 16,
-       
+        backgroundColor: theme.color.gameBackground.backgroundColor,   
     },
-
     removedSection: {
         marginVertical: 16,
     },
-
     bottomSection: {
         alignItems: 'center',
         gap: 12,

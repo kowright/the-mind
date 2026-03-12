@@ -158,12 +158,15 @@ export function areAllHandsEmpty(players: Player[]): boolean {
 export function determineRewards(lives: number, shuriken:number, level: Level) {
     let rewardShuriken = shuriken;
     let rewardLives = lives;
-
+    console.log('had shuriken', shuriken)
+    console.log('had lives', lives)
     if (level.reward === 'Life') {
         rewardLives++;
     }
     else if (level.reward === 'Shuriken') {
         rewardShuriken++;
     }
+    console.log('new shuriken', rewardShuriken)
+    console.log('new  lives', rewardLives)
     return { rewardLives, rewardShuriken };
 }

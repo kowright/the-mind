@@ -54,13 +54,9 @@ export function MistakeView({ countdown }: MistakeProps) {
                         horizontal
                         persistentScrollbar
                         showsHorizontalScrollIndicator
-                        contentContainerStyle={{
-                            marginVertical: 16, paddingHorizontal: 16,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                   
-                            width: '100%'
-} }
+
+                        contentContainerStyle={{ flexGrow: 1, paddingVertical: 12, paddingHorizontal: 12, overflow: 'visible', justifyContent: 'center' }}
+
                     >
                     {state.lastRemovedCards.map((card, index) => (
                         <View

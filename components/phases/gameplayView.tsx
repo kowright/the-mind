@@ -85,7 +85,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                         {enemies.length > 1 &&
                                             <View style={{marginTop: 20}}>
                                                 <Text style={styles.topEnemyText}>{`${enemies[0].name} `}
-                                                        {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>[{enemies[0].cardCount}]</Text>}
+                                                        {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>{`[${enemies[0].cardCount} card${enemies[0].cardCount === 1 ? '' : 's'}]`}</Text>}
                                                     </Text>
                                             </View>
                                         }
@@ -258,7 +258,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                                 iconColor='white'
                                             />
                                         </View>
-                                        {thumbsUpAsked && <Text style={[themeStyles.small ]}>{`Shuriken votes: ${thumbsUpNumbers}`}</Text>}
+                                        {thumbsUpAsked ? <Text style={[themeStyles.small ]}>{`Shuriken votes: ${thumbsUpNumbers}`}</Text> : <Text> </Text>}
                            </>
                         }
                         </View>
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     },
     leftEnemy: {
         position: 'absolute',
-        //left: -150,
+        left: 50,
         top: '25%',
         transform: [{ rotate: '90deg' }],
 

@@ -262,9 +262,13 @@ export function resolveEndOfRound(
                 levels.find(l => l.number === nextLevelNumber) ?? level;
 
             const rewards = determineRewards(lives, shuriken, level);
+            
             rewardedLives = rewards.rewardLives;
             rewardedShuriken = rewards.rewardShuriken;
+
         }
+        console.log('returning shuriken', rewardedShuriken)
+        console.log('returning lives', rewardedLives)
         return {
             updatedGamePhase,
             updatedLevel,

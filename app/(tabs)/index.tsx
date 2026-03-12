@@ -1,28 +1,21 @@
-import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { Text, View, TextInput, Platform } from 'react-native';
+import { Text, View, TextInput } from 'react-native';
 import { TabView } from '@/components/tab-view';
 import { useGame } from '@/hooks/useGame';
 import { websocketService } from '@/services/websocketService';
 import { useEffect, useState } from 'react';
 import { ClientAction } from '../../shared/types/gameAction';
 import { hasValidPlayerCount, allPlayersHaveNames } from '@/shared/utils/utils';
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { theme, themeStyles } from '../../theme/theme';
 import { ButtonView } from '../../components/models/button';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
-import { IconSymbol } from '../../components/ui/icon-symbol';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { GetReadyView } from '../../components/models/getReady';
-import { soundService } from '../../services/soundService';
 
 export default function HomeScreen() {
     const theme = useResponsiveTheme();
     const { state, playerId } = useGame();
-
     const [text, setText] = useState('');
     const [enteredName, setEnteredName] = useState(false);
-    const [visible, setVisible] = useState(false);
 
     const playersHaveNames = allPlayersHaveNames(state.players)
 
@@ -41,6 +34,7 @@ export default function HomeScreen() {
     }, [state.gamePhase]);
 
     const isValidPlayerCount = hasValidPlayerCount(state.players);
+
     let startButtonText = '';
     if (!isValidPlayerCount) {
         startButtonText = "You need 2-4 players to start";
@@ -49,8 +43,6 @@ export default function HomeScreen() {
     }
 
     function setName(name: string) {
-        //handleUserGesture(); 
-
         if (name) {
             setEnteredName(true);
             websocketService.send({
@@ -61,21 +53,6 @@ export default function HomeScreen() {
         }
         return;
     }
-    const [soundEnabled, setSoundEnabled] = useState(false);
-
-    //const handleUserGesture = async () => {
-    //    if (!soundEnabled && Platform.OS !== 'web') {
-    //        await soundService.load(); // load all sounds
-    //        // play a silent sound or tick to “unlock” the audio
-    //        const firstSound = soundService.sounds['click'];
-    //        if (firstSound) {
-    //            console.log('FIRST SOUND')
-    //            await firstSound.playAsync();
-    //            await firstSound.stopAsync();
-    //        }
-    //        setSoundEnabled(true);
-    //    }
-    //};
 
     const playerNames = state.players
         .map(p => p.name)
@@ -87,6 +64,7 @@ export default function HomeScreen() {
             <View style={styles.screen}>
                 <View style={styles.content}>
                     <Text style={styles.gameTitle}>THE MIND</Text>
+
                     <ButtonView
                        
                         onPress={() => 
@@ -112,29 +90,9 @@ export default function HomeScreen() {
                                 placeholderTextColor={theme.color.nameInput.text}
                                 onChangeText={setText}
                             />
-
-
                             <ButtonView
                                 text={restartedGame ? "Rename yourself?" : "Give yourself a name!"}
-                                onPress={() => { 
-                                    //console.log('everyone press')
-                                    //// play the first click immediately in the gesture
-                                    //const firstSound = soundService.sounds['click'];
-                                    //if (firstSound) {
-                                    //    firstSound.playAsync(); // no await here
-                                    //    firstSound.stopAsync();  // stop immediately
-                                    //}
-                                    //console.log('played sound')
-
-                                    //// then async load all other sounds in background
-                                    //soundService.load().then(() => {
-                                    //    console.log('sounds loaded');
-                                    //});
-
-                                    //setSoundEnabled(true);
-
-                                    setName(text);
-                                }}
+                                onPress={() => { setName(text); }}
                                 variant='secondary'
                             />
                         </>
@@ -142,7 +100,6 @@ export default function HomeScreen() {
 
                        <Text style={styles.metaTitle}>Hi {text}!</Text>
                     )}
-
 
                     <Text style={styles.meta}>
                         There {state.players.length > 1 ? 'are' : 'is'} {state.players.length}{' '}
@@ -207,7 +164,6 @@ const styles = StyleSheet.create({
     },
     metaTitle: {
         ...themeStyles.title,
-
     }
 });
 

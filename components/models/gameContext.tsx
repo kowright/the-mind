@@ -10,7 +10,7 @@ import { GameSound, soundService } from "@/services/soundService";
 import { SOUND_FILES } from '../../constants/sounds';
 import { Audio } from 'expo-av';
 
-type GameContextType = {
+export type GameContextType = {
     state: GameState;
     dispatch: React.Dispatch<ServerAction>;
     playerId?: string;    

@@ -1,12 +1,9 @@
 import { Text, View, StyleSheet } from 'react-native';
 import { theme, themeStyles } from '../../theme/theme';
-import { Switch } from 'react-native';
-import { useState } from 'react';
 import { ToggleText } from '../../components/models/toggleText';
 import { LevelProgression } from '../../components/models/levelProgression';
 import { IconText } from '../../components/models/iconText';
 import { ScrollView } from "react-native";
-import { ReactNode } from "react";
 import { CardView } from '../../components/models/card';
 import { RuleText } from '../../components/models/ruleText';
 

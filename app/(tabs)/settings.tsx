@@ -1,15 +1,9 @@
 
-import { Platform, ScrollView, StyleSheet } from 'react-native';
-
-
+import { ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from 'react-native';
 import { theme, themeStyles } from '../../theme/theme';
-
-import { useGame } from '../../hooks/useGame';
-
 import { SettingsItem } from '../../components/models/settingsItem';
 export default function TabTwoScreen() {
-    const { state, playerId } = useGame();
 
     return (
         <View
@@ -24,8 +18,7 @@ export default function TabTwoScreen() {
 
             <Text style={[themeStyles.body, {color:'red', textAlign: 'center'}]}>Changes here will make the game significant harder. These are not necessary to set to play a standard game.</Text>
 
-            <ScrollView style={{ marginTop: 24 }}
-                contentContainerStyle={{ gap: 24 }}>
+            <ScrollView style={{ marginTop: 24 }} contentContainerStyle={{ gap: 24 }}>
                 <SettingsItem settingName='Skip skipped cards' settingDescription='Hide cards done in a mistake or by shuriken for a challenge' settingType='skippedCards' />
 
                 <SettingsItem settingName='Card counting' settingDescription='Hide how many cards other people have for a challenge' settingType='cardCounts' />

@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     },
     leftEnemy: {
         position: 'absolute',
-        left: 50,
+        left: '5%',
         top: '25%',
         transform: [{ rotate: '90deg' }],
 
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
     rightEnemy: {
         alignItems: 'center',
         position: 'absolute',
-        right: 0,
+        right: '5%',
         top: '25%',
         transform: [{ rotate: '-90deg' }],
     },

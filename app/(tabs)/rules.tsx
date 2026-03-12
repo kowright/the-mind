@@ -6,24 +6,11 @@ import { ToggleText } from '../../components/models/toggleText';
 import { LevelProgression } from '../../components/models/levelProgression';
 import { IconText } from '../../components/models/iconText';
 import { ScrollView } from "react-native";
-
 import { ReactNode } from "react";
 import { CardView } from '../../components/models/card';
+import { RuleText } from '../../components/models/ruleText';
 
-//TODO move to file
-interface RuleTextProps {
-    children: ReactNode;
-    breaks?: number;
-}
 
-export function RuleText({ children, breaks = 0 }: RuleTextProps) {
-    return (
-        <Text style={themeStyles.body}>
-            {"\n".repeat(breaks)}
-            {children}
-        </Text>
-    );
-}
 export default function TabThreeScreen() {
 
     return (

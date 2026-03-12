@@ -267,7 +267,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 
 
                 </View>
-                : <Text>UNDEFINED PLAYER that should be a TODO: loading screen of some kind</Text>
+                        : <Text style={themeStyles.body }>LOADING...</Text>
             }
             </View>
         </View>

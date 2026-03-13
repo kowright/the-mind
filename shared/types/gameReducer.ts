@@ -47,7 +47,7 @@ export function gameReducer(
                     ...state,
                     players,
                     gamePhase: 'error',
-                    errorMessage: 'A player disconnected. There are not enough players connected. Restarting game.'
+                    errorMessage: 'There are not enough players in the game. Restarting game.'
                 }
             }
 

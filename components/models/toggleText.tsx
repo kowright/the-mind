@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react";
-import { Pressable, View, Text, StyleSheet } from "react-native";
+import { Pressable, View, StyleSheet } from "react-native";
 import { IconText } from "./iconText";
 import { theme } from "../../theme/theme";
 
@@ -10,41 +10,40 @@ interface ToggleTextProps {
 }
 
 export function ToggleText({ title, children, defaultOpen = false }: ToggleTextProps) {
-  const [open, setOpen] = useState(defaultOpen);
+    const [open, setOpen] = useState(defaultOpen);
 
-  return (
-    <View>
-          <Pressable onPress={() => setOpen(v => !v)}>
-              {({ pressed, hovered }) => {
-                  const altColor = pressed
-                      ? theme.color.toggleIcon.press
-                      : hovered
-                          ? theme.color.toggleIcon.hover
-                          : open
-                              ? theme.color.toggleIcon.open
-                              : theme.color.toggleIcon.close;
+    return (   
+        <View>
+            <Pressable onPress={() => setOpen(v => !v)}>
+                {({ pressed, hovered }) => {
+                    const altColor = pressed
+                        ? theme.color.toggleIcon.press
+                        : hovered
+                            ? theme.color.toggleIcon.hover
+                            : open
+                                ? theme.color.toggleIcon.open
+                                : theme.color.toggleIcon.close;
 
-                  return (
-                      <View style={styles.header}>
-                          <IconText
-                              iconFirst
-                              iconName="hare.fill"
-                              altColor={altColor}
-                              text={title}
-                          />
-                      </View>
-                  );
-              }}
-          </Pressable>
+                    return (
+                        <View style={styles.header}>
+                            <IconText
+                                iconFirst
+                                iconName="hare.fill"
+                                altColor={altColor}
+                                text={title}
+                            />
+                        </View>
+                    );
+                }}
+            </Pressable>
           
-
-      {open && (
-        <View style={styles.content}>
-          {children}
+            {open && (
+                <View style={styles.content}>
+                    {children}
+                </View>
+            )}
         </View>
-      )}
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({

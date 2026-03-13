@@ -4,7 +4,6 @@ import { StyleSheet, Pressable } from 'react-native';
 import { theme, themeStyles } from "../../theme/theme";
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
 import { Platform } from 'react-native';
-import { soundService } from "../../services/soundService";
 import { IconSymbol } from '../ui/icon-symbol';
 
 interface BaseButtonProps {
@@ -40,12 +39,6 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
     const dynamicShadowStyle = {
         borderRadius: circleShape ? circleSize / 2 : 6,
         ...theme.shadow,
-        //shadowColor: 'black',
-        //shadowOffset: { width: 1, height: 5 },
-        //shadowOpacity: 0.15,
-        //shadowRadius: 3,
-        //elevation: 7, // android
-
     }
     const dynamicTooltipStyle = circleShape
         ? { bottom: circleSize + 12 }
@@ -82,7 +75,6 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
     };
 
     return (
-        //<View style={styles.shadow}>
         <View style={[styles.buttonContainer]}>
             <Pressable onHoverIn={() => setVisible(true)}
                 onHoverOut={() => {setVisible(false)}}
@@ -125,7 +117,6 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                 </View>
             )}
             </View>
-        //</View>
     );
 }
 
@@ -135,8 +126,6 @@ const styles = StyleSheet.create({
         maxWidth: '75%',
     },
     disabled: {
-        //backgroundColor: theme.color.button.primary.disabled,
-        //opacity: 0.5,
         opacity: theme.opacity.disabled,
     },
     disabledText: {
@@ -152,7 +141,6 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         ...themeStyles.body,
-        //fontWeight: 'normal',
         textAlign: 'center',
     },
     tooltip: {
@@ -164,32 +152,5 @@ const styles = StyleSheet.create({
     },
     tooltipText: {
         color: theme.color.tooltip.text,
-    },
-    shadow: {
-        //backgroundColor: '#fff',
-        //borderRadius: 99,
-        //shadowColor: 'black',
-        //shadowOffset: { width: 5, height: 3 },
-        //shadowOpacity: 0.4,
-        //shadowRadius: 3,
-        //elevation: 5,
-        //...Platform.select({
-        //    ios: {
-        //        shadowColor: 'white',
-        //        shadowOffset: { height: 5, width: 5 },
-        //        shadowOpacity: 1,
-        //        shadowRadius: 1, // Controls the blur radius
-        //    },
-        //    android: {
-        //        elevation: 1, // A higher value results in a larger, lighter shadow
-        //        shadowColor: '#000',
-        //        shadowOffset: {
-        //            width: 0,
-        //            height: 2,
-        //        },
-        //        shadowOpacity: 0.25,
-        //        shadowRadius: 3.84,
-        //    },
-        //}),
     },
 });

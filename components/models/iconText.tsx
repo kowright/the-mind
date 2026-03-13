@@ -1,5 +1,4 @@
-import { Text, View } from 'react-native';
-import { StyleSheet, Pressable } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { IconSymbol } from '../ui/icon-symbol';
 import { theme, themeStyles } from '../../theme/theme';
 import { SymbolViewProps } from 'expo-symbols';
@@ -22,7 +21,6 @@ const iconColorMapping: IconMapping = {
 type IconMapping = Partial<Record<SymbolViewProps['name'], string>>;
 
 export function IconText({ iconFirst, text, iconName, altColor, altIconSize}: IconTextProps) {
-
     const resolvedColor =
         altColor && altColor !== ''
             ? altColor
@@ -32,10 +30,10 @@ export function IconText({ iconFirst, text, iconName, altColor, altIconSize}: Ic
     if (altIconSize) {
         iconSize = altIconSize;
     }
+
     return (
         <View style={styles.container} >
             {!iconFirst && <Text style={[styles.textRight, { color: altColor || themeStyles.body.color }]}>{text}</Text>}
-
             <IconSymbol size={iconSize} name={iconName} color={resolvedColor} style={styles.icon} />
             {iconFirst && <Text style={[styles.textLeft, { color: altColor || themeStyles.body.color }]}>{text}</Text>}
         </View>
@@ -49,14 +47,10 @@ const styles = StyleSheet.create({
     },
     textRight: {
         ...themeStyles.body,
-        //fontSize: 14,
-        //marginLeft: 4,
-        //color: theme.color.gameplayIcon.text,
     },
     textLeft: {
         ...themeStyles.body,
         marginLeft: 4,
-        
     },
     icon: {
         textShadowColor: 'black',

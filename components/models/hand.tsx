@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
-import { Card } from "../../shared/types/card";
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Player } from "../../shared/types/player";
 import { CardView } from "./card";
@@ -18,21 +17,10 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
 
     return (
         <>
-            { /* <ScrollView horizontal showsHorizontalScrollIndicator={true}
-        //    ref={scrollRef}
-
-        //    onContentSizeChange={() => 
-               
-        //            scrollRef.current?.scrollToEnd({ animated: false })
-                
-        //    }
-        //>
-         */}
             {enemyPlayer ? 
 
                 <View style={[styles.handContainer]}>
                     <View style={styles.hand}>
-                  
                         {clientPlayer.cardCount !== 0 && Array.from({ length: clientPlayer.cardCount }).map((_, index, arr) => (
                             <CardView
                                 key={`enemy-${clientPlayer.id}-${index}`}
@@ -44,57 +32,48 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                                 index={index}
                                 total={arr.length}
                                 hideNumbers={true}
-                        
                             />
-                        ))
-                           
-                        }
+                        ))}
                     </View>
                 </View>
                 :
-                 <ScrollView horizontal showsHorizontalScrollIndicator={true}
+                <ScrollView horizontal showsHorizontalScrollIndicator={true}
                     ref={scrollRef}
                     contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
                     onContentSizeChange={() =>
-
                             scrollRef.current?.scrollToEnd({ animated: false })
-
                     }
                 >
-                <View style={styles.handContainer}>
-
-                    {clientPlayer.cardCount > 0 ? <View style={styles.hand}>
-
-                        {[...clientPlayer.hand.cards]
-                            .sort((a, b) => b.number - a.number)
-                            .map((card, index, sortedCards) => (
-                                <CardView
-                                    key={`hand-${clientPlayer.id}-${card.id}`}
-                                    card={card}
-                                    index={index}
-                                    total={sortedCards.length}
-                                    onPress={onPressCard}
-                                    hideNumbers={enemyPlayer}
-                                />
-                            ))}
-                    </View> :
-                        <CardView
-
-                            card={{
-                                id: `hand-placeholder`,
-                                number: 0,
-                                mistakenlyPlayed: false,
-                            }}
-                            index={0}
-                            total={-1}
-                            hideNumbers={true}
-                     
-                        />
-                    }
+                    <View style={styles.handContainer}>
+                            {clientPlayer.cardCount > 0 ?
+                                <View style={styles.hand}>
+                                    {[...clientPlayer.hand.cards]
+                                    .sort((a, b) => b.number - a.number)
+                                    .map((card, index, sortedCards) => (
+                                        <CardView
+                                            key={`hand-${clientPlayer.id}-${card.id}`}
+                                            card={card}
+                                            index={index}
+                                            total={sortedCards.length}
+                                            onPress={onPressCard}
+                                            hideNumbers={enemyPlayer}
+                                        />
+                                    ))}
+                                </View> :
+                            <CardView
+                                card={{
+                                    id: `hand-placeholder`,
+                                    number: 0,
+                                    mistakenlyPlayed: false,
+                                }}
+                                index={0}
+                                total={-1}
+                                hideNumbers={true}
+                            />
+                        }
                     </View>
-                    </ScrollView>
+                </ScrollView>
             }
-
             </>
     
     );
@@ -108,11 +87,8 @@ const styles = StyleSheet.create({
     },
     handContainer: {
         display: 'flex',
-        alignItems: 'center', // could align things flex-end so that top card is always at the end to tap quickly - USERTEST
+        alignItems: 'center',
         flexDirection: 'row',
         overflow: 'visible',
     },
-    clientPlayerName: {
-
-    }
 });

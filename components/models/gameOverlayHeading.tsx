@@ -1,7 +1,6 @@
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { useGame } from '@/hooks/useGame';
-import { theme, themeStyles } from '../../theme/theme';
+import { themeStyles } from '../../theme/theme';
 interface GameOverlayHeadingProps {
     text: string;
 }
@@ -15,9 +14,7 @@ export function GameOverlayHeading({ text }: GameOverlayHeadingProps) {
 const styles = StyleSheet.create({
     heading: {
         ...themeStyles.heading,
-   
         paddingHorizontal: 16,
         textAlign: 'center',
-
     }
 });

@@ -27,12 +27,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const [socketError, setSocketError] = useState<string | null>(null);
 
     const wsURL = Constants.expoConfig?.extra?.WS_URL_WEB;
-    //useEffect(() => {
-    //    (async () => {
-    //        await soundService.load();
-    //        console.log('sounds loaded from Game Context!');
-    //    })();
-    //}, []);
  
     useEffect(() => {
         (async () => {
@@ -45,12 +39,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
                 shouldDuckAndroid: false,
             });
 
-            // Warm up all sounds so first play works
             for (const soundName of Object.keys(SOUND_FILES) as GameSound[]) {
                 const sound = soundService.sounds[soundName];
                 if (sound) {
-                    console.log('playing sound in game context', soundName)
-                    //await sound.playAsync();  // play once
                     await sound.setVolumeAsync(0);
                     await sound.replayAsync();
                     await sound.setVolumeAsync(1);
@@ -65,7 +56,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
             websocketService.connect(
                 wsURL,
                 () => { },
-                //() => setSocketError("WebSocket connection failed. Restart App.")
                 () => dispatch({
                     type: 'ERROR', errorMessage: 'Websocket connection failed. Restart App.'
                 })

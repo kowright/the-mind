@@ -11,9 +11,6 @@ export default function GameRouter() {
         case 'setup':
             return <Redirect href="(tabs)" />;
 
-        //case 'playing':
-        //    return <Redirect href="play" />;
-
         case 'gameOver':
             return <Redirect href="gameResult" />;
 

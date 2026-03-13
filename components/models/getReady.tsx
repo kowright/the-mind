@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native';
-import { StyleSheet, Pressable } from 'react-native';
-import { IconSymbol } from '../ui/icon-symbol';
+import { StyleSheet } from 'react-native';
 import { theme, themeStyles } from '../../theme/theme';
 
 interface GetReadyViewProps {
@@ -9,7 +8,6 @@ interface GetReadyViewProps {
 }
 
 export function GetReadyView({ countdown, text }: GetReadyViewProps) {
-
     return (
         <View style={styles.getReadyContainer}>
             <Text style={styles.getReadyPrimaryText}>{text}</Text>
@@ -21,16 +19,11 @@ export function GetReadyView({ countdown, text }: GetReadyViewProps) {
 const styles = StyleSheet.create({
     getReadyPrimaryText: {
         ...themeStyles.body,
-        //color: 'white',
-        //fontSize: 16,
     },
     getReadyNumberText: {
         ...themeStyles.heading,
         textAlign: 'center',
-        //fontSize: 32,
-        //fontWeight: 'bold',
         width: '100%',
-    //    color: 'white'
     },
     getReadyContainer: {
         ...theme.shadow,

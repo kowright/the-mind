@@ -8,8 +8,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { themeStyles } from "../../theme/theme";
 interface CardViewProps {
     card: Card;
-    //onPlay: (card: Card) => void;
-    //onSelected: (card: Card) => void;
     onPress?: () => void;
     index: number;
     total: number;
@@ -170,40 +168,20 @@ export function CardView({ card, total, index, onPress, mistakenPlayerName, disc
 
 const styles = StyleSheet.create({
     cardContainer: {
-        //backgroundColor: 'black',
         borderRadius: 16,
         padding: 12,
         position: 'relative',
-        //boxShadow: '5px 0px 10px 2px #aaa',
-  
-        //shadowColor: '#aaa',
-        ////shadowOffset: { width: 5, height: 5 },
-        //shadowOpacity: 0.2,
-        //shadowRadius: 1,
-        ////elevation: 10, // android
-        //overflow: 'visible'
     },
     shadow: {
-        //borderRadius: 16,
-        //shadowColor: 'red',
-        //shadowOffset: { width: 5, height: 5 },
-        //shadowOpacity: 0.5,
-        //shadowRadius: 1,
-        //elevation: 7, // android
         boxShadow: '1px 0px 10px 5px #aaa',
-
         shadowColor: '#aaa',
-        //shadowOffset: { width: 5, height: 5 },
         shadowOpacity: 0.2,
         shadowRadius: 1,
-        //elevation: 10, // android
         overflow: 'visible'
     },
-
     cornerText: {
         position: 'absolute',
         color: 'white',
-        //fontSize: 20,
     },
     discardEmpty: {
         backgroundColor: 'transparent',
@@ -211,36 +189,24 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         borderStyle: 'dotted',
     },
-
     centerContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-
     centerText: {
         color: 'black',
-        //fontSize: 72,
         fontWeight: 'bold',
     },
-
     mistakenPlayerText: {
         ...themeStyles.small,
-
         position: 'absolute',
         transform: [{ rotate: '45deg' }],
         backgroundColor: 'black',
-        //color: 'white',
         padding: 4,
-        //paddingHorizontal: 32,
         zIndex: 20,
     },
-
-    middleCircle: {
-        //width: 120,
-        //height: 150,
-        //borderRadius: 90,
-        //backgroundColor: 'white', 
+    middleCircle: { 
         justifyContent: 'center',
         alignItems: 'center',
     },

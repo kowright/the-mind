@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import { themeStyles } from "../../theme/theme";
-import { Text, View, StyleSheet } from 'react-native';
-
+import { Text } from 'react-native';
 interface RuleTextProps {
     children: ReactNode;
     breaks?: number;

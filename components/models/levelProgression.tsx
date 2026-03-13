@@ -1,13 +1,7 @@
-import { Text, View } from 'react-native';
-import { StyleSheet, Pressable } from 'react-native';
-import { IconSymbol } from '../ui/icon-symbol';
+import { Text, View, StyleSheet } from 'react-native';
 import { LevelToRewardIconMapping, levels } from '../../shared/types/level';
 import { IconText } from './iconText';
-import { theme, themeStyles } from '../../theme/theme';
-
-interface LevelProgressionProps {
-
-}
+import { themeStyles } from '../../theme/theme';
 
 export function LevelProgression() {
 
@@ -45,13 +39,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        //backgroundColor: 'yellow'
     },
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        //backgroundColor: 'yellow',
     },
     text: {
         ...themeStyles.small,

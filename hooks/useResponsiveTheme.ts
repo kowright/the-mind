@@ -1,7 +1,7 @@
 import { useWindowDimensions } from 'react-native';
 import { theme, themeStyles } from '@/theme/theme';
 export function useResponsiveTheme() {
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const isDesktop = width >= 1024;
 
@@ -20,15 +20,10 @@ export function useResponsiveTheme() {
         body: themeStyles.body.fontSize * scale50,
         title: themeStyles.title.fontSize * scale100,
         heading: themeStyles.heading.fontSize * scale100,
-        //small: theme.typography.small * scale50,
-        //  body: theme.typography.body * scale50,
-        //  title: theme.typography.title * scale100,
-        //  heading: theme.typography.heading * scale100,
       },
 
       size: {
           circleSize: Math.min(width * 0.7, 400),
-          //cardWidth: Math.min(width * 0.25, 200),
           cardWidth,
           cardHeight,
       },

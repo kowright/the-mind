@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { applyAction, getState } from "../shared/types/gameEngine.js";
 import { ClientAction, ServerAction, enrichAction } from "../shared/types/gameAction.js";
 import { GameState } from "../shared/types/gameState"; 
-import { hasValidPlayerCount, removeOtherPlayersFromStateForClient } from '@/shared/utils/utils.js'
+import { removeOtherPlayersFromStateForClient } from '@/shared/utils/utils.js'
 import { handlePostActionEffects } from "./serverUtils.js";
 import { createLogger } from "../shared/types/logger.js";
 
@@ -48,13 +48,6 @@ export function broadcastServerAction(action: ServerAction) {
     const oldState = getState();
     const newState = applyAction(action);
 
-    //if (!hasValidPlayerCount(newState.players)) {
-    //    return broadcastServerAction({
-    //        type: "ERROR",
-    //        errorMessage: "There are not enough players to continue."
-    //    });
-    //}
-
     broadcastLobby(newState);
     handlePostActionEffects(action, oldState, newState);
 }
@@ -63,7 +56,7 @@ export function broadcastAction(
     clientAction: ClientAction,
     playerId: string
 ) {
-    // translate client action to server actopm
+    // translate client action to server action
     const enriched = enrichAction(clientAction, playerId);
     if (!enriched) return;
 

@@ -26,7 +26,6 @@ class WebsocketService {
         this.socket.onclose = () => {
             if (!this.socket || this.socket.readyState === WebSocket.CLOSED) {
                 log.info('WebSocket closed');
-                //onError?.('Connection lost');
             }
         };
     }

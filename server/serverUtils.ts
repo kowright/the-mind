@@ -1,8 +1,8 @@
 import { ServerAction } from "../shared/types/gameAction";
 import { applyAction } from "../shared/types/gameEngine";
 import { GameState } from "../shared/types/gameState";
-import { broadcastLobby, broadcastAction, broadcastServerAction } from "./server";
-import { errorWaitTime, hasValidPlayerCount, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime, winLevelWaitTime } from "../shared/utils/utils";
+import { broadcastLobby, broadcastServerAction } from "./server";
+import { errorWaitTime, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime, winLevelWaitTime } from "../shared/utils/utils";
 import { createLogger } from "../shared/types/logger";
 import { GamePhase } from "../shared/types/gamePhase";
 
@@ -35,8 +35,6 @@ export function handlePostActionEffects(
         setTimeout(() => {
             broadcastServerAction({ type: 'MISTAKE_OVER' })
         }, waitTime(mistakeWaitTime));
-
-
     }
 
     if (
@@ -70,10 +68,3 @@ export function handlePostActionEffects(
             broadcastServerAction({ type: 'LEVEL_START' })
         }, waitTime(winLevelWaitTime));
     }
-
-    //if (enterPhase('pause', oldState, newState)) {
-    //    setTimeout(() => {
-    //        broadcastServerAction({ type: 'TRANSITION_TO_PLAYING' })
-    //    }, waitTime(startLevelWaitTime));
-    //}
-}

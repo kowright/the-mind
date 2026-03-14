@@ -1,8 +1,7 @@
 import { Card } from "./card";
-import { ClientAction, GameAction } from "./gameAction";
 import { GamePhase } from "./gamePhase";
 import { GameSettings, initialGameSettings } from "./gameSettings";
-import { Level, levels, RewardType } from "./level";
+import { Level, levels } from "./level";
 import { Player } from "./player";
 
 export interface GameState {
@@ -12,7 +11,6 @@ export interface GameState {
     level: Level;
     discardPile?: Card[];
     deck: Card[];
-    // players who want shuriken
     gamePhase: GamePhase;
     winLevel: number;
     readyToStartPlayers: string[];
@@ -43,8 +41,6 @@ export const initialGameState: GameState = {
     paused: false,
 }
 
-
-
 export function determineWinLevel(playerCount: number) {
 
     switch (playerCount) {
@@ -58,7 +54,6 @@ export function determineWinLevel(playerCount: number) {
     }
 }
 
-
 export function determineLives(playerCount: number) {
     return playerCount;
 }
@@ -69,7 +64,6 @@ export function canShurikenBeUsed(gameState: GameState) {
 
     return shurikenCount === playerCount;
 }
-
 
 function createDeck() {
     return Array.from({ length: 100 }, (_, i): Card => ({
@@ -120,7 +114,6 @@ export function addCardToDiscardPile(
 }
 
 export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) {
-
     if (!lastCard) {
         return true;
     }
@@ -158,15 +151,13 @@ export function areAllHandsEmpty(players: Player[]): boolean {
 export function determineRewards(lives: number, shuriken:number, level: Level) {
     let rewardShuriken = shuriken;
     let rewardLives = lives;
-    console.log('had shuriken', shuriken)
-    console.log('had lives', lives)
+
     if (level.reward === 'Life') {
         rewardLives++;
     }
     else if (level.reward === 'Shuriken') {
         rewardShuriken++;
     }
-    console.log('new shuriken', rewardShuriken)
-    console.log('new  lives', rewardLives)
+
     return { rewardLives, rewardShuriken };
 }

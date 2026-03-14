@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { soundService } from "../services/soundService";
 
-
 interface UseCountdownProps {
     start: number;
 }

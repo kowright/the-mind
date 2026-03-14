@@ -51,8 +51,6 @@ const tokens = {
         weight: {
             normal: "500" as const, // use as const for the union type, not a generic string
             bold: "700" as const,
-            //normal: 500,
-            //bold: 700,
         }, 
         size: {
             sm: 14,
@@ -132,9 +130,6 @@ export const theme = {
             hover: tokens.colors.orange[300],
         },
         gameBackground: {
-            // backgroundColor: '#96725c', // mid orange
-            //backgroundColor: '#5c7296', // mid blue
-            // backgroundColor: '#9a9faf', // gray blue
             backgroundColor: tokens.colors.blue[700],
             gradient: [
                 tokens.colors.blue[700],
@@ -177,7 +172,6 @@ export const theme = {
 
     size: {
         circleSize: tokens.size[400],
-        //iconSize
     },
 
     font: {

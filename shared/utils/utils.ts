@@ -249,7 +249,6 @@ export function resolveEndOfRound(
 
 
     const noMoreCards = areAllHandsEmpty(players);
-    console.log('resolve end of round no more cards', noMoreCards)
     if (noMoreCards) {
         const gameWon = level.number === state.winLevel;
 
@@ -267,8 +266,7 @@ export function resolveEndOfRound(
             rewardedShuriken = rewards.rewardShuriken;
 
         }
-        console.log('returning shuriken', rewardedShuriken)
-        console.log('returning lives', rewardedLives)
+
         return {
             updatedGamePhase,
             updatedLevel,

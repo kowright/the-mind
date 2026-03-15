@@ -16,7 +16,6 @@ import { PauseView } from '../components/phases/pause';
 
 export default function PlayView() {
     const { state, playerId } = useGame();
-    console.log('state paused', state.paused)
     const player = state.players.find(p => p.id === playerId);
 
     const countdown = useCountdown({

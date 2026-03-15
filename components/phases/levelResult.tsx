@@ -1,10 +1,9 @@
 import { useGame } from '@/hooks/useGame';
-import { LevelToRewardIconMapping, levels, RewardType } from "@/shared/types/level";
+import { LevelToRewardIconMapping, levels } from "@/shared/types/level";
 import { DiscardPileView } from "@/components/models/discardPile";
 import { GameOverlayView } from '../models/gameOverlay';
 import { ScrollView, Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { IconSymbol } from '../ui/icon-symbol';
 import { IconText } from '../models/iconText';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
 import { CardView } from '../models/card';
@@ -45,51 +44,43 @@ export function LevelResultView() {
                         <IconText iconFirst={false} iconName={pastLevelIcon} altIconSize={36} text='RECEIVED REWARD:' />
                         <IconText iconFirst={false} iconName={nextLevelIcon} altIconSize={36} text='NEXT LEVEL REWARD:' />
 
-                    <DiscardPileView keepStacked={false} />
-                    {state.shurikenedCards.length > 0 && <Text style={themeStyles.body}>Removed Cards:</Text>}
-                    {/*<View style={styles.removedCardsContainer}>*/}
-                        <ScrollView
-                        horizontal
-                        persistentScrollbar
-                        showsHorizontalScrollIndicator
-                        contentContainerStyle={state.shurikenedCards.length > 0 && styles.removedCards }
+                        <DiscardPileView keepStacked={false} />
+                        {state.shurikenedCards.length > 0 && <Text style={themeStyles.body}>Removed Cards:</Text>}
+                            <ScrollView
+                                horizontal
+                                persistentScrollbar
+                                showsHorizontalScrollIndicator
+                                contentContainerStyle={state.shurikenedCards.length > 0 && styles.removedCards }
 
-                        >
-                        {state.shurikenedCards.map((card, index) => (
-                            <View
-                                key={card.id}
-                                style={{
-                                    marginLeft: index === 0 ? 0 : theme.size.cardWidth,
-                                }}
-                            >
-                                <CardView
-                                    card={card}
-                                    index={index}
-                                    total={state.lastRemovedCards.length + 1}
-                                    discarded={true}
-                                    rotate={false}
+                                >
+                                {state.shurikenedCards.map((card, index) => (
+                                    <View
+                                        key={card.id}
+                                        style={{
+                                            marginLeft: index === 0 ? 0 : theme.size.cardWidth,
+                                        }}
+                                    >
+                                        <CardView
+                                            card={card}
+                                            index={index}
+                                            total={state.lastRemovedCards.length + 1}
+                                            discarded={true}
+                                            rotate={false}
                              
-                                />
-                            </View>
-                        ))}
-                        </ScrollView>
-
-                    {/*</View>*/}
+                                        />
+                                    </View>
+                                ))}
+                            </ScrollView>
                     </View>
                 </View>
-
-                </GameOverlayView>
+            </GameOverlayView>
         </>
     );
 }
 
 const styles = StyleSheet.create({
     overlayContainer: {
-        //backgroundColor: theme.color.gameBackground.backgroundColor,
-        //padding: 16,
-        //borderRadius: 16,
         display: 'flex',
-        //alignItems: 'stretch',
     },
     overlay: overlayStyle(theme),
     removedCardsContainer: {

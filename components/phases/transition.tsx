@@ -1,6 +1,5 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
 import { GetReadyView } from '../models/getReady';
 import { overlayStyle, theme } from '../../theme/theme';
@@ -21,12 +20,8 @@ export function TransitionView({ countdown }: TransitionProps) {
 
 const styles = StyleSheet.create({
     overlayContainer: {
-        //backgroundColor: theme.color.overlay.backgroundColor,
-        //padding: 32,
-        //borderRadius: 16,
         display: 'flex',
         alignItems: 'center',
     },
     overlay: overlayStyle(theme),
-   
 });

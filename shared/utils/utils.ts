@@ -26,18 +26,6 @@ export function hasValidPlayerCount(players: Player[]) {
     return true;
 }
 
-export function makeFakePlayers(
-    gameState: GameState,
-    numberToMake: number
-): Player[] {
-    return Array.from({ length: numberToMake }, (_, i): Player => ({
-        id: `${i}`,
-        name: `Player ${i + 1}`,
-        hand: { cards: [] },
-        cardCount: 0,
-    }));
-}
-
 export function makePlayer(
     id: string,
     name?: string,
@@ -126,11 +114,6 @@ export function loseLife(lives: number): number {
 
 export function areAllLivesLost(lives: number) {
     return lives === 0;
-}
-
-export function isGameWon(gameState: GameState) {
-    const atWinLevel = gameState.level.number === gameState.winLevel;
-    return atWinLevel
 }
 
 export function removeLowestCardFromAllHands(

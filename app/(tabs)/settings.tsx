@@ -1,6 +1,4 @@
-
-import { ScrollView, StyleSheet } from 'react-native';
-import { Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { theme, themeStyles } from '../../theme/theme';
 import { SettingsItem } from '../../components/models/settingsItem';
 export default function TabTwoScreen() {
@@ -16,9 +14,9 @@ export default function TabTwoScreen() {
                 SETTINGS
             </Text>
 
-            <Text style={[themeStyles.body, {color:'red', textAlign: 'center'}]}>Changes here will make the game significant harder. These are not necessary to set to play a standard game.</Text>
+            <Text style={styles.settingWarning}>Changes here will make the game significant harder. These are not necessary to set to play a standard game.</Text>
 
-            <ScrollView style={{ marginTop: 24 }} contentContainerStyle={{ gap: 24 }}>
+            <ScrollView style={styles.scrollViewStyle} contentContainerStyle={styles.scrollViewContentStyle}>
                 <SettingsItem settingName='Skip skipped cards' settingDescription='Hide cards done in a mistake or by shuriken for a challenge' settingType='skippedCards' />
 
                 <SettingsItem settingName='Card counting' settingDescription='Hide how many cards other people have for a challenge' settingType='cardCounts' />
@@ -27,7 +25,7 @@ export default function TabTwoScreen() {
 
                 <SettingsItem settingName='Blind' settingDescription='Cannot see card numbers in pile while playing for a challenge' settingType='blind' />
 
-                <Text style={[themeStyles.heading, {marginTop: 24}]}>Upcoming App Update Settings!</Text>
+                <Text style={styles.futureHeading}>Upcoming App Update Settings!</Text>
 
                 <SettingsItem settingName='Extreme' settingDescription='Have 2 decks and 2 piles; one pile needs to be ordered ascending, the other descending' />
 
@@ -57,4 +55,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingBottom: 16,
     },
+    settingWarning: {
+        ...themeStyles.body,
+        color: theme.color.settingWarning,
+        textAlign: 'center',
+    },
+    scrollViewStyle: {
+        marginTop: 24 
+    },
+    scrollViewContentStyle: {
+        gap: 24 
+    },
+    futureHeading: {
+        ...themeStyles.heading,
+        marginTop: 24,
+    }
 });

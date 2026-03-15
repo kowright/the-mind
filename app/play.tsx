@@ -1,5 +1,4 @@
-import { Text, View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { MistakeView } from '@/components/phases/mistake';
 import { GameplayView } from '@/components/phases/gamePlayView';
@@ -33,7 +32,6 @@ export default function PlayView() {
     const inAskToStartPhase = state.readyToStartPlayers.length > 0;
 
     return (
-
         <View style={styles.container}>
             <Text style={styles.nameText}>{player?.name || 'Unnamed Player'}</Text>
 

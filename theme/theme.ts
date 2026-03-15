@@ -158,7 +158,9 @@ export const theme = {
         checkbox: {
             checkboxOutline: tokens.colors.white,
             checkBoxFill: tokens.colors.orange[700],
-        }
+        },
+        settingWarning: tokens.colors.red[400],
+        gameResultStats: tokens.colors.black,
     },
 
     spacing: {

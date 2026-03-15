@@ -1,12 +1,11 @@
 import { router } from 'expo-router';
-import { Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, StyleSheet } from 'react-native';
 import { TabView } from '@/components/tab-view';
 import { useGame } from '@/hooks/useGame';
 import { websocketService } from '@/services/websocketService';
 import { useEffect, useState } from 'react';
 import { ClientAction } from '../../shared/types/gameAction';
 import { hasValidPlayerCount, allPlayersHaveNames } from '@/shared/utils/utils';
-import { StyleSheet } from 'react-native';
 import { theme, themeStyles } from '../../theme/theme';
 import { ButtonView } from '../../components/models/button';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
@@ -113,7 +112,6 @@ export default function HomeScreen() {
             </View>
         </TabView>
     );
-
 }
 
 const styles = StyleSheet.create({
@@ -122,7 +120,6 @@ const styles = StyleSheet.create({
         padding: 24,
         backgroundColor: theme.color.gameBackground.backgroundColor,
     },
-
     content: {
         flex: 1,
         alignItems: 'center',
@@ -132,20 +129,10 @@ const styles = StyleSheet.create({
         width: '100%',
         gap: 20,
     },
-
     gameTitle: {
         ...themeStyles.gameTitle,
         textAlign: 'center',
     },
-
-    image: {
-        width: '100%',
-        maxWidth: 225,
-        height: 125,
-        borderRadius: 12,
-        resizeMode: 'cover',
-    },
-
     input: {
         width: '100%',
         maxWidth: 400,
@@ -156,7 +143,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         color: theme.color.nameInput.text,
     },
-
     meta: {
         ...themeStyles.body,
         textAlign: 'center',

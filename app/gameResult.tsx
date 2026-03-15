@@ -1,6 +1,5 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
-import { StyleSheet } from 'react-native';
 import { websocketService } from '../services/websocketService';
 import { DiscardPileView } from '../components/models/discardPile';
 import { CardView } from '../components/models/card';
@@ -32,14 +31,12 @@ export default function GameResult() {
 
     return (
         <View style={styles.container}>
-            <View style={{gap: 32}}>
+            <View style={styles.content}>
                 <Text style={wonGame ? styles.wonContainer : styles.lostContainer}>
                     {title}
                 </Text>
 
-                <View style={{
-                    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor: 'black'
-                }}>
+                <View style={styles.stats}>
                     <IconText iconFirst={true} iconName='heart.fill' text={state.lives} />
                     <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
                     <IconText iconFirst={true} iconName='chart.bar.fill' text={`${levelAchieved}`} />
@@ -52,8 +49,7 @@ export default function GameResult() {
                 <View style={styles.removedSection}>
                     <Text style={styles.text}>Removed Cards:</Text>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={{ flexGrow: 1,paddingVertical: 12, paddingHorizontal: 12, overflow: 'visible', justifyContent: 'center' }}
-
+                        contentContainerStyle={styles.scrollViewContent}
                     >
                         {state.shurikenedCards.map((card, index) => (
                             <View
@@ -68,7 +64,6 @@ export default function GameResult() {
                                     total={state.lastRemovedCards.length + 1}
                                     discarded
                                     rotate={false}
-                                    
                                 />
                             </View>
                         ))}
@@ -84,7 +79,6 @@ export default function GameResult() {
                     variant="primary"
                 />
             </View>
-
         </View>
     );
 }
@@ -116,5 +110,21 @@ const styles = StyleSheet.create({
         gap: 12,
         marginTop: 'auto',
         paddingBottom: 44,
+    },
+    content: {
+        gap: 32 
+    },
+    stats: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        backgroundColor: theme.color.gameResultStats,
+    },
+    scrollViewContent: {
+        flexGrow: 1,
+        paddingVertical: 12,
+        paddingHorizontal: 12,
+        overflow: 'visible',
+        justifyContent: 'center'
     },
 });

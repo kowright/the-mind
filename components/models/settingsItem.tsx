@@ -27,6 +27,7 @@ export function SettingsItem({ settingDescription, settingName, settingType }: S
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
             {settingType && <Checkbox
+                testID={`checkbox-${settingType}`}
                 value={isChecked}
                 onValueChange={setSetting}
                 color={isChecked ? theme.color.checkbox.checkBoxFill : theme.color.checkbox.checkboxOutline}

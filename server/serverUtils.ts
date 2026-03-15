@@ -53,7 +53,7 @@ export function handlePostActionEffects(
 
     if (enterPhase('error', oldState, newState)) {
         setTimeout(() => {
-            broadcastServerAction({ type:'GAME_RESTART' })
+            broadcastServerAction({ type: 'GAME_RESTART' })
         }, waitTime(errorWaitTime));
     }
 
@@ -68,3 +68,4 @@ export function handlePostActionEffects(
             broadcastServerAction({ type: 'LEVEL_START' })
         }, waitTime(winLevelWaitTime));
     }
+}

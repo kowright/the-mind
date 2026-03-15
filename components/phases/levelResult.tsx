@@ -13,9 +13,6 @@ import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 import { soundService } from '../../services/soundService';
 import { useEffect } from 'react';
 
-interface LevelResultProps {
-    // fake props
-}
 export function LevelResultView() {
     const { state } = useGame();
     const theme = useResponsiveTheme();

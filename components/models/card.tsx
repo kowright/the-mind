@@ -94,6 +94,7 @@ export function CardView({ card, total, index, onPress, mistakenPlayerName, disc
         <Pressable
             onPress={canPress ? onPress : undefined}
             disabled={!canPress}
+            testID="card-pressable"
         >
         <View style={dynamicCardContainer}>
             {/* Top Left */}

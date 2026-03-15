@@ -12,10 +12,10 @@ interface IconTextProps {
 }
 
 const iconColorMapping: IconMapping = {
-    'heart.fill': '#af088f',
-    'hare.fill': 'green',
-    'staroflife.fill': 'gray',
-    'chart.bar.fill': 'green',
+    'heart.fill': theme.color.gameplayIcon.heart,
+    'hare.fill': theme.color.gameplayIcon.rabbit,
+    'staroflife.fill': theme.color.gameplayIcon.shuriken,
+    'chart.bar.fill': theme.color.gameplayIcon.level,
 };
 
 type IconMapping = Partial<Record<SymbolViewProps['name'], string>>;
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         marginLeft: 4,
     },
     icon: {
-        textShadowColor: 'black',
+        textShadowColor: theme.textShadow.textShadowColor,
         textShadowOffset: { width: 2, height: 1 },
         textShadowRadius: 2,
     },

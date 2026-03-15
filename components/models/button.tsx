@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Text, View } from 'react-native';
-import { StyleSheet, Pressable } from 'react-native';
+import { Text, View, Platform, StyleSheet, Pressable } from 'react-native';
 import { theme, themeStyles } from "../../theme/theme";
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
-import { Platform } from 'react-native';
 import { IconSymbol } from '../ui/icon-symbol';
 
 interface BaseButtonProps {
@@ -92,7 +90,6 @@ export function ButtonView({ text, onPress, tooltipText = '', disabled = false, 
                 ]}
             >
                 {iconName ?
-
                     <IconSymbol name={iconName} color={iconColor} />
                     :
                     <Text

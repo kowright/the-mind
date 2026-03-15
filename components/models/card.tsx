@@ -1,11 +1,11 @@
 import React from "react";
 import { Card } from "../../shared/types/card";
-import { Text, View } from 'react-native';
-import { StyleSheet, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { useResponsiveTheme } from "../../hooks/useResponsiveTheme";
 import { useGame } from "../../hooks/useGame";
 import { LinearGradient } from 'expo-linear-gradient';
-import { themeStyles } from "../../theme/theme";
+import { theme, themeStyles } from "../../theme/theme";
+
 interface CardViewProps {
     card: Card;
     onPress?: () => void;
@@ -96,13 +96,12 @@ export function CardView({ card, total, index, onPress, mistakenPlayerName, disc
             disabled={!canPress}
             testID="card-pressable"
         >
-        <View style={dynamicCardContainer}>
-            {/* Top Left */}
+            <View style={dynamicCardContainer}>
+  
             <Text style={[styles.cornerText, topLeft, { fontSize: cornerFontSize }]}>
                     {!hideNumbers && card.number}
             </Text>
 
-            {/* Top Right */}
             <Text style={[styles.cornerText, topRight, {fontSize: cornerFontSize}]}>
                     {!hideNumbers && card.number}
             </Text>
@@ -115,7 +114,6 @@ export function CardView({ card, total, index, onPress, mistakenPlayerName, disc
                             width: circleWidth,
                             height: circleHeight,
                             borderRadius: circleWidth / 2,
-                            overflow: 'hidden',
                         },
                     ]}>
 
@@ -143,27 +141,25 @@ export function CardView({ card, total, index, onPress, mistakenPlayerName, disc
                     </Text>
                   
                     </View>
-                    {card.mistakenlyPlayed && <Text style={[
-                        styles.mistakenPlayerText, {fontSize: theme.typography.small }
-                    ]}>
-                        {mistakenName}
-                    </Text>}
-            </View>
-                }
+                    {card.mistakenlyPlayed &&
+                        <Text style={[
+                            styles.mistakenPlayerText, {fontSize: theme.typography.small }
+                        ]}>
+                            {mistakenName}
+                        </Text>
+                    }
+                </View>
+            }
 
-
-            {/* Bottom Left */}
             <Text style={[styles.cornerText, bottomLeft, { fontSize: cornerFontSize }]}>
                     {!hideNumbers && card.number}
             </Text>
 
-            {/* Bottom Right */}
             <Text style={[styles.cornerText, bottomRight, { fontSize: cornerFontSize }]}>
                     {!hideNumbers && card.number}
             </Text>
             </View>
-            </Pressable>
-       
+        </Pressable>
     );
 }
 
@@ -175,19 +171,19 @@ const styles = StyleSheet.create({
     },
     shadow: {
         boxShadow: '1px 0px 10px 5px #aaa',
-        shadowColor: '#aaa',
+        shadowColor: theme.color.cardShadow,
         shadowOpacity: 0.2,
         shadowRadius: 1,
         overflow: 'visible'
     },
     cornerText: {
         position: 'absolute',
-        color: 'white',
+        color: theme.color.cardCornerText,
     },
     discardEmpty: {
         backgroundColor: 'transparent',
         borderWidth: 2,
-        borderColor: 'white',
+        borderColor: theme.border.color.discardPileEmpty,
         borderStyle: 'dotted',
     },
     centerContainer: {
@@ -196,19 +192,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     centerText: {
-        color: 'black',
+        color: theme.color.cardMiddleText,
         fontWeight: 'bold',
     },
     mistakenPlayerText: {
         ...themeStyles.small,
         position: 'absolute',
         transform: [{ rotate: '45deg' }],
-        backgroundColor: 'black',
+        backgroundColor: theme.color.mistakenPlayer,
         padding: 4,
         zIndex: 20,
     },
     middleCircle: { 
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden',
     },
 });

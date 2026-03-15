@@ -26,6 +26,9 @@ const tokens = {
         green: {
             300: '#09b500',
         },
+        pink: {
+            600: '#af088f'
+        },
         white: '#FFF',
         black: '#000',
     },
@@ -121,6 +124,10 @@ export const theme = {
         gameplayIcon: {
             backgroundColor: tokens.colors.white,
             voted: tokens.colors.red[400],
+            heart: tokens.colors.pink[600],
+            rabbit: tokens.colors.green[300],
+            shuriken: tokens.colors.gray[400],
+            level: tokens.colors.green[300],
         },
 
         toggleIcon: {
@@ -159,8 +166,13 @@ export const theme = {
             checkboxOutline: tokens.colors.white,
             checkBoxFill: tokens.colors.orange[700],
         },
+
         settingWarning: tokens.colors.red[400],
         gameResultStats: tokens.colors.black,
+        cardShadow: tokens.colors.gray[400],
+        cardCornerText: tokens.colors.white,
+        cardMiddleText: tokens.colors.black,
+        mistakenPlayer: tokens.colors.black,
     },
 
     spacing: {
@@ -203,6 +215,9 @@ export const theme = {
             overlay: tokens.border.radius.lg,
             button: tokens.border.radius.sm,
             tooltip: tokens.border.radius.sm,
+        },
+        color: {
+            discardPileEmpty: tokens.colors.white,
         }
     },
     textShadow: {

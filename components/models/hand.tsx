@@ -1,9 +1,7 @@
 import React, { useRef } from "react";
-import { View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Player } from "../../shared/types/player";
 import { CardView } from "./card";
-import { ScrollView } from 'react-native';
 
 interface HandProps {
     clientPlayer: Player;
@@ -39,7 +37,7 @@ export function HandView({ clientPlayer, onPressCard, enemyPlayer }: HandProps) 
                 :
                 <ScrollView horizontal showsHorizontalScrollIndicator={true}
                     ref={scrollRef}
-                    contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+                    contentContainerStyle={styles.scrollViewContent}
                     onContentSizeChange={() =>
                             scrollRef.current?.scrollToEnd({ animated: false })
                     }
@@ -91,4 +89,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         overflow: 'visible',
     },
+    scrollViewContent: {
+        flexGrow: 1,
+        justifyContent: 'center' 
+    }
 });

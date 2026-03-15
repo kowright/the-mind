@@ -53,13 +53,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     gap: 6,
   },
-  arrow: {
-    fontSize: 14,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
   content: {
     paddingLeft: 20,
     paddingTop: 6,

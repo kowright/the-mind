@@ -1,5 +1,4 @@
-import { Text, View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { theme, themeStyles } from '../../theme/theme';
 
 interface GetReadyViewProps {

@@ -1,5 +1,4 @@
-import { View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 interface OverlayProps {
     children: React.ReactNode;
@@ -26,7 +25,4 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         zIndex: 999,
     },
-    overlapText: {
-        backgroundColor: 'white',
-    }
 });

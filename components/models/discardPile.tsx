@@ -1,10 +1,7 @@
-import { View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { CardView } from './card';
-import { ScrollView } from 'react-native';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
-import { useRef } from 'react';
 interface DiscardPileProps {
     keepStacked?: boolean;
 } 
@@ -29,14 +26,12 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
                                 <CardView card={card} index={index} total={state.discardPile?.length} key={`discard-${card.id}`} discarded={true} rotate={true} hideNumbers={state.gameSettings.blind ? true : false } />
                         )) }
                     </> )
-                   
-                    : !isPlayingorMistake && showDiscardPile ? 
+                   : !isPlayingorMistake && showDiscardPile ? 
                         <>
                             <ScrollView
                                 horizontal
                                 showsHorizontalScrollIndicator
-                                contentContainerStyle={{ flexGrow: 1,marginTop: 12,paddingHorizontal: 12, overflow: 'visible', justifyContent: 'center' }}
-
+                                contentContainerStyle={styles.scrollViewContent}
                             >
                                 {state.discardPile?.map((card, index) => (
                                     <View
@@ -50,19 +45,17 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
                                 ))}
                             </ScrollView>
                         </>
-                    :
-                    <CardView
-                           
-                        card={{
-                            id: `discard-placeholder`,
-                            number: 0,
-                            mistakenlyPlayed: false,
-                        }}
-                        index={0}
-                        total={-1}
-                        hideNumbers={true}
-                       
-                    />
+                        :
+                        <CardView      
+                            card={{
+                                id: `discard-placeholder`,
+                                number: 0,
+                                mistakenlyPlayed: false,
+                            }}
+                            index={0}
+                            total={-1}
+                            hideNumbers={true}
+                        />
                 }
                 
             </View>
@@ -71,20 +64,17 @@ export function DiscardPileView({keepStacked = true}: DiscardPileProps) {
 };
 
 const styles = StyleSheet.create({
-    discardPileContainerRight: {
-        marginTop: 16,
-        backgroundColor: 'green',
-        display: 'flex',
-        alignItems: 'center',
-    },
     discardContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         width: '100%',
         overflow: 'visible',
     },
-    straightCardsContainer: {
-        display: 'flex',
-        flexDirection: 'row',
+    scrollViewContent: {
+        flexGrow: 1,
+        marginTop: 12,
+        paddingHorizontal: 12,
+        overflow: 'visible',
+        justifyContent: 'center'
     }
 });

@@ -5,6 +5,7 @@ import { LevelProgression } from '../../components/models/levelProgression';
 import { IconText } from '../../components/models/iconText';
 import { CardView } from '../../components/models/card';
 import { RuleText } from '../../components/models/ruleText';
+import { ButtonView } from '../../components/models/button';
 
 export default function TabThreeScreen() {
 
@@ -115,7 +116,7 @@ export default function TabThreeScreen() {
                 >
                     <RuleText>The amount of lives you get are dependent on how many players there are; it is the same number as the amount of players.</RuleText>
                     <RuleText breaks={1}>Lives are also denoted by this symbol and can be found at the top of the play screen: </RuleText>
-                    <IconText iconFirst={true} iconName='hare.fill' text={`2`} />
+                    <IconText iconFirst={true} iconName='heart.fill' text={`2`} />
                     <RuleText>You can see for example, the symbol and number mean you have 2 lives left.</RuleText>
                     <RuleText breaks={1}>You can get more lives dependent on the reward of some levels. You can get a life as a reward in levels 3, 6 & 9.</RuleText>
                 </ToggleText>
@@ -141,17 +142,54 @@ export default function TabThreeScreen() {
 
 
                 <ToggleText
-                    title='Thumbs Up'
+                    title='Votes'
                     defaultOpen={false}
                 >
-                    <RuleText>During the preparation and play screens, there are opportunities to vote on when an event happens</RuleText>
-                    <RuleText breaks={1}>During the preparation level phase, players can use the &#39;READY??&#39; button to cast their vote to start the level. During game play, casting a vote will denote interest in using a shuriken.</RuleText>
-                    <RuleText breaks={1}>Once the first player&#39;s vote is cast, the thumbs up symbol will be red to signify voting has started. If there are no votes, the thumbs up symbol will be white. The votes are reset after all players voted.</RuleText>
-                    <RuleText breaks={1}>The thumbs up is also denoted by this symbol and can be found at the top of the play screen:</RuleText>
+                    <RuleText>During the preparation and play screens, there are opportunities to vote on when an event happens.</RuleText>
+                    <RuleText breaks={1}>During the preparation level phase, players can use the &#39;READY??&#39; to cast their vote to start the level. During game play, playes can use the button that has a shuriken to cast a vote will denote interest in using a shuriken.</RuleText>
+                    <RuleText breaks={1}>There will be a small text by the button to show how many people have voted. All votes are reset after all players voted.</RuleText>
+                    <RuleText breaks={1}>The voting buttons look like the following:</RuleText>
+                    <View style={styles.votesContainer}>
+                    <ButtonView
+                        onPress={() => { } }
+                        text='READY??'
+                        circleShape={false}
+                        disabled={false}
+                        showTooltip={false}
+                        variant='primary'
+                    />
+                    <ButtonView
+                        onPress={() => { } }
+                        text=''
+                        circleShape={false}
+                        showTooltip={false}
+                        variant='secondary'
+                        iconName='staroflife.fill'
+                        iconColor='white'
+                        />
+                    </View>
+                    <RuleText>You can see the orange button is for voting if you are ready and the blue button is for voting to use a shuriken. Both buttons can be toggled so if you press to vote, you can press it again to remove your vote.</RuleText>
 
-                    <IconText iconFirst={true} iconName='hand.thumbsup' altColor={theme.color.gameplayIcon.voted} text={`2`} />
-                    <RuleText>You can see for example, the symbol and number mean 2 people voted.</RuleText>
+                </ToggleText>
 
+
+                <ToggleText
+                    title='Pause'
+                    defaultOpen={false}
+                >
+                    <RuleText>During gameplay, you can pause the game. This means you can stop all players from being able put down any cards.</RuleText>
+                    <RuleText breaks={1}>To resume the game, press the &#39;Resume Game?&#39; button and a count will count you into being able to play again. </RuleText>
+                    <RuleText breaks={1}>The button looks like this: </RuleText>
+                    <ButtonView
+                        onPress={() => { } }
+                        text=''
+                        circleShape={false}
+                        iconName='pause.fill'
+                        showTooltip={false}
+                        variant='secondary'
+                        iconColor='white'
+                    />
+               
                 </ToggleText>
             </ScrollView>
         </View>
@@ -175,4 +213,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingBottom: 16,
     },
+    votesContainer: {
+        flexDirection: 'row',
+        gap: 32
+    }
 });

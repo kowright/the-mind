@@ -1,8 +1,8 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { ButtonView } from './button';
+import { ButtonView } from '@/components/models/button';
 
-jest.mock("../../hooks/useResponsiveTheme", () => ({
+jest.mock("@/hooks/useResponsiveTheme", () => ({
     useResponsiveTheme: () => ({
         size: { circleSize: 40 },
         color: {
@@ -40,7 +40,7 @@ jest.mock("../../hooks/useResponsiveTheme", () => ({
     }),
 }));
 
-jest.mock("../ui/icon-symbol", () => ({
+jest.mock("@/components/ui/icon-symbol", () => ({
     IconSymbol: () => null,
 }));
 

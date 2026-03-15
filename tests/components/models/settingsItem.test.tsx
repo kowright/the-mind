@@ -1,10 +1,10 @@
 import { render, fireEvent } from '@testing-library/react-native';
-import { SettingsItem } from './settingsItem';
-import { useGame } from '../../hooks/useGame';
-import { websocketService } from '../../services/websocketService';
+import { SettingsItem } from '@/components/models/settingsItem';
+import { useGame } from '@/hooks/useGame';
+import { websocketService } from '@/services/websocketService';
 
-jest.mock('../../hooks/useGame');
-jest.mock('../../services/websocketService');
+jest.mock('@/hooks/useGame');
+jest.mock('@/services/websocketService');
 
 describe('SettingsItem', () => {
     beforeEach(() => {

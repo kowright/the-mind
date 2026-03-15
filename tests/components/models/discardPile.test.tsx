@@ -1,17 +1,17 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { DiscardPileView } from "./discardPile";
-import { useGame } from "../../hooks/useGame";
+import { DiscardPileView } from "@/components/models/discardPile";
+import { useGame } from "@/hooks/useGame";
 import "react-native-gesture-handler/jestSetup";
 
-jest.mock("../../hooks/useGame");
-jest.mock("../../hooks/useResponsiveTheme", () => ({
+jest.mock("@/hooks/useGame");
+jest.mock("@/hooks/useResponsiveTheme", () => ({
     useResponsiveTheme: () => ({
         size: { cardWidth: 100, cardHeight: 150 },
     }),
 }));
 
-jest.mock("./card", () => ({
+jest.mock("@/components/models/card", () => ({
     CardView: (props: any) => {
         const { View, Text } = require("react-native");
         return (

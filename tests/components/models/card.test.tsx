@@ -1,9 +1,9 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { CardView } from "./card";
+import { CardView } from "@/components/models/card";
 
 // Mock theme hook
-jest.mock("../../hooks/useResponsiveTheme", () => ({
+jest.mock("@/hooks/useResponsiveTheme", () => ({
     useResponsiveTheme: () => ({
         size: {
             cardWidth: 100,
@@ -29,7 +29,7 @@ jest.mock("../../hooks/useResponsiveTheme", () => ({
 }));
 
 // Mock game hook
-jest.mock("../../hooks/useGame", () => ({
+jest.mock("@/hooks/useGame", () => ({
     useGame: () => ({
         state: {
             players: [{ id: "1", name: "Alice" }],

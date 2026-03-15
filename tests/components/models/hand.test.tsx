@@ -1,9 +1,9 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { Text, View, TouchableOpacity } from "react-native";
-import { HandView } from "./hand";
+import { HandView } from "@/components/models/hand";
 
-jest.mock("./card", () => {
+jest.mock("@/components/models/card", () => {
     return {
         CardView: (props: any) => {
             const { TouchableOpacity, Text } = require("react-native"); // lazy require

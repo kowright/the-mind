@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { GameOverlayHeading } from "./gameOverlayHeading";
+import { GameOverlayHeading } from "@/components/models/gameOverlayHeading";
 
 describe("GameOverlayHeading", () => {
     it("renders the heading text correctly", () => {

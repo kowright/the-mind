@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import { IconText } from './iconText';
+import { IconText } from '@/components/models/iconText';
 
 // Mock IconSymbol to avoid rendering native SVGs
-jest.mock('../ui/icon-symbol', () => ({
+jest.mock('@/components/ui/icon-symbol', () => ({
     IconSymbol: ({ name, size, color }: any) => {
         const { View, Text } = require('react-native');
         return (

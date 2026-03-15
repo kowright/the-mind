@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { GetReadyView } from "./getReady";
+import { GetReadyView } from "@/components/models/getReady";
 
 describe("GetReadyView", () => {
     it("renders the text and countdown correctly", () => {

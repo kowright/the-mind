@@ -1,9 +1,8 @@
 import { ServerAction } from '@/shared/types/gameAction';
 import { GamePhase } from '@/shared/types/gamePhase';
 import { hasValidPlayerCount, shuffleDeck, dealCards, loseLife, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber, makePlayer, resetAllCardMistakes, resolveEndOfRound } from '@/shared/utils/utils';
-import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile } from '@/shared/types/gameState';
+import { initialGameState, GameState, determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile } from '@/shared/types/gameState';
 import { Card } from '@/shared/types/card';
-import { GameState, initialGameState } from '@/shared/types/gameState';
 import { createLogger } from './logger';
 
 const log = createLogger('REDUCER')

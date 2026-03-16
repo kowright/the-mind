@@ -58,31 +58,12 @@ export function determineLives(playerCount: number) {
     return playerCount;
 }
 
-export function canShurikenBeUsed(gameState: GameState) {
-    const shurikenCount = gameState.shuriken;
-    const playerCount = gameState.players.length;
-
-    return shurikenCount === playerCount;
-}
-
 function createDeck() {
     return Array.from({ length: 100 }, (_, i): Card => ({
         number: i + 1,
         mistakenlyPlayed: false,
         id: `card-${i+1}`
     }));
-}
-
-export function getTopCardFromPlayerHand(
-    playerId: number,
-    gameState: GameState
-): Card | null {
-    const player = gameState.players.find(p => p.id === playerId);
-    if (!player || player.hand.cards.length === 0) {
-        return null;
-    }
-
-    return player.hand.cards[0]; // READ only
 }
 
 export function removeTopCardFromPlayer(
@@ -111,37 +92,6 @@ export function addCardToDiscardPile(
     card: Card
 ): Card[] {
     return [...(discardPile ?? []), card];
-}
-
-export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) {
-    if (!lastCard) {
-        return true;
-    }
-    return !lastCard || lastCard.number < cardPlayed.number
-}
-
-export function getLastValidCard(discardPile: Card[] | undefined): Card | undefined {
-    if (!discardPile) {
-        return undefined;
-    }
-    for (let i = discardPile.length - 1; i >= 0; i--) {
-        if (!discardPile[i].mistakenlyPlayed) {
-            return discardPile[i];
-        }
-    }
-    return undefined;
-}
-
-export function setPlayedCard(
-    card: Card,
-    playerId: number,
-    wasCorrect: boolean
-): Card {
-    return {
-        number: card.number,
-        mistakenPlayerId: playerId,
-        mistakenlyPlayed: !wasCorrect,
-    };
 }
 
 export function areAllHandsEmpty(players: Player[]): boolean {

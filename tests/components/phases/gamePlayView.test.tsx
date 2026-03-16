@@ -23,10 +23,41 @@ jest.mock("../../../hooks/useGame", () => ({
     }),
 }));
 
+jest.mock("../../../theme/theme", () => ({
+    theme: {
+        color: {
+            gameBackground: { backgroundColor: "black" },
+            gameplayIcon: {
+                backgroundColor: "gray",
+                activeBackgroundColor: "green",
+            },
+            text: {
+                cardCount: "white",
+            },
+        },
+    },
+    themeStyles: {
+        small: {},
+        body: {},
+    },
+}));
+
 jest.mock("../../../hooks/useResponsiveTheme", () => ({
     useResponsiveTheme: () => ({
-        color: { gameBackground: { gradient: ["#000", "#111"] }, text: { cardCount: "white" } },
-        size: { cardWidth: 50, cardHeight: 70 },
+        color: {
+            gameBackground: { gradient: ["#000", "#111"] },
+            gameplayIcon: {
+                backgroundColor: "gray",
+                activeBackgroundColor: "green",
+            },
+            text: {
+                cardCount: "white",
+            },
+        },
+        size: {
+            cardWidth: 50,
+            cardHeight: 70,
+        },
     }),
 }));
 

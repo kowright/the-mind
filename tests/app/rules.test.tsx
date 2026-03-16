@@ -8,7 +8,10 @@ jest.mock("@/theme/theme", () => ({
     color: {
       gameBackground: { backgroundColor: "black" },
       gameplayIcon: { voted: "red" },
-    },
+        },
+        opacity: {
+            disabled: 0.5,
+        },
   },
   themeStyles: {
     gameTitle: {},
@@ -16,6 +19,19 @@ jest.mock("@/theme/theme", () => ({
     body: {},
   },
 }));
+
+jest.mock("@/components/models/button", () => {
+    const React = require("react");
+    const { Pressable, Text } = require("react-native");
+
+    return {
+        ButtonView: ({ text, onPress }: any) => (
+            <Pressable onPress={onPress}>
+                <Text>{text}</Text>
+            </Pressable>
+        ),
+    };
+});
 
 // Mock ToggleText
 jest.mock("@/components/models/toggleText", () => {
@@ -88,7 +104,7 @@ describe("TabThreeScreen (Rules)", () => {
     expect(getByText("Cards")).toBeTruthy();
     expect(getByText("Lives")).toBeTruthy();
     expect(getByText("Shuriken")).toBeTruthy();
-    expect(getByText("Thumbs Up")).toBeTruthy();
+    expect(getByText("Votes")).toBeTruthy();
   });
 
     test("renders example components", () => {

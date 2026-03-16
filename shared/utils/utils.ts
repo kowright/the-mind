@@ -259,7 +259,6 @@ export function resolveEndOfRound(
         };
     }
 
-
     updatedGamePhase = 'playing'
 
     return {

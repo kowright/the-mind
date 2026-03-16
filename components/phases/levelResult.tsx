@@ -82,12 +82,6 @@ const styles = StyleSheet.create({
         display: 'flex',
     },
     overlay: overlayStyle(theme),
-    //removedCardsContainer: {
-    //    flexDirection: 'row',
-    //    alignItems: 'center',
-    //    justifyContent: 'flex-start',
-    //    marginTop: 16,
-    //},
     removedCards: {
         marginVertical: 16,
         paddingHorizontal: 16

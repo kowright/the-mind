@@ -1,22 +1,30 @@
-import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, StyleSheet } from 'react-native';
 import { TabView } from '@/components/tab-view';
-import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
 import { websocketService } from '@/services/websocketService';
 import { useEffect, useState } from 'react';
 import { ClientAction } from '../../shared/types/gameAction';
-import { hasValidPlayerCount } from '@/shared/utils/utils';
-import { StyleSheet, Pressable } from 'react-native';
-
+import { hasValidPlayerCount, allPlayersHaveNames } from '@/shared/utils/utils';
+import { theme, themeStyles } from '../../theme/theme';
+import { ButtonView } from '../../components/models/button';
+import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
 
 export default function HomeScreen() {
-    const { state } = useGame();  
+    const theme = useResponsiveTheme();
+    const { state, playerId } = useGame();
     const [text, setText] = useState('');
     const [enteredName, setEnteredName] = useState(false);
-    const [visible, setVisible] = useState(false);
 
+    const playersHaveNames = allPlayersHaveNames(state.players)
+
+    const clientPlayer = state.players.find(p => p.id === playerId);
+
+    const restartedGame = 
+        text !== undefined && playersHaveNames;
+
+    const nameInputFieldText = !restartedGame ?
+        'Enter your name' : 'Rename or do nothing to keep past name';
 
     useEffect(() => {
         if (state.gamePhase === 'agreeToStart') {
@@ -26,117 +34,125 @@ export default function HomeScreen() {
 
     const isValidPlayerCount = hasValidPlayerCount(state.players);
 
+    let startButtonText = '';
+    if (!isValidPlayerCount) {
+        startButtonText = "You need 2-4 players to start";
+    } else if (!playersHaveNames) {
+        startButtonText = "All players must enter a name to start";
+    }
+
+    function setName(name: string) {
+        if (name) {
+            setEnteredName(true);
+            websocketService.send({
+                type: "PLAYER_NAME_CHANGE",
+                name: text,
+            } as ClientAction);
+            
+        }
+        return;
+    }
+
     const playerNames = state.players
         .map(p => p.name)
         .filter(Boolean)
         .join(', ');
 
-
     return (
         <TabView>
-            <Text style={styles.gameTitle}> THE MIND </Text>
-            <Image
-                style={styles.image}
-                source="https://www.tampavet.com/wp-content/uploads/2018/02/young-rabbit-1.jpg"
-            />
-            <View style={{ alignItems: 'center' }}>
-                <Pressable onHoverIn={() => setVisible(v => !v)}
-                    onHoverOut={() => setVisible(v => !v)}
-                    style={isValidPlayerCount ? styles.button : styles.disabled}
-                    onPress={() => startGame()}
-                >
-                    <Text>EVERYONE READY?</Text>
-                </Pressable>
+            <View style={styles.screen}>
+                <View style={styles.content}>
+                    <Text style={styles.gameTitle}>THE MIND</Text>
 
-                {visible && !isValidPlayerCount && (
-                    <View style={styles.tooltip}>
-                        <Text style={{ color: 'white' }}>
-                            You need 2 - 4 players to start.
-                        </Text>
-                    </View>
-                )}
+                    <ButtonView
+                       
+                        onPress={() => 
+                            startGame()
+                        }
+                        text="EVERYONE READY?"
+                        disabled={!isValidPlayerCount || !playersHaveNames}
+                        showTooltip={!isValidPlayerCount || !playersHaveNames}
+                        tooltipText={startButtonText}
+                        circleShape
+                        variant='primary'
+                    />
+
+                    {(!enteredName && clientPlayer?.name !== '') && <Text style={styles.metaTitle}>Hi {clientPlayer?.name}!</Text>}
+
+                    
+                    {!enteredName ? (
+                        <>
+                            <TextInput
+                                style={styles.input}
+                                value={text}
+                                placeholder={nameInputFieldText}
+                                placeholderTextColor={theme.color.nameInput.text}
+                                onChangeText={setText}
+                            />
+                            <ButtonView
+                                text={restartedGame ? "Rename yourself?" : "Give yourself a name!"}
+                                onPress={() => { setName(text); }}
+                                variant='secondary'
+                            />
+                        </>
+                    ) : (
+
+                       <Text style={styles.metaTitle}>Hi {text}!</Text>
+                    )}
+
+                    <Text style={styles.meta}>
+                        There {state.players.length > 1 ? 'are' : 'is'} {state.players.length}{' '}
+                        {state.players.length > 1 ? 'players!' : 'player!'}
+                    </Text>
+
+                    <Text style={styles.meta}>
+                        {`We got ${playerNames}${(!playersHaveNames) ? '...' : '!'} `}
+                    </Text>
+                </View>
             </View>
-
-            <Button onPress={() => startFakeGame()}>
-                MAKE FAKE GAME
-            </Button>
-            {enteredName ? <Text>Hi {text}!</Text> :
-                <>
-                <TextInput
-                    style={styles.input}
-                   
-                    value={text}
-                        placeholder="Enter your name"
-                        onChangeText={setText}
-               
-                />
-                    <Button onPress={() => { setEnteredName(true); websocketService.send({ type: "PLAYER_NAME_CHANGE", name: text } as ClientAction) }}>
-                    Give yourself a name
-                </Button>
-                </>
-            }
-
-            <Text>There {state.players.length > 1 ? 'are' : 'is'} {state.players.length} {state.players.length > 1 ? 'players!' : 'player!'}</Text>
-            <Text>We got {playerNames}</Text>
         </TabView>
     );
 }
 
 const styles = StyleSheet.create({
-    background: {
-        backgroundColor: 'white',
+    screen: {
         flex: 1,
-        marginTop: 36,
+        padding: 24,
+        backgroundColor: theme.color.gameBackground.backgroundColor,
+    },
+    content: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        maxWidth: 800,
+        alignSelf: 'center',
+        width: '100%',
+        gap: 20,
     },
     gameTitle: {
-        fontSize: 32,
-        fontWeight: 'bold',
+        ...themeStyles.gameTitle,
         textAlign: 'center',
-        marginTop: 16,
-    },
-    image: {
-        flex: 1,
-        width: '100%',
-        height: 10,
-        resizeMode: 'cover',
-        transform: [{ scale: 0.50 }],
     },
     input: {
+        width: '100%',
+        maxWidth: 400,
         height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
+        borderWidth: 2,
+        borderColor: theme.color.nameInput.borderColor,
+        borderRadius: 8,
         paddingHorizontal: 10,
-    }, 
-    disabled: {
-        backgroundColor: '#aaa',
-        opacity: 0.5,
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 6,
-        alignItems: 'center',
+        color: theme.color.nameInput.text,
     },
-    button: {
-        backgroundColor: '#6c63ff',
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 6,
-        alignItems: 'center',
+    meta: {
+        ...themeStyles.body,
+        textAlign: 'center',
 
-    }, 
-    tooltip: {
-        position: 'absolute',
-        bottom: 50,
-        backgroundColor: 'black',
-        padding: 8,
-        borderRadius: 6,
+    },
+    metaTitle: {
+        ...themeStyles.title,
     }
 });
-function startFakeGame() {
-    websocketService.send({ type: 'MAKE_FAKE_PLAYERS', playerCount: 3 });
-    websocketService.send({ type: 'GAME_START'});
-}
 
 function startGame() {
     websocketService.send({ type: 'GAME_START' });
 }
-

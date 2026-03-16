@@ -1,7 +1,9 @@
-import { GameState } from "../types/gameState";
+import { GameState, areAllHandsEmpty, determineRewards } from "../types/gameState";
 import { Player } from "../types/player";
 import { Card } from "../types/card";
 import { Hand } from "../types/hand";
+import { Level, levels } from "../types/level";
+import { GamePhase } from "../types/gamePhase";
 
 export const mistakeWaitTime: number = 5;
 export const winLevelWaitTime: number = 10;
@@ -10,24 +12,18 @@ export const shurikenWaitTime: number = 5;
 export const countdownInterval: number = 1000;
 export const errorWaitTime: number = 5;
 
+export function allPlayersHaveNames(players: Player[]) {
+    return players.every(
+        player => player.name && player.name.trim().length > 0
+    );
+}
+
 export function hasValidPlayerCount(players: Player[]) {
     const playerCount = players.length;
     if (playerCount < 2 || playerCount > 4) {
         return false;
     }
     return true;
-}
-
-export function makeFakePlayers(
-    gameState: GameState,
-    numberToMake: number
-): Player[] {
-    return Array.from({ length: numberToMake }, (_, i): Player => ({
-        id: `${i}`,
-        name: `Player ${i + 1}`,
-        hand: { cards: [] },
-        cardCount: 0,
-    }));
 }
 
 export function makePlayer(
@@ -49,6 +45,20 @@ export function shuffleDeck<T>(array: T[]): T[] {
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
+}
+
+export function resetAllCardMistakes(players: Player[]): Player[] {
+    return players.map(player => ({
+        ...player,
+        hand: {
+            ...player.hand,
+            cards: player.hand.cards.map(card => ({
+                ...card,
+                mistakenlyPlayed: false,
+                mistakenPlayerId: undefined,
+            })),
+        },
+    }));
 }
 
 /**
@@ -106,11 +116,6 @@ export function areAllLivesLost(lives: number) {
     return lives === 0;
 }
 
-export function isGameWon(gameState: GameState) {
-    const atWinLevel = gameState.level.number === gameState.winLevel;
-    return atWinLevel
-}
-
 export function removeLowestCardFromAllHands(
     players: Player[]
 ): { players: Player[]; removedCards: Card[] } {
@@ -148,8 +153,10 @@ export function removeCardsLowerThanCardNumber(
         for (const card of player.hand.cards) {
             if (card.number < playedCardNumber) {
                 discarded.push(card);
+             
                 card.mistakenPlayerId = player.id;
                 card.mistakenlyPlayed = true;
+
             } else {
                 keptCards.push(card);
             }
@@ -194,3 +201,71 @@ export function removeOtherPlayersFromStateForClient(
     };
 }
 
+export function resolveEndOfRound(
+    state: GameState,
+    players: Player[],
+    lives: number,
+    shuriken: number,
+    level: Level
+) {
+    let updatedGamePhase: GamePhase = state.gamePhase;
+    let updatedLevel = level;
+    let rewardedLives = lives;
+    let rewardedShuriken = shuriken;
+    let updatedGameOutcome = state.gameOutcome;
+
+    const noMoreLives = areAllLivesLost(rewardedLives);
+
+    updatedGamePhase = noMoreLives ? 'gameOver' : updatedGamePhase;
+
+
+    if (noMoreLives) {
+        updatedGameOutcome = 'lost';
+        return {
+            updatedGamePhase,
+            updatedLevel,
+            rewardedLives,
+            rewardedShuriken,
+            updatedGameOutcome,
+        };
+    }
+
+
+    const noMoreCards = areAllHandsEmpty(players);
+    if (noMoreCards) {
+        const gameWon = level.number === state.winLevel;
+
+        updatedGamePhase = gameWon ? "gameOver" : "levelComplete";
+        updatedGameOutcome = gameWon ? "won" : "lost";
+
+        if (!gameWon) {
+            const nextLevelNumber = level.number + 1;
+            updatedLevel =
+                levels.find(l => l.number === nextLevelNumber) ?? level;
+
+            const rewards = determineRewards(lives, shuriken, level);
+            
+            rewardedLives = rewards.rewardLives;
+            rewardedShuriken = rewards.rewardShuriken;
+
+        }
+
+        return {
+            updatedGamePhase,
+            updatedLevel,
+            rewardedLives,
+            rewardedShuriken,
+            updatedGameOutcome,
+        };
+    }
+
+    updatedGamePhase = 'playing'
+
+    return {
+        updatedGamePhase,
+        updatedLevel,
+        rewardedLives,
+        rewardedShuriken,
+        updatedGameOutcome,
+    };
+}

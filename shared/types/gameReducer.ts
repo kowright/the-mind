@@ -1,13 +1,9 @@
 import { ServerAction } from '@/shared/types/gameAction';
 import { GamePhase } from '@/shared/types/gamePhase';
-import { hasValidPlayerCount, makeFakePlayers, shuffleDeck, dealCards, loseLife, areAllLivesLost, isGameWon, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber, makePlayer } from '@/shared/utils/utils';
-import { determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile, getLastValidCard, areAllHandsEmpty, determineRewards } from '@/shared/types/gameState';
+import { hasValidPlayerCount, shuffleDeck, dealCards, loseLife, sortPlayerHands, removeLowestCardFromAllHands, removeCardsLowerThanCardNumber, makePlayer, resetAllCardMistakes, resolveEndOfRound } from '@/shared/utils/utils';
+import { initialGameState, GameState, determineLives, determineWinLevel, removeTopCardFromPlayer, addCardToDiscardPile } from '@/shared/types/gameState';
 import { Card } from '@/shared/types/card';
-import { Level, levels } from "./level";
-import { GameState, initialGameState } from '@/shared/types/gameState';
 import { createLogger } from './logger';
-
-// TODO: remove logs
 
 const log = createLogger('REDUCER')
 export function gameReducer(
@@ -26,7 +22,7 @@ export function gameReducer(
         }
 
         case 'PLAYER_NAME_CHANGE': {
-            console.log('PLAYER NAME CHANGE')
+
             const players = state.players.map(p =>
                 p.id === action.playerId
                     ? { ...p, name: action.name }
@@ -42,8 +38,22 @@ export function gameReducer(
             let players = state.players;
             players = players.filter((p) => p.id !== action.playerId);
 
+            const isValid = hasValidPlayerCount(players);
+
+            if (!isValid && state.gamePhase !== 'setup') {
+                return {
+                    ...state,
+                    players,
+                    gamePhase: 'error',
+                    errorMessage: 'There are not enough players in the game. Restarting game.'
+                }
+            }
+
+            const winLevel = determineWinLevel(players.length);
+
             return {
                 ...state,
+                winLevel,
                 players: [...players]
             };
         }
@@ -55,7 +65,6 @@ export function gameReducer(
             };
 
         case 'GAME_START':
-            console.log('GAME STARTTO');
 
             const playerCount = state.players.length;
             if (!hasValidPlayerCount(state.players)) {
@@ -63,7 +72,7 @@ export function gameReducer(
                 return state;
             }
 
-            const lives = determineLives(playerCount);
+            const lives = state.gameSettings.oneLife ? 1 : determineLives(playerCount);
             const winLevel = determineWinLevel(playerCount);
 
             return {
@@ -74,34 +83,25 @@ export function gameReducer(
             };
 
         case 'GAME_RESTART':
+
             log.info('Game is restarting')
 
             return {
                 ...initialGameState,
                 players: state.players,
+                gameSettings: state.gameSettings,
             }
-
-
-        case 'MAKE_FAKE_PLAYERS':
-            console.log('MAKE FAKE PLAYERS');
-
-            const players = makeFakePlayers(state, action.playerCount);
-
-            return {
-                ...state,
-                players
-            };
-
 
         case 'LEVEL_START':
             {
-                console.log('LEVEL START');
 
                 const shuffledDeck = shuffleDeck(state.deck);
 
                 const { players } = dealCards(state.players, shuffledDeck, state.level.number);
             
                 const playersWithSortedHands = sortPlayerHands(players);
+
+                const playersWithResetHands = resetAllCardMistakes(playersWithSortedHands)
 
                 const startDiscardPile: Card[] = [];
                 const startGamePhase: GamePhase = 'agreeToStart';
@@ -110,15 +110,15 @@ export function gameReducer(
                     ...state,
                     discardPile: startDiscardPile,
                     gamePhase: startGamePhase,
-                    players: playersWithSortedHands,
+                    players: playersWithResetHands,
                     shurikenCalls: [],
                     readyToStartPlayers: [],
                     lastPlayedCard: undefined,
+                    shurikenedCards: [],
                 };
             }
 
         case 'PLAY':
-            console.log('PLAY')
             const playerIndex = state.players.findIndex(
                 p => p.id === action.playerId
             );
@@ -139,21 +139,49 @@ export function gameReducer(
                 index === playerIndex ? updatedPlayer : p
             );
 
-            let updatedGamePhase: GamePhase = state.gamePhase;
 
             let wasRightMove: boolean = true;
 
             const { editedPlayers, removedCards } =
                 removeCardsLowerThanCardNumber(updatedPlayers, playedCard.number);
             if (removedCards.length > 0) {
+           
                 playedCard = {
                     ...playedCard,
                     mistakenlyPlayed: true,
                     mistakenPlayerId: updatedPlayer.id,
                 };
-                updatedGamePhase = 'mistake';
+                const updatedGamePhase = 'mistake';
                 wasRightMove = false;
                 updatedLastPlayedCard = playedCard;
+
+                let updatedDiscardPile: Card[] = addCardToDiscardPile(
+                    state.discardPile,
+                    playedCard
+                );
+
+                updatedDiscardPile = [
+                    ...updatedDiscardPile,
+                    ...removedCards,
+                ];
+
+                updatedPlayers = updatedPlayers.map(p =>
+                    editedPlayers.find(ep => ep.id === p.id) ?? p
+                );
+
+                let updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
+                updatedLives = removedCards.length > 1 ? loseLife(updatedLives) : updatedLives;
+
+                return {
+                    ...state,
+                    players: updatedPlayers,
+                    discardPile: updatedDiscardPile,
+                    lives: updatedLives,
+                    gamePhase: updatedGamePhase,
+                    lastRemovedCards: removedCards,
+                    readyToStartPlayers: [],
+                    lastPlayedCard: updatedLastPlayedCard,
+                };
             }
 
             let updatedDiscardPile: Card[] = addCardToDiscardPile(
@@ -170,47 +198,22 @@ export function gameReducer(
                 editedPlayers.find(ep => ep.id === p.id) ?? p
             );
 
-
             let updatedLives = wasRightMove ? state.lives : loseLife(state.lives);
             updatedLives = removedCards.length > 1 ? loseLife(updatedLives) : updatedLives;
 
-            let updatedLevel: Level = state.level;
-            let completedLevel = state.level;
-
-            let rewardedLives: number = updatedLives;
-            let rewardedShuriken: number = state.shuriken;
-
-            const noMoreLives = areAllLivesLost(updatedLives);
-
-            updatedGamePhase = noMoreLives ? 'gameOver' : updatedGamePhase;
-
-            if (noMoreLives) {
-                return {
-                    ...state,
-                    players: updatedPlayers,
-                    discardPile: updatedDiscardPile,
-                    lives: rewardedLives,
-                    gamePhase: updatedGamePhase,
-                    shuriken: rewardedShuriken,
-                    level: updatedLevel,
-                    lastRemovedCards: removedCards,
-                    lastPlayedCard: updatedLastPlayedCard,
-                };
-            }
-
-            const noMoreCards = areAllHandsEmpty(updatedPlayers);
-            
-            if (noMoreCards) {
-                const gameWon = isGameWon(state);
-                updatedGamePhase = gameWon ? 'gameOver' : 'transition';
-
-                const nextLevelNumber = updatedLevel.number + 1;
-                updatedLevel = levels.find(l => l.number === nextLevelNumber) ?? state.level;
-
-                const { rewardLives, rewardShuriken } = determineRewards(updatedLives, state.shuriken, completedLevel);
-                rewardedLives = rewardLives;
-                rewardedShuriken = rewardShuriken;
-            }
+            let {
+                updatedGamePhase,
+                updatedLevel,
+                rewardedLives,
+                rewardedShuriken,
+                updatedGameOutcome
+            } = resolveEndOfRound(
+                state,
+                updatedPlayers,
+                updatedLives,
+                state.shuriken,
+                state.level
+            );
 
             return {
                 ...state,
@@ -223,23 +226,12 @@ export function gameReducer(
                 lastRemovedCards: removedCards,
                 readyToStartPlayers: [],
                 lastPlayedCard: updatedLastPlayedCard,
-            };
-
-
-        case 'TRANSITION':
-            console.log('TRANSITION');
-
-            const transitionGamePhase: GamePhase = 'transition';
-
-            return {
-                ...state,
-                gamePhase: transitionGamePhase,
-                readyToStartPlayers: [],
+                gameOutcome: updatedGameOutcome,
             };
 
         case 'SHURIKEN_CALLED': {
 
-            if (state.lastRemovedCards.length > 0) {
+            if (state.gamePhase !== 'shuriken') {
                 return state;
             }
             const { players, removedCards } =
@@ -250,11 +242,11 @@ export function gameReducer(
                 players,
                 shuriken: state.shuriken - 1,
                 lastRemovedCards: removedCards,
+                shurikenedCards: [...state.shurikenedCards, ...removedCards]
             };
         };
 
         case 'CALL_FOR_SHURIKEN':
-            console.log('CALL FOR SHURIKEN by ', action.playerId);
             if (state.gamePhase !== 'playing') return state;
             if (state.shuriken <= 0) return state;
 
@@ -274,20 +266,64 @@ export function gameReducer(
             };
 
         case 'SHURIKEN_OVER': { 
-            console.log('SHURIKEN OVER')
-        
+            const {
+                updatedGamePhase,
+                updatedLevel,
+                rewardedLives,
+                rewardedShuriken,
+                updatedGameOutcome
+
+            } = resolveEndOfRound(
+                state,
+                state.players,
+                state.lives,
+                state.shuriken,
+                state.level
+            );
 
             return {
                 ...state,
-
                 shurikenCalls: [],
-                gamePhase: 'playing',
+                gamePhase: updatedGamePhase,
+                lives: rewardedLives,
+                shuriken: rewardedShuriken,
+                level: updatedLevel,
+                readyToStartPlayers: [],
                 lastRemovedCards: [],
+                gameOutcome: updatedGameOutcome,
+            };
+        }
+
+        case 'MISTAKE_OVER': {
+
+            const {
+                updatedGamePhase,
+                updatedLevel,
+                rewardedLives,
+                rewardedShuriken,
+                updatedGameOutcome,
+            } = resolveEndOfRound(
+                state,
+                state.players,
+                state.lives,
+                state.shuriken,
+                state.level
+            );
+
+            return {
+                ...state,
+                shurikenCalls: [],
+                gamePhase: updatedGamePhase,
+                lives: rewardedLives,
+                shuriken: rewardedShuriken,
+                level: updatedLevel,
+                readyToStartPlayers: [],
+                lastRemovedCards: [],
+                gameOutcome: updatedGameOutcome,
             };
         }
 
         case 'READY_TO_START': 
-            console.log('READY TO START')
 
             let readyToStartPlayers = [...state.readyToStartPlayers];
 
@@ -298,7 +334,6 @@ export function gameReducer(
             else {
                 readyToStartPlayers = [...readyToStartPlayers, action.playerId]
             }
-            
 
             const allReady =
                 readyToStartPlayers.length === state.players.length;
@@ -306,7 +341,7 @@ export function gameReducer(
             return {
                 ...state,
                 readyToStartPlayers,
-                gamePhase: allReady ? 'transition' : state.gamePhase,
+                gamePhase: allReady ? 'startLevel' : state.gamePhase,
             };
 
 
@@ -317,13 +352,42 @@ export function gameReducer(
 
             }
 
+        case 'SETTINGS': {
+            const settings = state.gameSettings;
+            const setting = settings[action.setting] 
+            settings[action.setting] = !setting;
+            
+            return {
+                ...state,
+                gameSettings: settings,
+            }
+        }
+          
         case 'ERROR':
             log.warn('Error in reducer')
             return {
                 ...state,
                 gamePhase: 'error',
+                errorMessage: action.errorMessage ?? 'Unknown error in reducer'
 
             }
+
+        case 'PAUSE': {
+
+            return {
+                ...state,
+                gamePhase: 'pause',
+                paused: true,
+            }
+        }
+
+        case 'PAUSE_OVER': {
+            return {
+                ...state,
+               gamePhase: 'startLevel',
+
+            }
+        }
 
         default:
             log.warn('Reducer could not find a case for action');

@@ -8,4 +8,7 @@ export type GamePhase =
     | 'gameOver'
     | 'mistake'
     | 'agreeToStart'
-    | 'error';
+    | 'error'
+    | 'levelComplete'
+    | 'startLevel'
+    | 'pause';

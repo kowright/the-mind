@@ -1,8 +1,7 @@
 import type { GameState } from "./gameState";
-import type { GameAction, ServerAction } from "./gameAction";
-
-const { initialGameState } = require("./gameState");
-const { gameReducer } = require("./gameReducer");
+import type { ServerAction } from "./gameAction";
+import { initialGameState } from "./gameState";
+import { gameReducer } from "./gameReducer";
 
 let gameState: GameState = initialGameState;
 

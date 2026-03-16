@@ -1,4 +1,4 @@
-import { GamePhase } from "./gamePhase";
+import { GameSetting } from "./gameSettings";
 import { GameState } from "./gameState";
 
 // events & intent, not how they happen
@@ -10,8 +10,8 @@ const gameActionSchema = {
     ASSIGN_PLAYER_ID: { requiresPlayerId: false },
     PLAY_CARD: { requiresPlayerId: true },
     STATE_UPDATE: { requiresPlayerId: false },
-    CALL_FOR_SHURIKEN: { requiresPlayerId: true }, // sends when a player votes to use a shuriken 
-    READY_TO_START: { requiresPlayerId: true }, // sends when a player votes to start the level
+    CALL_FOR_SHURIKEN: { requiresPlayerId: true },
+    READY_TO_START: { requiresPlayerId: true },
     FAILED_ORDER: { requiresPlayerId: false },
     SHURIKEN_CALLED: { requiresPlayerId: false },
     SHURIKEN_OVER: { requiresPlayerId: false },
@@ -25,7 +25,11 @@ const gameActionSchema = {
     TRANSITION: { requiresPlayerId: false },
     GAME_RESTART: { requiresPlayerId: false },  
     TRANSITION_TO_PLAYING: { requiresPlayerId: false },
-    ERROR: { requiresPlayerId: false},
+    ERROR: { requiresPlayerId: false },
+    SETTINGS: { requiresPlayerId: false },
+    MISTAKE_OVER: { requiresPlayerId: false },
+    PAUSE: { requiresPlayerId: false },
+    PAUSE_OVER: { requiresPlayerId: false },
 } as const;
 
 export type GameActionType = keyof typeof gameActionSchema;
@@ -40,7 +44,7 @@ export interface ActionPayloads {
     READY_TO_START: {};
     FAILED_ORDER: {};
     SHURIKEN_CALLED: {};
-    SHURIKEN_OVER: {};
+    SHURIKEN_OVER: {}; 
     GAME_START: {};
     GAME_WON: {};
     GAME_LOST: {};
@@ -51,7 +55,11 @@ export interface ActionPayloads {
     TRANSITION: { nextAction: ServerAction }
     GAME_RESTART: {};
     TRANSITION_TO_PLAYING: {};
-    ERROR: {};
+    ERROR: { errorMessage: string };
+    SETTINGS: { setting: GameSetting };
+    MISTAKE_OVER: {};
+    PAUSE: {};
+    PAUSE_OVER: {};
 }
 export type ClientAction = {
     [K in GameActionType]: { type: K } & ActionPayloads[K]

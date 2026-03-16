@@ -1,92 +1,71 @@
 import { ServerAction } from "../shared/types/gameAction";
 import { applyAction } from "../shared/types/gameEngine";
 import { GameState } from "../shared/types/gameState";
-import { broadcastLobby } from "./server";
-import { errorWaitTime, hasValidPlayerCount, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime, winLevelWaitTime } from "../shared/utils/utils";
+import { broadcastLobby, broadcastServerAction } from "./server";
+import { errorWaitTime, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime, winLevelWaitTime } from "../shared/utils/utils";
 import { createLogger } from "../shared/types/logger";
-
+import { GamePhase } from "../shared/types/gamePhase";
 
 const log = createLogger('SERVER UTILS')
-
 function waitTime(timeInSeconds: number) {
     return timeInSeconds * 1000;
+}
+function enterPhase(gamePhase: GamePhase, oldState: GameState, newState: GameState): boolean {
+    return oldState.gamePhase !== gamePhase &&
+        newState.gamePhase === gamePhase;
 }
 
 export function handlePostActionEffects(
     action: ServerAction,
+    oldState: GameState,
     newState: GameState
 ) {
+    log.info(`${oldState.gamePhase}->${newState.gamePhase} ${action.type}`)
 
-    // NOTE: could change to compare oldState to newState than action to newState
-    if (
-        action.type === 'READY_TO_START' &&
-        newState.gamePhase === 'transition'
-    ) {
-        // everyone agreed to start level, show countdown to play screen
-        console.log('Ready TO START to playing')
-        setTimeout(() => {
-            const playingState = applyAction({
-                type: 'TRANSITION_TO_PLAYING'
-            });
-
-            broadcastLobby(playingState);
-        }, waitTime(startLevelWaitTime));
-    }
-
-    if (action.type === 'PLAY' &&
-        newState.gamePhase === 'transition') {
-        // a play was done to win the level, transition was shown, show ready to start screen
+    if (enterPhase('shuriken', oldState, newState)) {
+        const shuriken = applyAction({ type: 'SHURIKEN_CALLED' });
+        broadcastLobby(shuriken);
 
         setTimeout(() => {
-            const startLevel = applyAction({ type: 'LEVEL_START' })
-            broadcastLobby(startLevel)
-        }, waitTime(winLevelWaitTime));
-    }
-
-    if (action.type === 'CALL_FOR_SHURIKEN' &&
-        newState.gamePhase === 'shuriken') {
-        // we have called for shuriken, show everyone shuriken screen
-        const shuriken = applyAction({ type: 'SHURIKEN_CALLED' })
-        broadcastLobby(shuriken)
-
-        // wait to go back to playing
-        setTimeout(() => {
-            const startLevel = applyAction({ type: 'SHURIKEN_OVER' })
-            broadcastLobby(startLevel)
+            broadcastServerAction({ type: 'SHURIKEN_OVER' })
         }, waitTime(shurikenWaitTime));
     }
 
-    if (action.type === 'PLAY' &&
-        newState.gamePhase === 'mistake') {
-        // someone made a mistake, mistake screen was shown, show playing screen again
-
+    if (enterPhase('mistake', oldState, newState)) {
         setTimeout(() => {
-            const startLevel = applyAction({ type: 'TRANSITION_TO_PLAYING' })
-            broadcastLobby(startLevel)
+            broadcastServerAction({ type: 'MISTAKE_OVER' })
         }, waitTime(mistakeWaitTime));
     }
 
-    if (action.type === 'GAME_START' &&
-        newState.gamePhase === 'agreeToStart') {
-        // passed game start checks. we always start the level on game start.
-        const startLevel = applyAction({ type: 'LEVEL_START' })
-        broadcastLobby(startLevel)
+    if (
+        oldState.gamePhase !== 'startLevel' &&
+        action.type === 'READY_TO_START' &&
+        newState.gamePhase === 'startLevel'
+    ) {
+        setTimeout(() => {
+            broadcastServerAction({ type: 'TRANSITION_TO_PLAYING' })
+        }, waitTime(startLevelWaitTime));
     }
 
-    if (action.type === 'PLAYER_DISCONNECTION') {
-        const isGameStillValidFromPlayerCount = hasValidPlayerCount(newState.players)
-        if (!isGameStillValidFromPlayerCount) {
-            log.warn('Not enough players to continue')
-            // notify players that game cannot continue 
-            const showError = applyAction({ type: 'ERROR' })
-            broadcastLobby(showError);
-
-            // then restart game
-            setTimeout(() => {
-                const restartGame = applyAction({ type: 'GAME_RESTART' })
-                broadcastLobby(restartGame)
-            }, waitTime(errorWaitTime));
-        }
+    if (enterPhase('agreeToStart', oldState, newState)) {
+        broadcastServerAction({ type: 'LEVEL_START' })
     }
 
+    if (enterPhase('error', oldState, newState)) {
+        setTimeout(() => {
+            broadcastServerAction({ type: 'GAME_RESTART' })
+        }, waitTime(errorWaitTime));
+    }
+
+    if (enterPhase('startLevel', oldState, newState)) {
+        setTimeout(() => {
+            broadcastServerAction({ type: 'TRANSITION_TO_PLAYING' })
+        }, waitTime(startLevelWaitTime));
+    }
+
+    if (enterPhase('levelComplete', oldState, newState)) {
+        setTimeout(() => {
+            broadcastServerAction({ type: 'LEVEL_START' })
+        }, waitTime(winLevelWaitTime));
+    }
 }

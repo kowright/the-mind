@@ -1,30 +1,96 @@
-import { Text } from 'react-native';
 import { useGame } from '@/hooks/useGame';
-import { levels } from "@/shared/types/level";
+import { LevelToRewardIconMapping, levels } from "@/shared/types/level";
 import { DiscardPileView } from "@/components/models/discardPile";
+import { GameOverlayView } from '../models/gameOverlay';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
+import { IconText } from '../models/iconText';
+import { GameOverlayHeading } from '../models/gameOverlayHeading';
+import { CardView } from '../models/card';
+import { overlayStyle, theme, themeStyles } from '../../theme/theme';
+import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
+import { soundService } from '../../services/soundService';
+import { useEffect } from 'react';
 
-interface LevelResultProps {
-    // fake props
-}
 export function LevelResultView() {
     const { state } = useGame();
+    const theme = useResponsiveTheme();
+
+
+    useEffect(() => {
+        if (!state) return;
+
+        soundService.play('win');
+
+    }, []);
 
     const pastLevelIndex = state.level.number - 2;
     const nextLevelIndex = state.level.number - 1;
 
     const pastLevelReward =
         levels[pastLevelIndex]?.reward ?? 'None';
+    const pastLevelIcon = LevelToRewardIconMapping[pastLevelReward];
 
     const nextLevelReward =
         levels[nextLevelIndex]?.reward ?? 'None';
+    const nextLevelIcon = LevelToRewardIconMapping[nextLevelReward];
 
     return (
         <>
-            <Text>YOU EARNED: {pastLevelReward}</Text>
-            <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
-            <Text>You will win at level: {state.winLevel}</Text>
-            <Text>YOU ARE NOW ON LEVEL {state.level.number}</Text>
-            <DiscardPileView />
+            <GameOverlayView>
+                <View style={[styles.overlay, styles.overlayContainer]}>
+                    <GameOverlayHeading text={`YOU BEAT LEVEL ${nextLevelIndex}!`} />
+                    <View style={styles.content}>
+                        <IconText iconFirst={false} iconName={pastLevelIcon} altIconSize={36} text='RECEIVED REWARD:' />
+                        <IconText iconFirst={false} iconName={nextLevelIcon} altIconSize={36} text='NEXT LEVEL REWARD:' />
+
+                        <DiscardPileView keepStacked={false} />
+                        {state.shurikenedCards.length > 0 && <Text style={themeStyles.body}>Removed Cards:</Text>}
+                            <ScrollView
+                                horizontal
+                                persistentScrollbar
+                                showsHorizontalScrollIndicator
+                                contentContainerStyle={state.shurikenedCards.length > 0 && styles.removedCards }
+
+                                >
+                                {state.shurikenedCards.map((card, index) => (
+                                    <View
+                                        key={card.id}
+                                        style={{
+                                            marginLeft: index === 0 ? 0 : theme.size.cardWidth,
+                                        }}
+                                    >
+                                        <CardView
+                                            card={card}
+                                            index={index}
+                                            total={state.lastRemovedCards.length + 1}
+                                            discarded={true}
+                                            rotate={false}
+                             
+                                        />
+                                    </View>
+                                ))}
+                            </ScrollView>
+                    </View>
+                </View>
+            </GameOverlayView>
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    overlayContainer: {
+        display: 'flex',
+    },
+    overlay: overlayStyle(theme),
+    removedCards: {
+        marginVertical: 16,
+        paddingHorizontal: 16
+    },
+    content: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 8,
+        marginBottom: 16
+    },
+});

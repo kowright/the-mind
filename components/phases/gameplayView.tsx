@@ -1,136 +1,288 @@
-import { Text, View } from 'react-native';
-import { StyleSheet, Pressable } from 'react-native';
-import { Button } from '@react-navigation/elements';
+import { Text, View, StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { ClientAction } from "../../shared/types/gameAction";
 import { websocketService } from '@/services/websocketService';
+import { HandView } from '../models/hand';
+import { ButtonView } from '../models/button';
+import { DiscardPileView } from '../models/discardPile';
+import { theme, themeStyles } from '../../theme/theme';
+import { IconText } from '../models/iconText';
+import { LevelProgression } from '../models/levelProgression';
+import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
+import { LinearGradient } from 'expo-linear-gradient';
+import { soundService } from '../../services/soundService';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
+    discardPileStacked: boolean;
 }
 
-export function GameplayView({ agreeToStartVersion = false, ...props }: GameplayViewProps) {
+export function GameplayView({ agreeToStartVersion = false, discardPileStacked = true, ...props }: GameplayViewProps) {
     const { state, playerId } = useGame();
-
+    const theme = useResponsiveTheme();
     const { players } = state;
 
     const shurikenDisabled = state.shuriken === 0;
     const clientPlayer = players.find(p => p.id === playerId);
-    const playerCardCounts = players.map(p => {
-        if (p.id !== playerId) {
-            return (<Text key={p.id}>{p.name} card count: {p.cardCount}</Text>)     
-        }
-    })
+;
+    const amReadyToStart = state.readyToStartPlayers.includes(playerId)
+    const readyButtonText = amReadyToStart ? 'Undo' : 'READY??';
+
+    const askedForShuriken = state.shurikenCalls.includes(playerId);
+
+    const thumbsUpNumbers = agreeToStartVersion ? `${state.readyToStartPlayers.length}/${state.players.length}` :
+        `${state.shurikenCalls.length}/${state.players.length}`
+    const thumbsUpAsked =  agreeToStartVersion ? state.readyToStartPlayers.length > 0 :
+        state.shurikenCalls.length > 0
+
+    const enemies = players.filter(p => p.id !== playerId);
 
     return (
-        <>
-            <Text>GAMEPLAY VIEW {agreeToStartVersion ? 'AGREE TO START' : ''}</Text>
-            <Text>LEVEL: {state.level.number}</Text>
-            <Text>LIVES: {state.lives}</Text>
-            <Text>SHURIKEN: {state.shuriken}</Text>
-            {playerCardCounts}
-
-            {agreeToStartVersion ? <Text>WHO IS READY TO START?: {state.readyToStartPlayers.length}/{state.players.length}</Text>
-                : <Text>SHURIKEN CALLED: {state.shurikenCalls.length}/{state.players.length}</Text>}
-
-            {clientPlayer !== undefined ? 
-               
-                <View key={clientPlayer.id} style={styles.playerContainer}>
-
-                        {agreeToStartVersion ?
-                            <View style={styles.buttonContainer}>
-                            <Text>{clientPlayer.name}</Text>
-                            </View>
-                            :
-                            <View style={styles.buttonContainer}>
-                                <Button
-                                    onPress={() =>
-                                        websocketService.send({ type: "PLAY" } as ClientAction)
-                                    }
-                                >
-                                PLAY
-                                </Button>
-                            </View>
-                        }
-
-
-
-                        <View>
-                        {clientPlayer.hand.cards.map(card => (
-                                <View
-                                    style={styles.deckContainer}
-                                key={`hand-${clientPlayer.id}-${card.id}`}
-                                >
-                                    <Text>{card.number}</Text>
-                                </View>
-                            ))}
-                        </View>
-
-                        {agreeToStartVersion ?
-                            <Pressable
-                                onPress={() =>
-                                    websocketService.send({ type: "READY_TO_START" } as ClientAction)
-                                }
-                                style={({ pressed }) => [
-                                    styles.shurikenButton,
-                                    shurikenDisabled && styles.shurikenButtonDisabled,
-                                    pressed && !shurikenDisabled && styles.shurikenButtonPressed,
-                                ]}
-                            >
-                                <Text style={styles.shurikenButtonText}>READY??</Text>
-                            </Pressable>
-                            :
-                            <Pressable
-                                disabled={shurikenDisabled}
-                                onPress={() =>
-                                    websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)
-
-                                }
-                                style={({ pressed }) => [
-                                    styles.shurikenButton,
-                                    shurikenDisabled && styles.shurikenButtonDisabled,
-                                    pressed && !shurikenDisabled && styles.shurikenButtonPressed,
-                                ]}
-                            >
-                                <Text style={styles.shurikenButtonText}>VOTE TO USE SHURIKEN</Text>
-                            </Pressable>
-                        }
-
+        <LinearGradient 
+            colors={theme.color.gameBackground.gradient}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}
+            style={{ flex: 1 }}
+        >
+            <View style={styles.container} >
+                <View style={{
+                   flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginVertical: 4,
+                }}>
+                    <IconText iconFirst={true} iconName='heart.fill' text={state.lives} />
+                    <IconText iconFirst={true} iconName='staroflife.fill' text={state.shuriken} />
+                    <IconText iconFirst={true} iconName='chart.bar.fill' text={`L${state.level.number}/${state.winLevel}`} />
                 </View>
-                : <Text>UNDEFINED PLAYER</Text>
-            }
-        </>
+
+                <View style={styles.gameBoard }>
+                    {clientPlayer !== undefined ? 
+                        <View key={clientPlayer.id}>
+                            {!agreeToStartVersion &&
+                                <>
+                                    {enemies[0] && (
+                                        <>
+                                            {enemies.length > 1 &&
+                                                <View style={styles.topEnemyMultiple}>
+                                                    <Text style={styles.topEnemyText}>{`${enemies[0].name} `}
+                                                            {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>{`[${enemies[0].cardCount} card${enemies[0].cardCount === 1 ? '' : 's'}]`}</Text>}
+                                                        </Text>
+                                                </View>
+                                            }
+
+                                            {enemies.length === 1 &&
+                                                <View>
+                                                    <View
+                                                        style={styles.topEnemySingle}
+                                                    >
+                                                        <Text style={styles.topEnemyTwoPlayerText}>{`${enemies[0].name} `}
+                                                            {!state.gameSettings.cardCounts &&
+                                                            <Text style={styles.cardCount}>{`[${enemies[0].cardCount} card${enemies[0].cardCount === 1 ? '' : 's'}]`}</Text>}
+                                                        </Text>
+
+                                                        <View>
+                                                            <HandView
+                                                                clientPlayer={enemies[0]}
+                                                                enemyPlayer
+                                                            />
+                                                        </View>
+                                                    </View>
+                                                </View>
+                                            }
+                                        </>
+                                    )}
+
+                                    {enemies[1] && (
+                                        <View style={styles.leftEnemy}>
+                                            <Text style={styles.horizontalEnemyText}>
+                                                {enemies[1].name}{' '}
+                                                {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>{`[${enemies[1].cardCount} card${enemies[1].cardCount === 1 ? '' : 's'}]`}</Text>}
+                                            </Text>
+                                        </View>
+                                    )}
+
+                                    {enemies[2] && (
+                                        <View style={styles.rightEnemy}>
+                                            <Text style={styles.horizontalEnemyText}>
+                                                {enemies[2].name}{' '}
+                                                {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>{`[${enemies[2].cardCount} card${enemies[2].cardCount === 1 ? '' : 's'}]`}</Text>}
+                                            </Text>
+                                        </View>
+                                    )}  
+
+                                    <View style={styles.centerArea}>
+                                        <DiscardPileView keepStacked={discardPileStacked} />
+                                    </View>
+                                </>
+                            }
+                            
+
+                            <View style={styles.playerArea}>
+                                {!agreeToStartVersion ?
+                                    <>
+                                        <ButtonView
+                                            onPress={() => {
+                                                websocketService.send({ type: "PLAY" } as ClientAction);
+                                                soundService.play('click');
+                                            }}
+                                            text="PLAY CARD"
+                                            circleShape={false}
+                                            disabled={clientPlayer.hand.cards.length === 0}
+                                            showTooltip={false}
+                                            variant='primary'
+                                        />
+                                        <View
+                                            style={[styles.clientHand, {
+                                                height: theme.size.cardHeight * 1.2,
+                                            }]}
+                                        >
+                                            <HandView
+                                                clientPlayer={clientPlayer}
+                                                enemyPlayer={false}
+                                                onPressCard={() =>
+                                                !agreeToStartVersion && websocketService.send({ type: "PLAY" } as ClientAction)}
+                                            />
+                                        </View>
+                                    </>
+                                    :
+                                    <View
+                                        style={[styles.clientHand, {
+                                            height: theme.size.cardHeight * 1.2,
+                                        }]}
+                                    >
+                                        <HandView
+                                            clientPlayer={clientPlayer}
+                                            enemyPlayer={false}
+                                        />
+                                    </View>
+                                }
+                        
+                                {agreeToStartVersion ?
+                                    <>
+                                        <Text style={themeStyles.small}>{`${thumbsUpNumbers} are ready to start Level ${state.level.number}`}</Text>
+                                        <ButtonView
+                                        onPress={() => websocketService.send({ type: "READY_TO_START" } as ClientAction)}
+                                        text={readyButtonText}
+                                        circleShape={false}
+                                        disabled={false}
+                                            showTooltip={false}
+                                        variant='primary'
+                                                />
+                                            </>
+                                    :
+                                    <>
+                                        <View style={styles.playViewButtons}>
+                                            <ButtonView
+                                                    onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
+                                                    text=''
+                                                    circleShape={false}
+                                                    disabled={shurikenDisabled}
+                                                    showTooltip={false}
+                                                    variant='secondary'
+                                                    iconName='staroflife.fill'
+                                                    iconColor={askedForShuriken ?
+                                                        theme.color.gameplayIcon.activeBackgroundColor : theme.color.gameplayIcon.backgroundColor}
+                               
+                                            />
+                                            <ButtonView
+                                                onPress={() => websocketService.send({ type: "PAUSE" } as ClientAction)}
+                                                text=''
+                                                circleShape={false}
+                                                iconName='pause.fill'
+                                                showTooltip={false}
+                                                variant='secondary'
+                                                iconColor={theme.color.gameplayIcon.backgroundColor}
+                                                />
+                                        </View>
+
+                                        {thumbsUpAsked ? <Text style={[themeStyles.small ]}>{`Shuriken votes: ${thumbsUpNumbers}`}</Text> : <Text> </Text>}
+                                   </>
+                                }
+                            </View>
+
+                            {agreeToStartVersion && <LevelProgression />}
+                        </View>
+                        :
+                        <Text style={themeStyles.body}>LOADING...</Text>
+                    }
+                </View>
+            </View>
+        </LinearGradient>
     );
 };
 
 const styles = StyleSheet.create({
-    buttonContainer: {
-        margin: 8,
+    topEnemyText: {
+        ...themeStyles.body,
+        textAlign: 'center',
     },
-    playerContainer: {
-        marginBottom: 16,
-        outlineWidth: 2,
-        outlineColor: 'blue',
+    topEnemyMultiple: {
+        marginTop: '5%',
     },
-    deckContainer: {
-        display: 'flex',
+    topEnemySingle: {
+        height: 50,
+        overflow: 'hidden',
+        alignItems: 'center',
+        transform: [
+            { rotate: '180deg' },
+        ],
+    },
+    topEnemyTwoPlayerText: {
+        ...themeStyles.body,
+        transform: [{ rotate: '180deg' }],
+        color: theme.color.text.cardCount,
+        paddingTop: 8,
+    },
+    horizontalEnemyText: {
+        ...themeStyles.body,
+    },
+    cardCount: {
+        ...themeStyles.small,
+        fontWeight: 'bold'
+    },
+
+    sideEnemy: {
+        width: '40%',
+        height: 100,
+        overflow: 'hidden',
+        justifyContent: 'flex-end',
+    },
+    centerArea: {
+        alignItems: 'center',
+        marginTop: 30,
+
+    },
+    playerArea: { 
+        alignItems: 'center',
+        gap: 8,
+        paddingVertical: 8,
+        marginBottom: 12,
+    },
+    leftEnemy: {
+        position: 'absolute',
+        left: '5%',
+        top: '25%',
+        transform: [{ rotate: '90deg' }],
         alignItems: 'center',
     },
-    shurikenButtonPressed: {
-        opacity: 0.8,
-    },
-    shurikenButton: {
-        backgroundColor: '#6c63ff',
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 6,
+    rightEnemy: {
         alignItems: 'center',
+        position: 'absolute',
+        right: '5%',
+        top: '25%',
+        transform: [{ rotate: '-90deg' }],
     },
-    shurikenButtonDisabled: {
-        backgroundColor: '#aaa',
-        opacity: 0.5,
+    container: {
+        flex: 1,
     },
-    shurikenButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
+    gameBoard: {
+        flex: 1, 
+        position: 'relative',
+    }, 
+    clientHand: {
+        width: '100%',
+        overflow: 'visible',
+        justifyContent: 'center',
     },
+    playViewButtons: {
+        flexDirection: 'row',
+        gap: 16,
+    }
 });

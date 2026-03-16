@@ -1,39 +1,63 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { theme } from '../../theme/theme';
+import { useGame } from '../../hooks/useGame';
+import { hasValidPlayerCount, allPlayersHaveNames } from '@/shared/utils/utils';
+import { View } from 'react-native';
+import { soundService } from '../../services/soundService';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+
+    const { state } = useGame();
+
+    const playersHaveNames = allPlayersHaveNames(state.players);
+
+    const isValidPlayerCount = hasValidPlayerCount(state.players);
+
+    const readyToPlay = playersHaveNames && isValidPlayerCount;
+
+    useEffect(() => {
+        if (!state) return;
+
+        if (readyToPlay) {
+            console.log('everyone here sound in layout')
+            soundService.play('everyone_here');
+        }
+    }, [readyToPlay]);
+
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: theme.color.menuIcon.backgroundColor,
         headerShown: false,
-        tabBarButton: HapticTab,
+              tabBarButton: HapticTab,
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+            tabBarIcon: ({ color }) =>
+                <View style={{}}>
+                    <IconSymbol size={28} name="house.fill" color={readyToPlay ? 'orange' : color} />
+                </View>
+            ,
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="rules"
         options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
+          title: 'Rules',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="book.fill" color={color} />,
         }}
           />
         <Tabs.Screen
-            name="rules"
+            name="settings"
             options={{
-                title: 'Rules',
-                tabBarIcon: ({ color }) => <IconSymbol size={28} name="info" color={color} />,
+                title: 'Settings',
+                tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} /> ,
             }}
         />
     </Tabs>

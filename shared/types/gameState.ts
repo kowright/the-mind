@@ -1,5 +1,5 @@
 import { Card } from "./card";
-import { GameAction } from "./gameAction";
+import { ClientAction, GameAction } from "./gameAction";
 import { GamePhase } from "./gamePhase";
 import { Level, levels, RewardType } from "./level";
 import { Player } from "./player";
@@ -14,10 +14,10 @@ export interface GameState {
     // players who want shuriken
     gamePhase: GamePhase;
     winLevel: number;
-    readyToStartPlayers: number[];
-    shurikenCalls: number[];
+    readyToStartPlayers: string[];
+    shurikenCalls: string[];
     lastRemovedCards: Card[];
-    lastGameAction?: GameAction; // WHERE IS THIS USED
+    lastPlayedCard?: Card;
 }
 
 export const initialGameState: GameState = {
@@ -32,7 +32,6 @@ export const initialGameState: GameState = {
     readyToStartPlayers: [],
     shurikenCalls: [],
     lastRemovedCards: [],
-    lastGameAction: undefined,
 }
 
 
@@ -110,7 +109,7 @@ export function addCardToDiscardPile(
     return [...(discardPile ?? []), card];
 }
 
-export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) { // TODO fix name
+export function wasLastPlayWasValid(lastCard: Card | undefined, cardPlayed: Card) {
     console.log('wasLastPlayWasValid');
     if (!lastCard) {
         console.log('no last card to compare!');
@@ -139,12 +138,14 @@ export function setPlayedCard(
 ): Card {
     return {
         number: card.number,
-        mistakenlyPlayedByPlayerId: playerId,
+        mistakenPlayerId: playerId,
         mistakenlyPlayed: !wasCorrect,
     };
 }
 
 export function areAllHandsEmpty(players: Player[]): boolean {
+    console.log('are all hands empty')
+    players.map(p => console.log('player hand', p.hand))
     return players.every(player => player.hand.cards.length === 0);
 }
 

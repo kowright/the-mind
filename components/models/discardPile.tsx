@@ -1,15 +1,11 @@
-import { Card } from "../../types/card";
 import { Text, View } from 'react-native';
-import { Platform, StyleSheet, Pressable } from 'react-native';
-import { Button } from '@react-navigation/elements';
-import { GameState, initialGameState } from '@/types/gameState';
+import { StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 
 interface DiscardPileProps {
-    // fake props
 } 
 
-export function DiscardPileView({ }: DiscardPileProps) {
+export function DiscardPileView() {
     const { state } = useGame();
 
     const showDiscardPile: boolean = state.discardPile ? state.discardPile.length > 0 : false;

@@ -1,5 +1,5 @@
-import { Card } from "../../types/card";
-import { Text, View } from 'react-native';
+import { Card } from "../../shared/types/card";
+import { Text } from 'react-native';
 
 interface CardViewProps {
     card: Card;
@@ -16,17 +16,3 @@ export function CardView({ card, onPlay }: CardViewProps) {
         </>
     );
 }
-
-
-
-// TODO:  might need a handview 
-
-// ideally looks like this
-/*
-<CardView
-    card={card}
-    onPress={() =>
-        dispatch({ type: 'PLAY_CARD', cardId: card.id })
-    }
-/>
-*/

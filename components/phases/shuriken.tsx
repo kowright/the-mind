@@ -1,18 +1,11 @@
-import { Card } from "../../types/card";
 import { Text, View } from 'react-native';
-import { Platform, StyleSheet, Pressable } from 'react-native';
-import { Button } from '@react-navigation/elements';
-import { GameState, initialGameState } from '@/types/gameState';
 import { useGame } from '@/hooks/useGame';
-import { Level, levels, RewardType } from "@/types/level";
-
-
 
 interface ShurikenViewProps {
-    // fake props
+    countdown: number;
 }
 
-export function ShurikenView({ }: ShurikenViewProps) {
+export function ShurikenView({ countdown }: ShurikenViewProps) {
     const { state } = useGame();
 
     return (
@@ -20,6 +13,7 @@ export function ShurikenView({ }: ShurikenViewProps) {
             <Text> SHURIKEN CALLED!</Text>
             <Text>Looks like you all can agree on something!</Text>
             <Text>Removed cards: </Text>
+            <Text>GET READY TO PLAY IN... {countdown}</Text>
             <View>
                 {state.lastRemovedCards.map(card => (
                     <View key={`removed-${card.id}`}>

@@ -1,18 +1,12 @@
-import { Card } from "../../types/card";
-import { Text, View } from 'react-native';
-import { Platform, StyleSheet, Pressable } from 'react-native';
-import { Button } from '@react-navigation/elements';
-import { GameState, initialGameState } from '@/types/gameState';
+import { Text } from 'react-native';
 import { useGame } from '@/hooks/useGame';
-import { Level, levels, RewardType } from "@/types/level";
+import { levels } from "@/shared/types/level";
 import { DiscardPileView } from "@/components/models/discardPile";
 
-
-interface TransitionViewProps {
+interface LevelResultProps {
     // fake props
 }
-
-export function TransitionView({ }: TransitionViewProps) {
+export function LevelResultView() {
     const { state } = useGame();
 
     const pastLevelIndex = state.level.number - 2;
@@ -29,6 +23,7 @@ export function TransitionView({ }: TransitionViewProps) {
             <Text>YOU EARNED: {pastLevelReward}</Text>
             <Text>NEXT LEVEL YOU WILL EARN: {nextLevelReward}</Text>
             <Text>You will win at level: {state.winLevel}</Text>
+            <Text>YOU ARE NOW ON LEVEL {state.level.number}</Text>
             <DiscardPileView />
         </>
     );

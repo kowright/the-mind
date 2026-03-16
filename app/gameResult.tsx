@@ -1,24 +1,16 @@
-// whether win or lose, probably show the same game deck that was last used
-// and either a win or lose text
 import { Text, View } from 'react-native';
 import { useGame } from '@/hooks/useGame';
-import { isGameWon} from '@/utils/utils';
-import { Platform, StyleSheet, Pressable } from 'react-native';
+import { isGameWon} from '@/shared/utils/utils';
+import { StyleSheet } from 'react-native';
 import { Button } from '@react-navigation/elements';
+import { websocketService } from '../services/websocketService';
 
 interface GameResultProps {
 
 }
 
 export default function GameResult() {
-    console.log('GAME RESULT')
-    const { dispatch, state } = useGame();
-    if (state.discardPile) {
-        console.log('discard', state.discardPile)
-    }
-    else {
-        console.log('no discard')
-    }
+    const { state } = useGame();
 
     const wonGame = isGameWon(state);
     const title = wonGame ? 'YOU WON!' : 'WOW, YOU LOST';
@@ -32,7 +24,6 @@ export default function GameResult() {
             <Text>You made it to Level {levelAchieved}</Text>
             <Text>DISCARD PILE</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-
                 <>
                     {state.discardPile?.map(card => (
                         <View key={`discard-${card.id}`} style={card.mistakenlyPlayed ? styles.discardPileContainerWrong : styles.discardPileContainerRight}>
@@ -40,12 +31,9 @@ export default function GameResult() {
                         </View>
                     ))}
                 </>
-
-
-
             </View>
             <Text>{snarkyText}</Text>
-            <Button onPress={() => dispatch({ type: 'GAME_RESTART' })}>
+            <Button onPress={() => websocketService.send({ type: 'GAME_RESTART' })}>
                 NEW GAME?
             </Button>
 

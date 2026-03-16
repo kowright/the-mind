@@ -7,4 +7,5 @@ export type GamePhase =
     | 'shuriken'
     | 'gameOver'
     | 'mistake'
-    | 'agreeToStart';
+    | 'agreeToStart'
+    | 'error';

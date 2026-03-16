@@ -1,88 +1,72 @@
-// actual card showing view
 import { Text, View } from 'react-native';
-import { Button } from '@react-navigation/elements';
 import { useGame } from '@/hooks/useGame';
-import { Platform, StyleSheet, Pressable } from 'react-native';
-import { CardView } from '@/components/models/card';
-import { Level, levels, RewardType } from "@/types/level";
 import { MistakeView } from '@/components/phases/mistake';
-import { GameplayView } from '@/components/phases/gameplayView'
-
+import { GameplayView } from '@/components/phases/gamePlayView';
 import React, { useEffect, useState } from 'react';
 import { DiscardPileView } from '../components/models/discardPile';
-import { TransitionView } from '../components/phases/transition';
+import { LevelResultView } from '../components/phases/levelResult';
 import { ShurikenView } from '../components/phases/shuriken';
+import { countdownInterval, mistakeWaitTime, shurikenWaitTime, startLevelWaitTime } from '../shared/utils/utils';
+import { ErrorView } from '../components/phases/error';
 
 interface PlayViewProps {
 
 }
 
 export default function PlayView() {
-    console.log("play view rendering");
-   
-    const { dispatch, state } = useGame();
+    const { state, playerId } = useGame();
     const [countdown, setCountdown] = useState(3);
 
+    const player = state.players.find(p => p.id === playerId);
 
     useEffect(() => {
         if (!state) return;
 
-        if (state.gamePhase === 'transition') {
-
+        if (state.gamePhase === 'transition') { 
             if (state.readyToStartPlayers.length > 0) {
-                // agreeToStart to playing transition
-                setCountdown(3);
+                // agreeToStart to playing transition to show countdown
+                
+                setCountdown(startLevelWaitTime);
 
                 const interval = setInterval(() => {
                     setCountdown(prev => prev - 1);
-                }, 1000);
+                }, countdownInterval);
 
                 return () => clearInterval(interval);
 
             }
-            else {
-                // level to level transition
-                const timeout = setTimeout(() => {
-                    dispatch({ type: 'LEVEL_START' });
-                }, 3000);
-
-                return () => clearTimeout(timeout); // cleanup if component unmounts
-            }
         }
 
         if (state.gamePhase === 'shuriken') {
-            dispatch({ type: 'SHURIKEN_CALLED' });
-
-            const timeout = setTimeout(() => {
-                dispatch({ type: 'SHURIKEN_OVER' });
-            }, 5000);
-
-            return () => clearTimeout(timeout); 
-        }
-
-        if (state.gamePhase === 'mistake') {
-            setCountdown(3);
+            setCountdown(shurikenWaitTime);
 
             const interval = setInterval(() => {
                 setCountdown(prev => prev - 1);
-            }, 1000);
+            }, countdownInterval);
+
+            return () => clearInterval(interval);
+        }
+
+
+        if (state.gamePhase === 'mistake') {
+            setCountdown(mistakeWaitTime);
+
+            const interval = setInterval(() => {
+                setCountdown(prev => prev - 1);
+            }, countdownInterval);
 
             return () => clearInterval(interval);
         }
         
-    }, [state.gamePhase, dispatch, state]);
-
-    useEffect(() => {
-        if (countdown === 0) {
-            dispatch({ type: 'TRANSITION_TO_PLAYING' });
-        }
-    }, [countdown, state.gamePhase, dispatch]);
+    }, [state.gamePhase]);
 
 
     const inAskToStartPhase = state.readyToStartPlayers.length > 0;
 
     return (
         <View>
+            <Text>{player?.name}</Text>
+
             {state.gamePhase === 'playing' || state.gamePhase === 'mistake' ? (
                 <>
                     <GameplayView agreeToStartVersion={false} />
@@ -101,18 +85,20 @@ export default function PlayView() {
                         {inAskToStartPhase ?
                             (<Text>START IN: {countdown}</Text>) :
                             (
-                                <TransitionView />
+                                <LevelResultView />
                             )}
                     </>
+            ) : state.gamePhase === 'error' ? (
+                    <ErrorView />
 
             ) : state.gamePhase === 'shuriken' ? (
-                <ShurikenView />
+                        <ShurikenView countdown={countdown} />
              
             ) : (state.readyToStartPlayers.length > 0 || state.gamePhase === 'agreeToStart') ? (
                 <GameplayView agreeToStartVersion={true} />
 
-            ) : (
-            <Text>SOMETHING ELSE, maybe loading or something</Text>
+            ): (
+            <Text>Loading...!</Text>
             )
 
             } 

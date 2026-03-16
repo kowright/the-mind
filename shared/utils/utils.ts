@@ -1,12 +1,18 @@
-import { PlayerView } from "../components/models/player";
 import { GameState } from "../types/gameState";
 import { Player } from "../types/player";
 import { Card } from "../types/card";
 import { Hand } from "../types/hand";
 
+export const mistakeWaitTime: number = 5;
+export const winLevelWaitTime: number = 10;
+export const startLevelWaitTime: number = 3;
+export const shurikenWaitTime: number = 5;
+export const countdownInterval: number = 1000;
+export const errorWaitTime: number = 5;
+
 export function hasValidPlayerCount(players: Player[]) {
     const playerCount = players.length;
-    if (playerCount < 1 || playerCount > 4) {
+    if (playerCount < 2 || playerCount > 4) {
         return false;
     }
     return true;
@@ -17,10 +23,23 @@ export function makeFakePlayers(
     numberToMake: number
 ): Player[] {
     return Array.from({ length: numberToMake }, (_, i): Player => ({
-        id: i,
+        id: `${i}`,
         name: `Player ${i + 1}`,
         hand: { cards: [] },
+        cardCount: 0,
     }));
+}
+
+export function makePlayer(
+    id: string,
+    name?: string,
+): Player {
+    return {
+        hand: { cards: [] },
+        name: name ?? '',
+        id: id,
+        cardCount: 0,
+    }
 }
 
 export function shuffleDeck<T>(array: T[]): T[] {
@@ -40,7 +59,7 @@ export function dealCards(
     players: Player[],
     shuffledDeck: Card[],
     level: number
-): { players: Player[]; remainingDeck: Card[] } {
+): { players: Player[] } {
 
     let deck = [...shuffledDeck];
 
@@ -53,18 +72,19 @@ export function dealCards(
         updatedPlayers = updatedPlayers.map(player => {
             const card = deck.shift();
             if (!card) return player;
-
+            const cards = [...player.hand.cards, card];
             return {
                 ...player,
                 hand: {
                     ...player.hand,
-                    cards: [...player.hand.cards, card],
+                    cards,
                 },
+                cardCount: cards.length
             };
         });
     }
 
-    return { players: updatedPlayers, remainingDeck: deck };
+    return { players: updatedPlayers };
 }
 
 
@@ -78,11 +98,9 @@ export function sortPlayerHands(players: Player[]) {
     }));
 }
 
-
 export function loseLife(lives: number): number {
     return Math.max(lives - 1, 0);
 }
-
 
 export function areAllLivesLost(lives: number) {
     return lives === 0;
@@ -108,12 +126,12 @@ export function removeLowestCardFromAllHands(
         return {
             ...player,
             hand: { cards: rest },
+            cardCount: rest.length,
         };
     });
 
     return { players: updatedPlayers, removedCards };
 }
-
 
 export function removeCardsLowerThanCardNumber(
     players: Player[],
@@ -123,7 +141,6 @@ export function removeCardsLowerThanCardNumber(
     removedCards: Card[];
     } {
     const removedCards: Card[] = [];
-    console.log('remove cards lower than: ', playedCardNumber);
     const editedPlayers = players.map(player => {
         const keptCards: Card[] = [];
         const discarded: Card[] = [];
@@ -131,7 +148,7 @@ export function removeCardsLowerThanCardNumber(
         for (const card of player.hand.cards) {
             if (card.number < playedCardNumber) {
                 discarded.push(card);
-                card.mistakenlyPlayedByPlayerId = player.id;
+                card.mistakenPlayerId = player.id;
                 card.mistakenlyPlayed = true;
             } else {
                 keptCards.push(card);
@@ -140,14 +157,40 @@ export function removeCardsLowerThanCardNumber(
 
         removedCards.push(...discarded);
 
+        const hand = {
+            ...player.hand,
+            cards: keptCards
+        }
+
         return {
             ...player,
-            hand: {
-                ...player.hand,
-                cards: keptCards,
-            },
+            hand,
+            cardCount: hand.cards.length
         };
     });
 
     return { editedPlayers, removedCards };
 }
+
+export function removeOtherPlayersFromStateForClient(
+    state: GameState,
+    playerId: string
+): GameState {
+    const emptyHand: Hand = { cards: [] };
+
+    return {
+        ...state,
+        players: state.players.map(player => {
+            if (player.id === playerId) {
+                return player; // clients get all of their data
+            }
+
+            return {
+                ...player, 
+                hand: emptyHand // clients can't get other clients crucial data
+                // card count remains to show other clients know what to display
+            };
+        }),
+    };
+}
+

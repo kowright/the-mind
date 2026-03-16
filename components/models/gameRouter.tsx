@@ -1,7 +1,5 @@
 // will always still mounted so when gamePhase changes, this reacts
 import { useGame } from '@/hooks/useGame';
-import { useEffect } from 'react';
-import { useRouter } from 'expo-router';
 import { Redirect } from 'expo-router';
 
 export default function GameRouter() {

@@ -4,11 +4,11 @@ import PlayView from '@/app/play';
 import { useGame } from '@/hooks/useGame';
 
 jest.mock('@/hooks/useGame');
+
 jest.mock('@/hooks/useCountdown', () => ({
     useCountdown: () => 5,
 }));
 
-// Mock phase components
 jest.mock('@/components/phases/mistake', () => ({
     MistakeView: () => <></>,
 }));

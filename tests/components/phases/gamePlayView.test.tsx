@@ -1,8 +1,7 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import { GameplayView } from "../../../components/phases/gamePlayView";
 
-// Mock hooks
 jest.mock("../../../hooks/useGame", () => ({
     useGame: () => ({
         state: {
@@ -61,15 +60,14 @@ jest.mock("../../../hooks/useResponsiveTheme", () => ({
     }),
 }));
 
-// Mock services
 jest.mock("../../../services/websocketService", () => ({
     websocketService: { send: jest.fn() },
 }));
+
 jest.mock("../../../services/soundService", () => ({
     soundService: { play: jest.fn() },
 }));
 
-// Mock components
 jest.mock("../../../components/models/gameOverlay", () => {
     const React = require("react");
     const { View } = require("react-native");

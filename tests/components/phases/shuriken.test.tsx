@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import { ShurikenView } from "@/components/phases/shuriken";
 
-// Mock the useGame hook
 jest.mock("@/hooks/useGame", () => ({
     useGame: () => ({
         state: {
@@ -39,7 +38,6 @@ jest.mock("@/components/models/getReady", () => ({
     },
 }));
 
-// Mock soundService
 jest.mock("@/services/soundService", () => ({
     soundService: {
         play: jest.fn(),
@@ -51,18 +49,14 @@ describe("ShurikenView", () => {
         const countdown = 5;
         const { getByText } = render(<ShurikenView countdown={countdown} />);
 
-        // Heading
         expect(getByText("SHURIKEN CALLED!")).toBeTruthy();
 
-        // Main texts
         expect(getByText("Looks like you all can agree on something!")).toBeTruthy();
         expect(getByText("Removed cards: ")).toBeTruthy();
 
-        // Removed cards
         expect(getByText("Card 1 (1/2)")).toBeTruthy();
         expect(getByText("Card 2 (2/2)")).toBeTruthy();
 
-        // Countdown
         expect(getByText(`STARTING AGAIN IN ${countdown}`)).toBeTruthy();
     });
 

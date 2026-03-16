@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import TabTwoScreen from "@/app/(tabs)/settings";
 
-// Mock theme
 jest.mock("@/theme/theme", () => ({
     theme: {
         color: {
@@ -17,7 +16,6 @@ jest.mock("@/theme/theme", () => ({
     },
 }));
 
-// Mock SettingsItem
 jest.mock("@/components/models/settingsItem", () => {
     const React = require("react");
     const { Text } = require("react-native");

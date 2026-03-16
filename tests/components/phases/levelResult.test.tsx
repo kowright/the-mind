@@ -1,7 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { LevelResultView } from "@/components/phases/levelResult";
-import { } from '@/hooks/useResponsiveTheme'
 
 jest.mock("@/hooks/useGame", () => ({
     useGame: () => ({
@@ -23,14 +22,12 @@ jest.mock("@/hooks/useResponsiveTheme", () => ({
     }),
 }));
 
-// Mock sound service
 jest.mock("@/services/soundService", () => ({
     soundService: {
         play: jest.fn(),
     },
 }));
 
-// Mock child components
 jest.mock("@/components/models/gameOverlay", () => ({
     GameOverlayView: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));

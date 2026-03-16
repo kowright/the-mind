@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import { MistakeView } from "@/components/phases/mistake";
 
-// Mock hooks
 jest.mock("../../../hooks/useGame", () => ({
     useGame: () => ({
         state: {
@@ -19,12 +18,10 @@ jest.mock("../../../hooks/useResponsiveTheme", () => ({
     }),
 }));
 
-// Mock soundService
 jest.mock("../../../services/soundService", () => ({
     soundService: { play: jest.fn() },
 }));
 
-// Mock components that render Text or Views
 jest.mock("../../../components/models/gameOverlay", () => {
     const React = require("react");
     const { View } = require("react-native");
@@ -71,21 +68,16 @@ describe("MistakeView", () => {
     it("renders heading, last played card, removed cards, and countdown text", () => {
         const { getByText } = render(<MistakeView countdown={5} />);
 
-        // Heading shows number of lives lost
         expect(getByText(/LOST 2 LIVES!/i)).toBeTruthy();
 
-        // Text labels
         expect(getByText("PLAYED TOO EARLY:")).toBeTruthy();
         expect(getByText("DID NOT PLAY WHEN THEY SHOULD HAVE:")).toBeTruthy();
 
-        // Last played card
         expect(getByText("Card last")).toBeTruthy();
 
-        // Removed cards
         expect(getByText("Card 1")).toBeTruthy();
         expect(getByText("Card 2")).toBeTruthy();
 
-        // Countdown text
         expect(getByText(/STARTING BACK IN 5/i)).toBeTruthy();
     });
 

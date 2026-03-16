@@ -5,6 +5,7 @@ import { useGame } from "@/hooks/useGame";
 import "react-native-gesture-handler/jestSetup";
 
 jest.mock("@/hooks/useGame");
+
 jest.mock("@/hooks/useResponsiveTheme", () => ({
     useResponsiveTheme: () => ({
         size: { cardWidth: 100, cardHeight: 150 },

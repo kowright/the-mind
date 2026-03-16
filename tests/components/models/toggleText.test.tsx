@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { ToggleText } from "@/components/models/toggleText";
 import { Text } from "react-native"; 
-// Proper mock
+
 jest.mock("@/components/models/iconText", () => ({
     IconText: ({ text }: { text: string }) => {
         const React = require("react");

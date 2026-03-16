@@ -2,7 +2,6 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { CardView } from "@/components/models/card";
 
-// Mock theme hook
 jest.mock("@/hooks/useResponsiveTheme", () => ({
     useResponsiveTheme: () => ({
         size: {
@@ -28,7 +27,6 @@ jest.mock("@/hooks/useResponsiveTheme", () => ({
     }),
 }));
 
-// Mock game hook
 jest.mock("@/hooks/useGame", () => ({
     useGame: () => ({
         state: {
@@ -37,7 +35,6 @@ jest.mock("@/hooks/useGame", () => ({
     }),
 }));
 
-// Mock expo linear gradient
 jest.mock("expo-linear-gradient", () => ({
     LinearGradient: ({ children }: any) => children || null,
 }));

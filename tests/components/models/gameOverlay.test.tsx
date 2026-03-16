@@ -21,7 +21,6 @@ describe("GameOverlayView", () => {
             </GameOverlayView>
         );
 
-        // Since GameOverlayView only wraps a View, we can check its children are present
         expect(getByTestId("child")).toBeTruthy();
     });
 });

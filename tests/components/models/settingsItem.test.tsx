@@ -4,6 +4,7 @@ import { useGame } from '@/hooks/useGame';
 import { websocketService } from '@/services/websocketService';
 
 jest.mock('@/hooks/useGame');
+
 jest.mock('@/services/websocketService');
 
 describe('SettingsItem', () => {
@@ -25,7 +26,7 @@ describe('SettingsItem', () => {
         );
 
         const checkbox = getByTestId('checkbox-someSetting');
-        expect(checkbox).toBeTruthy(); // Check that it exists
+        expect(checkbox).toBeTruthy();
     });
 
     it('calls websocketService.send when checkbox is toggled', () => {

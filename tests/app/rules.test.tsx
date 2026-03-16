@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import TabThreeScreen from "@/app/(tabs)/rules";
 
-// Mock theme
 jest.mock("@/theme/theme", () => ({
   theme: {
     color: {
@@ -33,7 +32,6 @@ jest.mock("@/components/models/button", () => {
     };
 });
 
-// Mock ToggleText
 jest.mock("@/components/models/toggleText", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
@@ -48,7 +46,6 @@ jest.mock("@/components/models/toggleText", () => {
   };
 });
 
-// Mock LevelProgression
 jest.mock("@/components/models/levelProgression", () => {
   const React = require("react");
   const { Text } = require("react-native");
@@ -57,7 +54,6 @@ jest.mock("@/components/models/levelProgression", () => {
   };
 });
 
-// Mock IconText
 jest.mock("@/components/models/iconText", () => {
   const React = require("react");
   const { Text } = require("react-native");
@@ -66,7 +62,6 @@ jest.mock("@/components/models/iconText", () => {
   };
 });
 
-// Mock CardView
 jest.mock("@/components/models/card", () => {
   const React = require("react");
   const { Text } = require("react-native");
@@ -76,7 +71,6 @@ jest.mock("@/components/models/card", () => {
   };
 });
 
-// Mock RuleText
 jest.mock("@/components/models/ruleText", () => {
   const React = require("react");
   const { Text } = require("react-native");

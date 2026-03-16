@@ -6,6 +6,7 @@ import { websocketService } from '../../services/websocketService';
 import { soundService } from '../../services/soundService';
 
 jest.mock('@/hooks/useGame');
+
 jest.mock('../../hooks/useResponsiveTheme', () => ({
     useResponsiveTheme: () => ({
         size: { cardWidth: 50 },
@@ -36,7 +37,6 @@ jest.mock('../../services/soundService', () => ({
     },
 }));
 
-// Mock UI components
 jest.mock('../../components/models/discardPile', () => ({
     DiscardPileView: () => null,
 }));

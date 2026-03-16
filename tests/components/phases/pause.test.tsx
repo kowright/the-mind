@@ -8,7 +8,7 @@ jest.mock("@/components/models/gameOverlay", () => ({
 
 jest.mock("@/components/models/gameOverlayHeading", () => {
     const React = require("react");
-    const { Text } = require("react-native"); // lazy require inside factory
+    const { Text } = require("react-native");
     return {
         GameOverlayHeading: ({ text }: { text: string }) => <Text>{text}</Text>,
     };
@@ -16,7 +16,7 @@ jest.mock("@/components/models/gameOverlayHeading", () => {
 
 jest.mock("@/components/models/button", () => {
     const React = require("react");
-    const { Text, TouchableOpacity } = require("react-native"); // lazy require inside factory
+    const { Text, TouchableOpacity } = require("react-native"); 
     return {
         ButtonView: ({ onPress, text }: { onPress: () => void; text: string }) => (
             <TouchableOpacity onPress={onPress}>

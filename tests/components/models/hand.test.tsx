@@ -1,23 +1,20 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { Text, View, TouchableOpacity } from "react-native";
 import { HandView } from "@/components/models/hand";
 
 jest.mock("@/components/models/card", () => {
     return {
         CardView: (props: any) => {
-            const { TouchableOpacity, Text } = require("react-native"); // lazy require
-            const { card, onPress, index, total } = props;
+            const { TouchableOpacity, Text } = require("react-native");
+            const { card, onPress, index} = props;
 
             let testID = card.id === "hand-placeholder"
                 ? `card-hand-placeholder`
                 : `card-hand-${props.clientId ?? "p1"}-${card.id}`;
 
-            // fallback for enemy cards
             if (props.total && props.total > 0 && props.hideNumbers) {
                 testID = `card-enemy-${index}`;
             }
-
 
             return (
                 <TouchableOpacity testID={testID} onPress={onPress}>
@@ -49,7 +46,6 @@ describe("HandView", () => {
             <HandView clientPlayer={mockClientPlayer} enemyPlayer={false} />
         );
 
-        // Sorted descending: c2 (5), c1 (3)
         const cardIds = ["c2", "c1"];
         cardIds.forEach((id) => {
             expect(getByTestId(`card-hand-p1-${id}`)).toBeTruthy();

@@ -2,8 +2,7 @@ import { useGame } from '@/hooks/useGame';
 import { LevelToRewardIconMapping, levels } from "@/shared/types/level";
 import { DiscardPileView } from "@/components/models/discardPile";
 import { GameOverlayView } from '../models/gameOverlay';
-import { ScrollView, Text, View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
 import { IconText } from '../models/iconText';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
 import { CardView } from '../models/card';
@@ -40,7 +39,7 @@ export function LevelResultView() {
             <GameOverlayView>
                 <View style={[styles.overlay, styles.overlayContainer]}>
                     <GameOverlayHeading text={`YOU BEAT LEVEL ${nextLevelIndex}!`} />
-                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems:'center', marginTop: 8, marginBottom: 16 } }>
+                    <View style={styles.content}>
                         <IconText iconFirst={false} iconName={pastLevelIcon} altIconSize={36} text='RECEIVED REWARD:' />
                         <IconText iconFirst={false} iconName={nextLevelIcon} altIconSize={36} text='NEXT LEVEL REWARD:' />
 
@@ -83,14 +82,21 @@ const styles = StyleSheet.create({
         display: 'flex',
     },
     overlay: overlayStyle(theme),
-    removedCardsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        marginTop: 16,
-    },
+    //removedCardsContainer: {
+    //    flexDirection: 'row',
+    //    alignItems: 'center',
+    //    justifyContent: 'flex-start',
+    //    marginTop: 16,
+    //},
     removedCards: {
         marginVertical: 16,
         paddingHorizontal: 16
-    }
+    },
+    content: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 8,
+        marginBottom: 16
+    },
 });

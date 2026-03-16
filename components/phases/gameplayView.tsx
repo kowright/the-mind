@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { soundService } from '../../services/soundService';
 interface GameplayViewProps {
     agreeToStartVersion: boolean;
-    discardPileStacked: boolean; // keep the discard pile stacked and not straight
+    discardPileStacked: boolean;
 }
 
 export function GameplayView({ agreeToStartVersion = false, discardPileStacked = true, ...props }: GameplayViewProps) {
@@ -35,8 +35,6 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
         state.shurikenCalls.length > 0
 
     const enemies = players.filter(p => p.id !== playerId);
-
-    //TODO UX: is subtext for shuriken noticable? 
 
     return (
         <LinearGradient 
@@ -62,7 +60,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                     {enemies[0] && (
                                         <>
                                             {enemies.length > 1 &&
-                                                <View style={{marginTop: '5%'}}>
+                                                <View style={styles.topEnemyMultiple}>
                                                     <Text style={styles.topEnemyText}>{`${enemies[0].name} `}
                                                             {!state.gameSettings.cardCounts && <Text style={styles.cardCount}>{`[${enemies[0].cardCount} card${enemies[0].cardCount === 1 ? '' : 's'}]`}</Text>}
                                                         </Text>
@@ -72,14 +70,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                             {enemies.length === 1 &&
                                                 <View>
                                                     <View
-                                                        style={{
-                                                            height: 50,
-                                                            overflow: 'hidden',
-                                                            alignItems: 'center',
-                                                            transform: [
-                                                                { rotate: '180deg' },
-                                                            ],
-                                                        }}
+                                                        style={styles.topEnemySingle}
                                                     >
                                                         <Text style={styles.topEnemyTwoPlayerText}>{`${enemies[0].name} `}
                                                             {!state.gameSettings.cardCounts &&
@@ -138,30 +129,23 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                             variant='primary'
                                         />
                                         <View
-                                            style={{
-                                                height: theme.size.cardHeight *1.2,
-                                                width: '100%',
-                                                overflow: 'visible',
-                                                justifyContent: 'center',
-                                            }}
+                                            style={[styles.clientHand, {
+                                                height: theme.size.cardHeight * 1.2,
+                                            }]}
                                         >
                                             <HandView
                                                 clientPlayer={clientPlayer}
                                                 enemyPlayer={false}
-                                                    onPressCard={() =>
-                                                        agreeToStartVersion ? console.log('nah') :
-                                                            websocketService.send({ type: "PLAY" } as ClientAction)}
+                                                onPressCard={() =>
+                                                !agreeToStartVersion && websocketService.send({ type: "PLAY" } as ClientAction)}
                                             />
                                         </View>
                                     </>
                                     :
                                     <View
-                                        style={{
+                                        style={[styles.clientHand, {
                                             height: theme.size.cardHeight * 1.2,
-                                            width: '100%',
-                                            overflow: 'visible',
-                                            justifyContent: 'center',
-                                        }}
+                                        }]}
                                     >
                                         <HandView
                                             clientPlayer={clientPlayer}
@@ -184,7 +168,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                             </>
                                     :
                                     <>
-                                        <View style={{flexDirection: 'row', gap: 16} }>
+                                        <View style={styles.playViewButtons}>
                                             <ButtonView
                                                     onPress={() => websocketService.send({ type: "CALL_FOR_SHURIKEN" } as ClientAction)}
                                                     text=''
@@ -193,7 +177,8 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                                     showTooltip={false}
                                                     variant='secondary'
                                                     iconName='staroflife.fill'
-                                                    iconColor={askedForShuriken ? 'orange' : 'white'}
+                                                    iconColor={askedForShuriken ?
+                                                        theme.color.gameplayIcon.activeBackgroundColor : theme.color.gameplayIcon.backgroundColor}
                                
                                             />
                                             <ButtonView
@@ -203,7 +188,7 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
                                                 iconName='pause.fill'
                                                 showTooltip={false}
                                                 variant='secondary'
-                                                    iconColor='white'
+                                                iconColor={theme.color.gameplayIcon.backgroundColor}
                                                 />
                                         </View>
 
@@ -224,20 +209,20 @@ export function GameplayView({ agreeToStartVersion = false, discardPileStacked =
 };
 
 const styles = StyleSheet.create({
-    buttonContainer: {
-        margin: 8,
+    topEnemyText: {
+        ...themeStyles.body,
+        textAlign: 'center',
     },
-    twoPlayerView: {
-        alignItems: 'center',
+    topEnemyMultiple: {
+        marginTop: '5%',
     },
-    topEnemy: {
+    topEnemySingle: {
         height: 50,
         overflow: 'hidden',
         alignItems: 'center',
-    },
-    topEnemyText: {
-        color: 'white',
-        textAlign: 'center',
+        transform: [
+            { rotate: '180deg' },
+        ],
     },
     topEnemyTwoPlayerText: {
         ...themeStyles.body,
@@ -246,17 +231,13 @@ const styles = StyleSheet.create({
         paddingTop: 8,
     },
     horizontalEnemyText: {
-        color: 'white',
+        ...themeStyles.body,
     },
     cardCount: {
         ...themeStyles.small,
         fontWeight: 'bold'
     },
-    middleEnemyRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-    },
+
     sideEnemy: {
         width: '40%',
         height: 100,
@@ -279,7 +260,6 @@ const styles = StyleSheet.create({
         left: '5%',
         top: '25%',
         transform: [{ rotate: '90deg' }],
-
         alignItems: 'center',
     },
     rightEnemy: {
@@ -295,5 +275,14 @@ const styles = StyleSheet.create({
     gameBoard: {
         flex: 1, 
         position: 'relative',
+    }, 
+    clientHand: {
+        width: '100%',
+        overflow: 'visible',
+        justifyContent: 'center',
+    },
+    playViewButtons: {
+        flexDirection: 'row',
+        gap: 16,
     }
 });

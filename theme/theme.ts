@@ -128,6 +128,7 @@ export const theme = {
             rabbit: tokens.colors.green[300],
             shuriken: tokens.colors.gray[400],
             level: tokens.colors.green[300],
+            activeBackgroundColor: tokens.colors.orange[500],
         },
 
         toggleIcon: {

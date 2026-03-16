@@ -1,5 +1,4 @@
-import { View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { GameOverlayView } from '../models/gameOverlay';
 import { GetReadyView } from '../models/getReady';
 import { overlayStyle, theme } from '../../theme/theme';

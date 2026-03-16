@@ -1,11 +1,9 @@
-import { ScrollView, Text, View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
 import { CardView } from '../models/card';
 import { overlayStyle, theme, themeStyles } from '../../theme/theme';
 import { useResponsiveTheme } from '../../hooks/useResponsiveTheme';
-import { IconText } from '../models/iconText';
 import { GetReadyView } from '../models/getReady';
 import { GameOverlayHeading } from '../models/gameOverlayHeading';
 import { useEffect } from 'react';
@@ -24,8 +22,6 @@ export function MistakeView({ countdown }: MistakeProps) {
         soundService.play('mistake');
 
     }, []);
-
-    // TODO UX: does it go to fast? Maybe reformatting it so it can be understood faster
 
     return (
         <GameOverlayView>
@@ -54,9 +50,7 @@ export function MistakeView({ countdown }: MistakeProps) {
                         horizontal
                         persistentScrollbar
                         showsHorizontalScrollIndicator
-
-                        contentContainerStyle={{ flexGrow: 1, paddingVertical: 12, paddingHorizontal: 12, overflow: 'visible', justifyContent: 'center' }}
-
+                        contentContainerStyle={styles.scrollViewContent}
                     >
                     {state.lastRemovedCards.map((card, index) => (
                         <View
@@ -72,17 +66,12 @@ export function MistakeView({ countdown }: MistakeProps) {
                                 total={state.lastRemovedCards.length + 1}
                                 discarded={true}
                                 rotate={false}
-
                             />
                         </View>
                     ))}
                     </ScrollView>
                 </View>}
-
-                {/*<View style={styles.lostLivesContainer}>*/}
-                {/*    <IconText iconFirst={false} iconName='hare.fill' text={`Lost ${state.lastRemovedCards.length}`} />*/}
-                {/*</View>*/}
-                <View style={{marginTop: 16} }> 
+                <View style={styles.countdown}> 
                     <GetReadyView text='STARTING BACK IN' countdown={countdown} />
                 </View>
             </View>
@@ -92,9 +81,6 @@ export function MistakeView({ countdown }: MistakeProps) {
 
 const styles = StyleSheet.create({
     overlayContainer: {
-        //backgroundColor: theme.color.overlay.backgroundColor,
-        //padding: 16,
-        //borderRadius: theme.border.radius.overlay,
         display: 'flex',
         alignItems: 'center',
     },
@@ -105,13 +91,19 @@ const styles = StyleSheet.create({
         marginTop: 16,
 
     },
-    lostLivesContainer: {
-        marginVertical: 12,
-    },
     overlay: overlayStyle(theme),
     text: {
         ...themeStyles.body,
         textAlign: 'center'
-        //color: theme.color.overlay.color,
+    },
+    scrollViewContent: {
+        flexGrow: 1,
+        paddingVertical: 12,
+        paddingHorizontal: 12,
+        overflow: 'visible',
+        justifyContent: 'center'
+    },
+    countdown: {
+        marginTop: 16,
     }
 });

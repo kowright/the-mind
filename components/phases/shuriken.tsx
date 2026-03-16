@@ -1,7 +1,6 @@
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { useGame } from '@/hooks/useGame';
 import { GameOverlayView } from '../models/gameOverlay';
-import { StyleSheet } from 'react-native';
 import { CardView } from '../models/card';
 import { GetReadyView } from '../models/getReady';
 import { overlayStyle, theme, themeStyles } from '../../theme/theme';
@@ -18,9 +17,7 @@ export function ShurikenView({ countdown }: ShurikenViewProps) {
 
     useEffect(() => {
         if (!state) return;
-
         soundService.play('shuriken');
-
     }, []);
 
     return (
@@ -37,15 +34,12 @@ export function ShurikenView({ countdown }: ShurikenViewProps) {
                             total={state.lastRemovedCards.length}
                             key={`removed-${card.id}`}
                             discarded={true}
-                            rotate={true} // assuming it doesn't matter where shuriken cards came from 
-                  
+                            rotate={true}
                         />
                     ))}
                 </View>
                 <GetReadyView text='STARTING AGAIN IN' countdown={countdown} />
-
             </View>
-
         </GameOverlayView>
     );
 }
